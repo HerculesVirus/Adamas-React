@@ -2,35 +2,24 @@
 
 const express = require('express')
 const router = express.Router()
-var multer = require('multer')
+const multer = require("multer");
 const bodyParser = require('body-parser')
 const path = require('path')
-
+var fs = require('fs');
+//Load Model 
+const MySchema = require('../../models/Category')
 //Multer Config
 //Store Image
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-    cb(null, 'public')
+    cb(null, 'uploads/')
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' +file.originalname )
   }
 })
 //receive Single file
-var upload = multer({ storage: storage }).single('file')
-//server give Response
-router.post('/upload',(req, res) => {  
-    upload(req, res, 
-        (err) => {
-            if (err instanceof multer.MulterError) {
-                return res.status(500).json(err)
-            } else if (err) {
-                return res.status(500).json(err)
-            }
-        return res.status(200).send(req.file)
-        }
-    )
-});
+const upload = multer({ storage: storage });
 
 ///////////////
 //Custom Routes
@@ -52,15 +41,18 @@ router.get('/', (req, res) => {
     })
   });
 //Send Data to MonogoDB 
-router.post('/admin/addcategory' , 
-    async (req,res) => {
+router.post('/admin/addcategory' , upload.any() , 
+     async (req,res) => {
     console.log('Hit the post Router')
-    console.log(req.body)
-    console.log(req.body.name)
-    console.log(req.body.des)
+    console.log(req)
+    // console.log(req.body.title)
+    // console.log(req.body.desc)
+     console.log(req.files[0].originalname)
     const newData = new MySchema();
-    newData.Name = req.body.name
-    newData.Description = req.body.des
+    newData.Name = req.body.title
+    newData.Description = req.body.desc
+    newData.img = req.files[0].originalname;
+    
     await newData.save()
 return res.json({message:"yes"})
     }

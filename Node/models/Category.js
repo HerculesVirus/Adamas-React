@@ -7,11 +7,11 @@ const categorySchema= new mongoose.Schema({   
         lowercase: true,    
     },    
     Description:{        
-        type: String,        
-        required: true,    
+        type: String,          
     },    
     img:{   
-        type: String       
+        type: String ,
+        required: true,     
     }})
 const Category = mongoose.model('Category', categorySchema);
 module.exports = Category;

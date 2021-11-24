@@ -21,7 +21,7 @@ function AddCategory() {
     const [value, setValue] = useState(false);
     let [sendFile,setSendFile] = useState(null);
     let [Name, setName]= useState("")
-    let [Description,setDescription] = useState('')
+    let [Des,setDescription] = useState('')
 
     const onChangeHandler = event => {
         setSendFile(event.target.files[0])
@@ -31,14 +31,21 @@ function AddCategory() {
     }
     const onClickHandler = (e) => {     
         e.preventDefault()
-        const dt={
-          name:Name,
-          des:Description
-        }
+
+        const form = new FormData()
+        form.append('title', Name)
+        form.append('desc', Des)
+        form.append('image', sendFile)
+        console.log('File : '+sendFile)
+
+        // const dt={
+        //   name:Name,
+        //   des:Des
+        // }
         axios({
           method: 'post',
           url: 'http://localhost:8000/api/admin/addcategory',
-          data:dt
+          data: form
         })      
         .then(res => { // then print response status
          console.log(res.statusText)
@@ -83,7 +90,7 @@ function AddCategory() {
                             } }
                             onChange={ ( event, editor ) => {
                                 const dataCkeditor = editor.getData();
-                                setDescription(Description = dataCkeditor)
+                                setDescription(Des = dataCkeditor)
                                 console.log( { event, editor, dataCkeditor } );
                             } }
                             onBlur={ ( event, editor ) => {

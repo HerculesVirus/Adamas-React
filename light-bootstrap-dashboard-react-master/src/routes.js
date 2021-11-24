@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import ListCategory from "views/ListCategory";
 import AddCategory from "views/AddCategory";
 import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
@@ -53,6 +54,13 @@ const dashboardRoutes = [
     name: "Add Category",
     icon: "nc-icon nc-notes",
     component: AddCategory,
+    layout: "/admin",
+  },
+  {
+    path: "/category",
+    name: "Categories",
+    icon: "nc-icon nc-notes",
+    component: ListCategory,
     layout: "/admin",
   },
   {
