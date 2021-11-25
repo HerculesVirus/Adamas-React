@@ -4,6 +4,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Switch from "../components/Switch/Switch";
 import axios from 'axios';
 // react-bootstrap components
+import {useParams,} from "react-router-dom";
 import {
   Badge,
   Button,
@@ -17,7 +18,17 @@ import {
 } from "react-bootstrap";
 
 
-function AddCategory() {
+function EditCategory(props) {
+    console.log("Hello")
+    let { id } = useParams();
+    console.log( id )
+    let [currentData, setCurrentData] = useState(null)
+    //axios
+    axios.get("http://localhost:8000/api/admin/:id")
+    .then(
+        res => setCurrentData(res.data)
+    )
+    .catch(err => console.log(err))
     const [value, setValue] = useState(false);
     let [sendFile,setSendFile] = useState(null);
     let [Name, setName]= useState("")
@@ -31,22 +42,28 @@ function AddCategory() {
     }
     const onClickHandler = (e) => {     
         e.preventDefault()
-        //FromData into oneObject and send to Axios
+        
         const form = new FormData()
         form.append('title', Name)
         form.append('desc', Des)
         form.append('image', sendFile)
         form.append('status',value)
-        //
-        axios({
-          method: 'post',
-          url: 'http://localhost:8000/api/admin/addcategory',
-          data: form
-        })      
-        .then(res => { // then print response status
-         console.log(res.statusText)
-        })
-        .catch(err => console.log("Try to tell the error name "+err) )    
+        // console.log('Status : '+value)
+        // console.log('File : '+sendFile)
+
+        // const dt={
+        //   name:Name,
+        //   des:Des
+        // }
+        // axios({
+        //   method: 'post',
+        //   url: 'http://localhost:8000/api/admin/addcategory',
+        //   data: form
+        // })      
+        // .then(res => { // then print response status
+        //  console.log(res.statusText)
+        // })
+        // .catch(err => console.log("Try to tell the error name "+err) )    
     }
   return (
     <>
@@ -55,7 +72,7 @@ function AddCategory() {
           <Col md="8">
             <Card>
               <Card.Header>
-                <Card.Title as="h4" className="text-center">ADD Category</Card.Title>
+                <Card.Title as="h4" className="text-center">Edit Category</Card.Title>
               </Card.Header>
               <Card.Body>
                 <Form >
@@ -64,7 +81,7 @@ function AddCategory() {
                       <Form.Group>
                         <label>Name <span>*</span></label>
                         <Form.Control
-                          defaultValue=""
+                          defaultValue={props.edit &&  props.edit.Name }
                           placeholder="Category Title"
                           name = 'Name'
                           type="text"
@@ -87,7 +104,7 @@ function AddCategory() {
                             onChange={ ( event, editor ) => {
                                 const dataCkeditor = editor.getData();
                                 setDescription(Des = dataCkeditor)
-                                // console.log( { event, editor, dataCkeditor } );
+                                console.log( { event, editor, dataCkeditor } );
                             } }
                             onBlur={ ( event, editor ) => {
                                 console.log( 'Blur.', editor );
@@ -128,10 +145,11 @@ function AddCategory() {
               </Card.Body>
             </Card>
           </Col>
+            {/*()*/}
         </Row>
       </Container>
     </>
   );
 }
 
-export default AddCategory;
+export default EditCategory;

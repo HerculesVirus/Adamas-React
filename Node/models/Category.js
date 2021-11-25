@@ -12,6 +12,11 @@ const categorySchema= new mongoose.Schema({   
     img:{   
         type: String ,
         required: true,     
-    }})
+    },
+    status:{
+      type: Boolean  
+    }
+})
+
 const Category = mongoose.model('Category', categorySchema);
 module.exports = Category;

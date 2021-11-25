@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 
     MySchema.find((err ,docs)=>{
         if(!err){
-            console.log(docs)
+            //console.log(docs)
             res.end('data is find in mongo')
         }
         else{
@@ -43,19 +43,32 @@ router.get('/', (req, res) => {
 //Send Data to MonogoDB 
 router.post('/admin/addcategory' , upload.any() , 
      async (req,res) => {
-    console.log('Hit the post Router')
-    console.log(req)
+    // console.log('Hit the post Router')
+    // console.log(req)
     // console.log(req.body.title)
     // console.log(req.body.desc)
-     console.log(req.files[0].originalname)
+    //  console.log(req.files[0].originalname)
+    //  console.log("Monogo status: "+req.body.status)
     const newData = new MySchema();
-    newData.Name = req.body.title
-    newData.Description = req.body.desc
+    newData.Name = req.body.title;
+    newData.Description = req.body.desc;
     newData.img = req.files[0].originalname;
-    
+    newData.status = req.body.status;
     await newData.save()
 return res.json({message:"yes"})
-    }
-)
+})
+//Retrive from Mongo
+router.get('/admin/listcategory' , (req,res) => {
+  console.log('Hit get router');
+  MySchema.find({})
+  .then(data =>{
+      res.json(data)
+      console.log(data)
+    } 
+  )
+  .catch(err => console.log("Error from Get RES"+data))
+})
+
+// router.get('/admin/editcategory/:id')
 
 module.exports = router;
