@@ -27,7 +27,7 @@ function AddCategory() {
         setSendFile(event.target.files[0])
     }
     const onChangeNameHandler = event => {
-      setName(Name = event.target.value)
+      setName(event.target.value)
     }
     const onClickHandler = (e) => {     
         e.preventDefault()

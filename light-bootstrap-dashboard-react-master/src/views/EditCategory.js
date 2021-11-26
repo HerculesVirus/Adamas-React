@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState  } from "react";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Switch from "../components/Switch/Switch";
@@ -18,55 +18,64 @@ import {
 } from "react-bootstrap";
 
 
-function EditCategory(props) {
-    console.log("Hello")
-    let { id } = useParams();
-    console.log( id )
-    let [currentData, setCurrentData] = useState(null)
-    //axios
-    axios.get("http://localhost:8000/api/admin/:id")
-    .then(
-        res => setCurrentData(res.data)
-    )
-    .catch(err => console.log(err))
-    const [value, setValue] = useState(false);
-    let [sendFile,setSendFile] = useState(null);
-    let [Name, setName]= useState("")
-    let [Des,setDescription] = useState('')
+function EditCategory() {
 
+    let { id } = useParams();
+
+    const [value, setValue] = useState(false);
+    const [sendFile,setSendFile] = useState(null);
+    const [Name, setName]= useState("")
+    const [Des,setDescription] = useState('')
+
+    //axios
+    function useAsync(){
+      useEffect(() => {
+        let isActive = true;
+       axios({
+          method: 'post' ,
+          url:"http://localhost:8000/api/admin/editcategory/:id",
+          data:id
+        })
+        .then(async res => {
+          if (isActive){
+            await (setName(res.data.Name))
+            await (setDescription(res.data.Description))
+            await (setSendFile(res.data.img))
+            await (setValue(res.data.status))
+          }     
+        })
+        .catch( err => console.log(err))
+        return () => { isActive = false };
+      }, []);
+    }
+    useAsync()
     const onChangeHandler = event => {
         setSendFile(event.target.files[0])
     }
     const onChangeNameHandler = event => {
-      setName(Name = event.target.value)
+      setName(event.target.value)
     }
-    const onClickHandler = (e) => {     
+    const onClickHandler = async(e) => {     
         e.preventDefault()
-        
-        const form = new FormData()
-        form.append('title', Name)
-        form.append('desc', Des)
-        form.append('image', sendFile)
-        form.append('status',value)
-        // console.log('Status : '+value)
-        // console.log('File : '+sendFile)
-
-        // const dt={
-        //   name:Name,
-        //   des:Des
-        // }
-        // axios({
-        //   method: 'post',
-        //   url: 'http://localhost:8000/api/admin/addcategory',
-        //   data: form
-        // })      
-        // .then(res => { // then print response status
-        //  console.log(res.statusText)
-        // })
-        // .catch(err => console.log("Try to tell the error name "+err) )    
+        const forms = new FormData()
+        forms.append('title', Name)
+        forms.append('desc', Des)
+        forms.append('image', sendFile)
+        forms.append('status',value)
+        forms.append('Myid', id)
+        await axios({
+          method: 'put',
+          url: 'http://localhost:8000/api/admin/savedata',
+          data : forms
+        })      
+        .then(res => { // then print response status
+        console.log(res.statusText)
+        })
+        .catch(err => console.log("Try to tell the error name "+err) )      
     }
   return (
     <>
+    {}
       <Container fluid>
         <Row>
           <Col md="8">
@@ -81,7 +90,7 @@ function EditCategory(props) {
                       <Form.Group>
                         <label>Name <span>*</span></label>
                         <Form.Control
-                          defaultValue={props.edit &&  props.edit.Name }
+                          defaultValue={Name}
                           placeholder="Category Title"
                           name = 'Name'
                           type="text"
@@ -95,16 +104,19 @@ function EditCategory(props) {
                       <Form.Group>
                         <label>Description</label>
                         <CKEditor
+                            //defaultValue={ currentData && currentData.Description}
                             editor={ ClassicEditor }
-                            // data="<p>Hello from CKEditor 5!</p>"
+                            data= {Des}
                             onReady={ editor => {
                                 // You can store the "editor" and use when it is needed.
-                                console.log( 'Editor is ready to use!', editor );
+                                // editor.setData(data);
+                                //console.log( 'Editor is ready to use!', editor );
                             } }
                             onChange={ ( event, editor ) => {
                                 const dataCkeditor = editor.getData();
-                                setDescription(Des = dataCkeditor)
-                                console.log( { event, editor, dataCkeditor } );
+                                setDescription(dataCkeditor)
+
+                                //console.log( { event, editor, dataCkeditor } );
                             } }
                             onBlur={ ( event, editor ) => {
                                 console.log( 'Blur.', editor );
@@ -118,7 +130,7 @@ function EditCategory(props) {
                   </Row>
                   <Row>
                     <Col md={{ span: 10, offset: 2 }}>
-                        <input type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
+                        <input  defaultValue={sendFile} type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
                     </Col>
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Status</label>

@@ -3,14 +3,14 @@ import ReactHtmlParser from 'react-html-parser';
 import { Button} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import EditCategory from "./EditCategory";
+import axios from 'axios';
 //import axios from "axios";
 const TableData = (props)=>{
     //Get the Array of Objects in @props.dt
     const [nameState , setNameState] = useState(props.dt)
     //ComponentDidUpdate
-    useEffect(async() => {
+    useEffect( () => {
         setNameState(props.dt);
-
     }, [props])
 
     const   EditHandler = (e)=> {
@@ -18,8 +18,17 @@ const TableData = (props)=>{
         <>
             <EditCategory />
         </>
-        )
-        
+        )  
+    }
+    const DeleteHandler = async (e) => {
+      console.log(e)
+      console.log(typeof(e))
+      //axios
+      await axios({
+        method: 'delete',
+        url: 'http://localhost:8000/api/admin/delete',
+        data: {Uni : e}
+      })
     }
     return(
       <>
@@ -35,7 +44,7 @@ const TableData = (props)=>{
                 <td>{element.status ? "Active": "Not Active"}</td>
                 <td>
                     <Button onClick={(e) => EditHandler()}><Link to={`/admin/editcategory/${element._id}`}><i className="fas fa-edit"></i></Link></Button> 
-                    <Button><i className="fas fa-trash"></i></Button>
+                    <Button onClick={ (e) => DeleteHandler(element._id)}><i className="fas fa-trash"></i></Button>
                 </td>
               </tr>
               )

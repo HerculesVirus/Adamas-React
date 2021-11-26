@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 
+const bodyparser=require('body-parser')
+app.use(bodyparser.urlencoded({extended:true}))
+app.use(bodyparser.json())
 var cors = require('cors'); //Connect Front end routes with Backend
 const connectDB = require('./config/db'); //DB Connection 
 //Connect Database
