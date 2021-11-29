@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import ReactHtmlParser from 'react-html-parser';
 import { Button} from "react-bootstrap";
-import { Link } from "react-router-dom";
-import EditCategory from "./EditCategory";
+import { Link , useHistory } from "react-router-dom";
+import EditProduct from "./EditProduct";
 import axios from 'axios';
+import Moment from 'react-moment';
+
+
 //import axios from "axios";
-const TableData = (props)=>{
+const ListTableData = (props)=>{
     //Get the Array of Objects in @props.dt
     const [nameState , setNameState] = useState(props.dt)
-    //ComponentDidUpdate
+    let history = useHistory();
     useEffect( () => {
         setNameState(props.dt);
     }, [props])
@@ -16,19 +19,30 @@ const TableData = (props)=>{
     const   EditHandler = (e)=> {
         return (
         <>
-            <EditCategory />
+            <EditProduct />
         </>
         )  
     }
-    const DeleteHandler = async (e) => {
+    const handle_Date = (data) => {
+      console.log(data)
+      return(
+        <Moment format="YYYY/MM/DD">
+            {data}
+        </Moment>
+      )
+    }
+    const DeleteHandler =  (e) => {
       console.log(e)
       console.log(typeof(e))
+      
+      props.delcategory(e)
       //axios
-      await axios({
+      axios({
         method: 'delete',
         url: 'http://localhost:8000/api/admin/delete',
         data: {Uni : e}
-      })
+      }) 
+      // history.push('/admin/listcategory')
     }
     return(
       <>
@@ -39,12 +53,12 @@ const TableData = (props)=>{
                 <td>{index+1}</td>
                 <td>{element.Name}</td>
                 <td>{element.img}</td>
-                <td>{  ReactHtmlParser(element.Description)}</td>
-                <td>Nothing</td>
+                <td>{ReactHtmlParser(element.Description)}</td>
+                <td>{handle_Date(element.createdAt)}</td>
                 <td>{element.status ? "Active": "Not Active"}</td>
                 <td>
                     <Button onClick={(e) => EditHandler()}><Link to={`/admin/editcategory/${element._id}`}><i className="fas fa-edit"></i></Link></Button> 
-                    <Button onClick={ (e) => DeleteHandler(element._id)}><i className="fas fa-trash"></i></Button>
+                    <Button onClick={ (e) => DeleteHandler(element._id)}><Link to="/admin/listcategory"><i className="fas fa-trash"></i></Link></Button>
                 </td>
               </tr>
               )
@@ -54,4 +68,4 @@ const TableData = (props)=>{
     )
 }
 
-export default TableData
+export default ListTableData;

@@ -2,8 +2,8 @@ import React from 'react';
 import '../../assets/css/switch.css';
 
 const Switch = ({ isOn, handleToggle }) => {
-    //console.log("defaultValue: "+defaultValue)
-    //console.log("isOn: "+isOn)
+    console.log("defaultValue: "+handleToggle)
+    console.log("isOn: "+isOn)
 
   return (
     <>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState  } from "react";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import Switch from "../components/Switch/Switch";
+import Switch from "../../components/Switch/Switch";
 import axios from 'axios';
 // react-bootstrap components
-import {useParams,} from "react-router-dom";
+import {useParams , useHistory , Link} from "react-router-dom";
 import {
   Badge,
   Button,
@@ -22,13 +22,14 @@ function EditCategory() {
 
     let { id } = useParams();
 
-    const [value, setValue] = useState(false);
+    const [status, setStatus] = useState(false);
     const [sendFile,setSendFile] = useState(null);
     const [Name, setName]= useState("")
     const [Des,setDescription] = useState('')
+    let history = useHistory()
 
     //axios
-    function useAsync(){
+
       useEffect(() => {
         let isActive = true;
        axios({
@@ -41,27 +42,28 @@ function EditCategory() {
             await (setName(res.data.Name))
             await (setDescription(res.data.Description))
             await (setSendFile(res.data.img))
-            await (setValue(res.data.status))
+            await (setStatus(res.data.status))
+            console.log(Des)
           }     
         })
         .catch( err => console.log(err))
         return () => { isActive = false };
       }, []);
-    }
-    useAsync()
+    
     const onChangeHandler = event => {
         setSendFile(event.target.files[0])
     }
     const onChangeNameHandler = event => {
       setName(event.target.value)
     }
-    const onClickHandler = async(e) => {     
+    const onClickHandler = async(e) => {   
+      console.log("Event Handler : "+status)  
         e.preventDefault()
         const forms = new FormData()
         forms.append('title', Name)
         forms.append('desc', Des)
         forms.append('image', sendFile)
-        forms.append('status',value)
+        forms.append('status',status)
         forms.append('Myid', id)
         await axios({
           method: 'put',
@@ -71,11 +73,12 @@ function EditCategory() {
         .then(res => { // then print response status
         console.log(res.statusText)
         })
-        .catch(err => console.log("Try to tell the error name "+err) )      
+        .catch(err => console.log("Try to tell the error name "+err) )    
+        history.push('/admin/listcategory')  
     }
   return (
     <>
-    {}
+    {console.log(Des)}
       <Container fluid>
         <Row>
           <Col md="8">
@@ -104,7 +107,6 @@ function EditCategory() {
                       <Form.Group>
                         <label>Description</label>
                         <CKEditor
-                            //defaultValue={ currentData && currentData.Description}
                             editor={ ClassicEditor }
                             data= {Des}
                             onReady={ editor => {
@@ -135,9 +137,11 @@ function EditCategory() {
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Status</label>
                         <Switch
-                            isOn={value}
-                            handleToggle={() => setValue(!value)}
-                        />             
+                            isOn={status}
+                            handleToggle={() => setStatus(!status)}
+
+                        />  
+                        {console.log("After: "+status)}           
                     </Col>
                   </Row>
                   <Row>
@@ -147,8 +151,8 @@ function EditCategory() {
                           </Button>{' '}
                       </Col>
                       <Col md={{ span: 3, offset: 2 }}>        
-                        <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>{' '}
-                        {/* <Link to="/admin/category">Save</Link> */} Save
+                        <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>
+                        <Link to="#" >Save</Link>
                         </Button>
                       </Col>
                   </Row>

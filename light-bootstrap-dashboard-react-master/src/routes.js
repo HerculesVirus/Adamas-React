@@ -15,9 +15,12 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import EditCategory from "views/EditCategory";
-import ListCategory from "views/ListCategory";
-import AddCategory from "views/AddCategory";
+import CreateProduct from "views/Products/CreateProduct";
+import EditProduct from "views/Products/EditProduct";
+import ListProduct from "views/Products/ListProduct";
+import AddCategory from "views/Category/AddCategory";
+import ListCategory from "views/Category/ListCategory";
+import EditCategory from "views/Category/EditCategory";
 import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
 import TableList from "views/TableList.js";
@@ -70,6 +73,27 @@ const dashboardRoutes = [
     icon: "nc-icon nc-bullet-list-67",
     component: ListCategory,
     layout: "/admin",
+  },
+  {
+    path : "/createproduct",
+    name : "Create product", 
+    icon: "nc-icon nc-notes",
+    component : CreateProduct,
+    layout : "/admin" ,
+  },
+  {
+    path : "/editproduct",
+    name : "Edit product", 
+    icon: "nc-icon nc-controller-modern",
+    component : EditProduct,
+    layout : "/admin" ,
+  },
+  {
+    path : "/listproduct",
+    name : "Products", 
+    icon: "nc-icon nc-bullet-list-67",
+    component : ListProduct,
+    layout : "/admin" ,
   },
   {
     path: "/table",

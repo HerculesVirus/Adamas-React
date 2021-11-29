@@ -16,7 +16,7 @@ const categorySchema= new mongoose.Schema({   
     status:{
       type: Boolean  
     }
-})
+}, {timestamps:true})
 
 const Category = mongoose.model('Category', categorySchema);
 module.exports = Category;

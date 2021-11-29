@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import TableData from "./TableData";
+import TableData from "../Category/TableData";
 // react-bootstrap components
 import {
   Badge,
@@ -17,9 +17,21 @@ import axios from "axios";
 
 
 
-function ListCategory() {
+function ListProduct(props) {
+    //array of Objects are set in below state
   let [val,setVal] = useState(null)
 
+    const delcal=(id)=>{
+      console.log("Delcal: "+id)
+      //DElete that object and then Val have new list of objects
+      val.map((Element, index) =>{
+          if(Element._id === id){
+            val.splice(index,1)
+            
+          }
+      })
+      console.log("Delcal end of this : "+val)
+  }
   useEffect( ()=> {
       getAllRecords();
   }, [])
@@ -27,10 +39,11 @@ function ListCategory() {
     axios.get("http://localhost:8000/api/admin/listcategory")
     .then( async res =>{   
       await setVal(res.data)
+      //console.log()
     } )
     .catch( err => console.log(err))
 
-
+   
     
   }
   return (
@@ -40,9 +53,9 @@ function ListCategory() {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header style={{display: "flex"}}>               
-                  <Card.Title as="h4">Categories</Card.Title>
+                  <Card.Title as="h4">Products</Card.Title>
                   <Button className="ml-auto p-2">
-                    <Link to="/admin/addcategory">Add Category</Link>
+                    <Link to="/admin/addcategory">Add Products</Link>
                   </Button>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
@@ -59,7 +72,8 @@ function ListCategory() {
                     </tr>
                   </thead>
                   <tbody>
-                      <TableData dt={val}/>
+                    {/* {console.log("This should going on: "+val)} */}
+                      <TableData dt={val} delcategory={delcal}/>
                   </tbody>
                 </Table>
               </Card.Body>
@@ -71,4 +85,4 @@ function ListCategory() {
   );
 }
 
-export default ListCategory;
+export default ListProduct;
