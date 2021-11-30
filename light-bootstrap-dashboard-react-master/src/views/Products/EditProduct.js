@@ -21,41 +21,66 @@ import {
 
 
 function EditProduct() {
-    console.log("Where is Id")
-    let { id } = useParams();
-    console.log(id)
+    const { id } = useParams();
+    //console.log(id)
 
     const [status, setStatus] = useState(false);
     const [sendFile,setSendFile] = useState(null);
     const [Name, setName]= useState("")
     const [Des,setDescription] = useState('')
-    let [selectOptions , SetSelectOptions] = useState([])
-    // let [unique , setUnique]= useState('')
-    // let [cat , SetCat] = useState('')
-    let history = useHistory()
+    let   [selectOptions , setSelectOptions] = useState([])
+    let   [cat , setCat] = useState('')
+    let   [CatID , setCatID] = useState('')
+    let   [price ,setPrice] = useState('')
+    let   history = useHistory()
 
+    const getOptions=async()=>{
+      const res = await axios.get('http://localhost:8000/api/admin/listcategory')
+      const CategoriesName = res.data
+  
+      const options = CategoriesName.map(d => ({
+        "id" : d._id,
+        "label" : d.Name
+      }))
+      setSelectOptions(options)
+    }
     //axios
     useEffect(() => {
+      getOptions()
     let isActive = true;
     axios({
         method: 'post' ,
         url:"http://localhost:8000/api/admin/editproduct/:id",
-        data:id
+        data: id
     })
     .then(async res => {
         if (isActive){
-            console.log(res.data)
+            //console.log(res.data.Category)
             await (setName(res.data.Name))
             await (setDescription(res.data.Description))
             await (setSendFile(res.data.img))
-            await (setStatus(res.data.status))
+            await (setStatus(res.data.Featured))
+            await (setCat(res.data.Category.name))
+            await (setCatID(res.data.Category.id))
+            await (setPrice(res.data.price))
             
-            console.log(Des)
           }     
         })
     .catch( err => console.log(err))
         return () => { isActive = false };
     }, []);
+        //onChangeSelectHandler
+        const onChangeSelectHandler = async(event)=>{
+          console.log("Onchange event")
+          console.log(event.id)
+          console.log(event.label)
+          await setCatID(event.id)
+          await setCat(event.label)
+        }
+    //Pricef
+    const onChangePriceHandler = event => {
+      setPrice(event.target.value) 
+    }
     //Files are Handle here
     const onChangeHandler = event => {
         setSendFile(event.target.files[0])
@@ -64,6 +89,7 @@ function EditProduct() {
     const onChangeNameHandler = event => {
       setName(event.target.value)
     }
+
     //Save Button Handle here
     const onClickHandler = async(e) => {   
       console.log("Event Handler : "+status)  
@@ -74,9 +100,12 @@ function EditProduct() {
         forms.append('image', sendFile)
         forms.append('status',status)
         forms.append('Myid', id)
+        forms.append('price' , price)
+        forms.append('Category',cat)
+        forms.append('Cat_ID', CatID)
         await axios({
           method: 'put',
-          url: 'http://localhost:8000/api/admin/Save',
+          url: 'http://localhost:8000/api/admin/updateProduct',
           data : forms
         })      
         .then(res => { // then print response status
@@ -87,7 +116,6 @@ function EditProduct() {
     }
   return (
     <>
-    {console.log(Des)}
       <Container fluid>
         <Row>
           <Col md="8">
@@ -142,12 +170,14 @@ function EditProduct() {
                         <label>PRICE <span>*</span></label>
                         <InputGroup className="mb-3" >
                             <InputGroup.Text>$</InputGroup.Text>
-                            <FormControl aria-label="Amount (to the nearest dollar)"  name='price' style={{textAlign : "right"}} onChange={(event)=> onChangeHandler(event)}/>
+                            {/* { console.log(price)} */}
+                            <FormControl aria-label="Amount (to the nearest dollar)" defaultValue={price} style={{textAlign : "right"}} onChange={(event)=> onChangePriceHandler(event)}/>
                             <InputGroup.Text>.00</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={{ span: 7, offset: 2 }}>
-                          <Select options={selectOptions} onChange={(event) => onChangeSelectHandler(event)}/>
+                      {/* {console.log("Category_Name : "+cat+" value : "+CatID)} */}
+                          <Select options={selectOptions}  value={{"id" : CatID, "label" : cat  }} onChange={(event) => onChangeSelectHandler(event)}/>
                     </Col>
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Featured</label>

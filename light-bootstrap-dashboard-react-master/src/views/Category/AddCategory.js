@@ -26,9 +26,10 @@ function AddCategory() {
     let history= useHistory();
 
     const onChangeHandler = event => {
-        setSendFile(event.target.files[0])
+        setSendFile(URL.createObjectURL(event.target.files[0]))
     }
     const onChangeNameHandler = event => {
+      
       setName(event.target.value)
     }
     const onClickHandler = (e) => {     
@@ -106,6 +107,7 @@ function AddCategory() {
                   <Row>
                     <Col md={{ span: 10, offset: 2 }}>
                         <input type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
+                        
                     </Col>
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Status</label>

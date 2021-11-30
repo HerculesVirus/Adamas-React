@@ -38,7 +38,7 @@ const ListTableData = (props)=>{
       //axios
       axios({
         method: 'delete',
-        url: 'http://localhost:8000/api/admin/delete',
+        url: 'http://localhost:8000/api/admin/deleteproduct',
         data: {Uni : e}
       }) 
       // history.push('/admin/listcategory')
@@ -58,8 +58,8 @@ const ListTableData = (props)=>{
                 <td>{handle_Date(element.createdAt)}</td>
                 <td>{element.Featured ? "Active": "Not Active"}</td>
                 <td>
-                  {console.log(element._id)}
-                    <Link to={`/admin/editproduct/${element._id}`}><Button ><i className="fas fa-edit"></i></Button> </Link> 
+                  {/* {console.log(element._id)} */}
+                    <Link to={`/admin/editproduct/${element._id}`}><Button onClick={(e)=> EditHandler(e)}><i className="fas fa-edit"></i></Button> </Link> 
                     <Button onClick={ (e) => DeleteHandler(element._id)}><Link to="/admin/listproduct"><i className="fas fa-trash"></i></Link></Button>
                 </td>
               </tr>

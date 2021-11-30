@@ -69,5 +69,35 @@ router.post('/admin/editproduct/:id' ,(req,res) => {
       console.log(data)
     })
     .catch(err => console.log(err))
+})
+//UPDATE Category
+router.put("/admin/updateproduct" ,upload.any(), (req,res)=> {
+  console.log("PUT api is Hit UPDATE Category")
+  //console.log(req.body)
+  Product.findOneAndUpdate({_id : req.body.Myid },{
+    Name : req.body.title,
+    Description : req.body.desc ,
+    img : req.files[0].originalname,
+    Featured : req.body.status , 
+    price : req.body.price,
+    Category:{name : req.body.Category,
+    id : req.body.Cat_ID}
+  }
+  )
+  .then(data => res.json({messgae : "Data is updated"}))
+  .catch(err => console.log(err))
+})
+//DELETE Category
+router.delete("/admin/deleteproduct",(req,res)=> {
+  console.log("DEL API is hit DELETE Category")
+  //console.log(req.body.Uni)
+  Product.findOneAndRemove(req.body.Uni , (err , data) => {
+    if(!err){
+      console.log(data)
+    }
   })
+  .then(data => res.json({messgae : "Data is Deleted"}))
+  .catch(err => console.log(err))
+})
+
 module.exports = router;
