@@ -16,14 +16,14 @@ const TableData = (props)=>{
     }, [props])
 
     const   EditHandler = (e)=> {
-        return (
-        <>
-            <EditCategory />
-        </>
-        )  
+        // return (
+        // <>
+        //     <EditCategory />
+        // </>
+        // )  
     }
     const handle_Date = (data) => {
-      console.log(data)
+      //console.log(data)
       return(
         <Moment format="YYYY/MM/DD">
             {data}
@@ -31,9 +31,8 @@ const TableData = (props)=>{
       )
     }
     const DeleteHandler =  (e) => {
-      console.log(e)
-      console.log(typeof(e))
-      
+      // console.log(e)
+      // console.log(typeof(e))      
       props.delcategory(e)
       //axios
       axios({
@@ -41,7 +40,6 @@ const TableData = (props)=>{
         url: 'http://localhost:8000/api/admin/delete',
         data: {Uni : e}
       }) 
-      // history.push('/admin/listcategory')
     }
     return(
       <>

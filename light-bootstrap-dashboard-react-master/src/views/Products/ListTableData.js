@@ -7,7 +7,7 @@ import axios from 'axios';
 import Moment from 'react-moment';
 
 
-//import axios from "axios";
+
 const ListTableData = (props)=>{
     //Get the Array of Objects in @props.dt
     const [nameState , setNameState] = useState(props.dt)
@@ -24,7 +24,7 @@ const ListTableData = (props)=>{
         )  
     }
     const handle_Date = (data) => {
-      console.log(data)
+      //console.log(data)
       return(
         <Moment format="YYYY/MM/DD">
             {data}
@@ -32,9 +32,8 @@ const ListTableData = (props)=>{
       )
     }
     const DeleteHandler =  (e) => {
-      console.log(e)
-      console.log(typeof(e))
-      
+      // console.log(e)
+      // console.log(typeof(e))     
       props.delcategory(e)
       //axios
       axios({
@@ -54,11 +53,14 @@ const ListTableData = (props)=>{
                 <td>{element.Name}</td>
                 <td>{element.img}</td>
                 <td>{ReactHtmlParser(element.Description)}</td>
+                <td>{element.price}</td>
+                <td>{element.Category.name}</td>
                 <td>{handle_Date(element.createdAt)}</td>
-                <td>{element.status ? "Active": "Not Active"}</td>
+                <td>{element.Featured ? "Active": "Not Active"}</td>
                 <td>
-                    <Button onClick={(e) => EditHandler()}><Link to={`/admin/editcategory/${element._id}`}><i className="fas fa-edit"></i></Link></Button> 
-                    <Button onClick={ (e) => DeleteHandler(element._id)}><Link to="/admin/listcategory"><i className="fas fa-trash"></i></Link></Button>
+                  {console.log(element._id)}
+                    <Link to={`/admin/editproduct/${element._id}`}><Button ><i className="fas fa-edit"></i></Button> </Link> 
+                    <Button onClick={ (e) => DeleteHandler(element._id)}><Link to="/admin/listproduct"><i className="fas fa-trash"></i></Link></Button>
                 </td>
               </tr>
               )

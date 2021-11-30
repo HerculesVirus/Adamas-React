@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import TableData from "../Category/TableData";
+import ListTableData from "./ListTableData";
 // react-bootstrap components
 import {
   Badge,
@@ -36,7 +36,7 @@ function ListProduct(props) {
       getAllRecords();
   }, [])
   const getAllRecords = () => {
-    axios.get("http://localhost:8000/api/admin/listcategory")
+    axios.get("http://localhost:8000/api/admin/listproduct")
     .then( async res =>{   
       await setVal(res.data)
       //console.log()
@@ -55,7 +55,7 @@ function ListProduct(props) {
               <Card.Header style={{display: "flex"}}>               
                   <Card.Title as="h4">Products</Card.Title>
                   <Button className="ml-auto p-2">
-                    <Link to="/admin/addcategory">Add Products</Link>
+                    <Link to="/admin/createproduct">Add Products</Link>
                   </Button>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
@@ -66,6 +66,8 @@ function ListProduct(props) {
                       <th className="border-0">Img</th>
                       <th className="border-0">Name</th>
                       <th className="border-0">Description</th>
+                      <th className="border-0">Price</th>
+                      <th className="border-0">Category</th>
                       <th className="border-0">Created At</th>
                       <th className="border-0">STATUS</th>
                       <th className="border-0">Actions</th>
@@ -73,7 +75,7 @@ function ListProduct(props) {
                   </thead>
                   <tbody>
                     {/* {console.log("This should going on: "+val)} */}
-                      <TableData dt={val} delcategory={delcal}/>
+                      <ListTableData dt={val} delcategory={delcal}/>
                   </tbody>
                 </Table>
               </Card.Body>

@@ -1,5 +1,4 @@
 //Routes/api/categories
-
 const express = require('express')
 const router = express.Router()
 const multer = require("multer");
@@ -7,7 +6,7 @@ const multer = require("multer");
 const path = require('path')
 var fs = require('fs');
 //Load Model 
-const MySchema = require('../../models/Category')
+const CategoryModel = require('../../models/Category')
 //Multer Config
 //Store Image
 var storage = multer.diskStorage({
@@ -20,17 +19,10 @@ var storage = multer.diskStorage({
 })
 //receive Single file
 const upload = multer({ storage: storage });
-
-///////////////
 //Custom Routes
-// @ route GET api/categories/admin/addCategory
-// @ description addCategory to MongoDB
-// @ public Access
-//Server send data to client side on get Routes
-//Read Routes
+//HOME Routes
 router.get('/', (req, res) => {
-
-    MySchema.find((err ,docs)=>{
+    CategoryModel.find((err ,docs)=>{
         if(!err){
             //console.log(docs)
             res.end('data is find in mongo')
@@ -42,14 +34,8 @@ router.get('/', (req, res) => {
   });
 //Send Data to MonogoDB 
 router.post('/admin/addcategory' , upload.any() , 
-     async (req,res) => {
-    // console.log('Hit the post Router')
-    // console.log(req)
-    // console.log(req.body.title)
-    // console.log(req.body.desc)
-    //  console.log(req.files[0].originalname)
-    //  console.log("Monogo status: "+req.body.status)
-    const newData = new MySchema();
+    async (req,res) => {
+    const newData = new CategoryModel();
     newData.Name = req.body.title;
     newData.Description = req.body.desc;
     newData.img = req.files[0].originalname;
@@ -57,31 +43,31 @@ router.post('/admin/addcategory' , upload.any() ,
     await newData.save()
 return res.json({message:"yes"})
 })
-//Retrive from Mongo
+//Retrive Data from Mongo
 router.get('/admin/listcategory' , (req,res) => {
-  //console.log('Hit get router /admin/listcategory');
-  MySchema.find({})
+  CategoryModel.find({})
   .then(data =>{
       res.json(data)
-      console.log(data)
+      //console.log(data)
     } 
   )
   .catch(err => console.log("Error from Get RES"+data))
 })
-
+//Findone data from Mongo on ID
 router.post('/admin/editcategory/:id' ,(req,res) => {
   //console.log('Hit POST router /admin/editcategory/:id');
-  MySchema.findOne({_id : Object.keys(req.body)})
-  .then( data => {res.json(data)
+  CategoryModel.findOne({_id : Object.keys(req.body)})
+  .then( data => {
+    res.json(data)
     //console.log(data)
   })
   .catch(err => console.log(err))
 })
-//update
+//UPDATE Category
 router.put("/admin/savedata" ,upload.any(), (req,res)=> {
-  console.log("PUT api is Hit")
-  console.log(req.body)
-  MySchema.findOneAndUpdate({_id : req.body.Myid },{
+  console.log("PUT api is Hit UPDATE Category")
+  //console.log(req.body)
+  CategoryModel.findOneAndUpdate({_id : req.body.Myid },{
     Name : req.body.title,
     Description : req.body.desc ,
     img : req.files[0].originalname,
@@ -91,11 +77,11 @@ router.put("/admin/savedata" ,upload.any(), (req,res)=> {
   .then(data => res.json({messgae : "Data is updated"}))
   .catch(err => console.log(err))
 })
-//delete
+//DELETE Category
 router.delete("/admin/delete",(req,res)=> {
-  console.log("DEL API hit")
-  console.log(req.body.Uni)
-  MySchema.findOneAndRemove(req.body.Uni , (err , data) => {
+  console.log("DEL API is hit DELETE Category")
+  //console.log(req.body.Uni)
+  CategoryModel.findOneAndRemove(req.body.Uni , (err , data) => {
     if(!err){
       console.log(data)
     }
@@ -103,9 +89,5 @@ router.delete("/admin/delete",(req,res)=> {
   .then(data => res.json({messgae : "Data is Deleted"}))
   .catch(err => console.log(err))
 })
-//////////////////////Product/////////
-router.post('/admin/createProduct' ,(res,req) => {
-  console.log("Post  API is called")
-  //res.end("Hello from the HIT API")
-})
+
 module.exports = router;

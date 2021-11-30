@@ -3,9 +3,11 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Switch from "../../components/Switch/Switch";
 import axios from 'axios';
+import Select from 'react-select';
 // react-bootstrap components
 import {useParams , useHistory , Link} from "react-router-dom";
-import {
+import { 
+  InputGroup, FormControl , 
   Badge,
   Button,
   Card,
@@ -19,13 +21,17 @@ import {
 
 
 function EditProduct() {
-
+    console.log("Where is Id")
     let { id } = useParams();
+    console.log(id)
 
     const [status, setStatus] = useState(false);
     const [sendFile,setSendFile] = useState(null);
     const [Name, setName]= useState("")
     const [Des,setDescription] = useState('')
+    let [selectOptions , SetSelectOptions] = useState([])
+    // let [unique , setUnique]= useState('')
+    // let [cat , SetCat] = useState('')
     let history = useHistory()
 
     //axios
@@ -33,15 +39,17 @@ function EditProduct() {
     let isActive = true;
     axios({
         method: 'post' ,
-        url:"http://localhost:8000/api/admin/editcategory/:id",
+        url:"http://localhost:8000/api/admin/editproduct/:id",
         data:id
     })
     .then(async res => {
         if (isActive){
+            console.log(res.data)
             await (setName(res.data.Name))
             await (setDescription(res.data.Description))
             await (setSendFile(res.data.img))
             await (setStatus(res.data.status))
+            
             console.log(Des)
           }     
         })
@@ -68,7 +76,7 @@ function EditProduct() {
         forms.append('Myid', id)
         await axios({
           method: 'put',
-          url: 'http://localhost:8000/api/admin/savedata',
+          url: 'http://localhost:8000/api/admin/Save',
           data : forms
         })      
         .then(res => { // then print response status
@@ -130,13 +138,23 @@ function EditProduct() {
                     <Col md={{ span: 10, offset: 2 }}>
                         <input  defaultValue={sendFile} type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
                     </Col>
+                    <Col md={{ span: 7, offset: 2 }}>
+                        <label>PRICE <span>*</span></label>
+                        <InputGroup className="mb-3" >
+                            <InputGroup.Text>$</InputGroup.Text>
+                            <FormControl aria-label="Amount (to the nearest dollar)"  name='price' style={{textAlign : "right"}} onChange={(event)=> onChangeHandler(event)}/>
+                            <InputGroup.Text>.00</InputGroup.Text>
+                        </InputGroup>
+                    </Col>
+                    <Col md={{ span: 7, offset: 2 }}>
+                          <Select options={selectOptions} onChange={(event) => onChangeSelectHandler(event)}/>
+                    </Col>
                     <Col md={{ span: 3, offset: 2 }}>  
-                        <label>Status</label>
+                        <label>Featured</label>
                         <Switch
                             isOn={status}
                             handleToggle={() => setStatus(!status)}
-                        />  
-                        {/* {console.log("After: "+status)}            */}
+                        />             
                     </Col>
                   </Row>
                   <Row>

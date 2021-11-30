@@ -10,12 +10,14 @@ const connectDB = require('./config/db'); //DB Connection
 connectDB();
 //routes
 const categories = require('./Routes/api/categories')
+const products = require('./Routes/api/products')
 //cors
 app.use(cors())
 //Middleware
 app.use(express.urlencoded({extended: true}))
 // use Routes
 app.use('/api', categories)
+app.use('/api', products) 
 
 
 app.listen(8000, function() {

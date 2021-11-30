@@ -19,7 +19,7 @@ import {
 
 
 function AddCategory() {
-    const [value, setValue] = useState(false);
+    const [status, setStatus] = useState(false);
     let [sendFile,setSendFile] = useState(null);
     let [Name, setName]= useState("")
     let [Des,setDescription] = useState('')
@@ -38,7 +38,7 @@ function AddCategory() {
         form.append('title', Name)
         form.append('desc', Des)
         form.append('image', sendFile)
-        form.append('status',value)
+        form.append('status',status)
         //
         axios({
           method: 'post',
@@ -110,8 +110,8 @@ function AddCategory() {
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Status</label>
                         <Switch
-                            isOn={value}
-                            handleToggle={() => setValue(!value)}
+                            isOn={status}
+                            handleToggle={() => setStatus(!status)}
                         />             
                     </Col>
                   </Row>

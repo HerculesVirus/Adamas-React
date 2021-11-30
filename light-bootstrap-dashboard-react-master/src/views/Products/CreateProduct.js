@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Switch from "../../components/Switch/Switch";
 import { Link, useHistory } from "react-router-dom";
+import Select from 'react-select';
 
 import axios from 'axios';
 // react-bootstrap components
@@ -21,49 +22,79 @@ import {
 } from "react-bootstrap";
 
 
+
 function CreateProduct() {
     const [status, setStatus] = useState(false);
     let [sendFile,setSendFile] = useState(null);
     let [Name, setName]= useState("")
     let [Des,setDescription] = useState('')
     let [Price , setPrice] = useState("")
+    let [selectOptions , SetSelectOptions] = useState([])
+    let [id , setID]= useState('')
+    let [cat , SetCat] = useState('')
+    
     let history= useHistory();
-
+    //Genral Change Handler
     const onChangeHandler = async event => {
-       if(event.target.name === 'price' && event.target.name){
-          await setPrice(event.target.value)  
+       if( event.target.name === 'price' && event.target.name !== undefined){
+          setPrice(event.target.value)  
+          console.log(event.target.value)
       }
       else if(event.target.files[0]){
         setSendFile(event.target.files[0])
-      }
-        
+      }  
     }
-    
+    //onChangeSelectHandler
+    const onChangeSelectHandler = async(event)=>{
+      console.log(event.id)
+      console.log(event.label)
+      await setID(event.id)
+      await SetCat(event.label)
+    }
+    //GET ALL DATA from api
+    const getOptions=async()=>{
+      const res = await axios.get('http://localhost:8000/api/admin/listcategory')
+      const CategoriesName = res.data
+  
+      const options = CategoriesName.map(d => ({
+        "id" : d._id,
+        "label" : d.Name
+      }))
+      SetSelectOptions(options)
+    }
+    //onChangeNameHandler
     const onChangeNameHandler = event => {
       setName(event.target.value)
     }
+    //Save Button Handler
     const onClickHandler = (e) => {     
         e.preventDefault()
         //FromData into oneObject and send to Axios
-        const form = new FormData()
-        form.append('title', Name)
-        form.append('desc', Des)
-        form.append('image', sendFile)
-        form.append('status',value)
-        form.append('price' , Price)
+        const forms = new FormData()
+        console.log("Name: "+Name)
+        forms.append('title', Name)
+        forms.append('desc', Des)
+        forms.append('image', sendFile)
+        forms.append('status',status)
+        forms.append('price' , Price)
+        forms.append('Category',cat)
+        forms.append('Cat_ID', id)
+        console.log(forms)
         //
         axios({
           method: 'post',
-          url: 'http://localhost:8000/api/admin/createProduct',
-          data: form
+          url: 'http://localhost:8000/api/admin/createproduct',
+          data: forms
         })      
         .then(res => { // then print response status
          console.log(res.statusText)
         })
         .catch(err => console.log("Try to tell the error name "+err) )    
-    
-      history.push('/admin/listcategory')
+        history.push('/admin/listproduct')
     }
+    useEffect(()=> {
+      getOptions()
+    },[])
   return (
     <>
       <Container fluid>
@@ -113,15 +144,19 @@ function CreateProduct() {
                     </Col>
                   </Row>
                   <Row>
-                    <Col md={{ span: 10, offset: 2 }}>
+                    <Col md={{ span: 7, offset: 2 }}>
                         <input type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
                     </Col>
-                    <Col md={{ span: 6, offset: 2 }}>
+                    <Col md={{ span: 7, offset: 2 }}>
+                        <label>PRICE <span>*</span></label>
                         <InputGroup className="mb-3" >
                             <InputGroup.Text>$</InputGroup.Text>
                             <FormControl aria-label="Amount (to the nearest dollar)"  name='price' style={{textAlign : "right"}} onChange={(event)=> onChangeHandler(event)}/>
                             <InputGroup.Text>.00</InputGroup.Text>
                         </InputGroup>
+                    </Col>
+                    <Col md={{ span: 7, offset: 2 }}>
+                          <Select options={selectOptions} onChange={(event) => onChangeSelectHandler(event)}/>
                     </Col>
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Featured</label>
@@ -129,19 +164,6 @@ function CreateProduct() {
                             isOn={status}
                             handleToggle={() => setStatus(!status)}
                         />             
-                    </Col>
-                    <Col md={{ span: 3, offset: 2 }}>
-                      <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          Dropdown Button
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>   
                     </Col>
                   </Row>
                   <Row>
