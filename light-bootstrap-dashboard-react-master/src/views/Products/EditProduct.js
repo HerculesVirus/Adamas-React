@@ -22,10 +22,11 @@ import {
 
 function EditProduct() {
     const { id } = useParams();
-    //console.log(id)
+    console.log(id)
 
     const [status, setStatus] = useState(false);
     const [sendFile,setSendFile] = useState(null);
+    const [showImg , setShowImg] = useState(null)
     const [Name, setName]= useState("")
     const [Des,setDescription] = useState('')
     let   [selectOptions , setSelectOptions] = useState([])
@@ -49,9 +50,8 @@ function EditProduct() {
       getOptions()
     let isActive = true;
     axios({
-        method: 'post' ,
-        url:"http://localhost:8000/api/admin/editproduct/:id",
-        data: id
+        method: 'get' ,
+        url:`http://localhost:8000/api/admin/editproduct/${id}`,
     })
     .then(async res => {
         if (isActive){
@@ -59,11 +59,10 @@ function EditProduct() {
             await (setName(res.data.Name))
             await (setDescription(res.data.Description))
             await (setSendFile(res.data.img))
-            await (setStatus(res.data.Featured))
+            await (setPrice(res.data.price))
             await (setCat(res.data.Category.name))
             await (setCatID(res.data.Category.id))
-            await (setPrice(res.data.price))
-            
+            await (setStatus(res.data.Featured))
           }     
         })
     .catch( err => console.log(err))
@@ -71,9 +70,9 @@ function EditProduct() {
     }, []);
         //onChangeSelectHandler
         const onChangeSelectHandler = async(event)=>{
-          console.log("Onchange event")
-          console.log(event.id)
-          console.log(event.label)
+          // console.log("Onchange event")
+          // console.log(event.id)
+          // console.log(event.label)
           await setCatID(event.id)
           await setCat(event.label)
         }
@@ -84,6 +83,7 @@ function EditProduct() {
     //Files are Handle here
     const onChangeHandler = event => {
         setSendFile(event.target.files[0])
+        setShowImg(URL.createObjectURL(event.target.files[0]))
     }
     // Name is Set here
     const onChangeNameHandler = event => {
@@ -99,13 +99,12 @@ function EditProduct() {
         forms.append('desc', Des)
         forms.append('image', sendFile)
         forms.append('status',status)
-        forms.append('Myid', id)
         forms.append('price' , price)
-        forms.append('Category',cat)
+        forms.append('name',cat)
         forms.append('Cat_ID', CatID)
         await axios({
           method: 'put',
-          url: 'http://localhost:8000/api/admin/updateProduct',
+          url: `http://localhost:8000/api/admin/editproduct/${id}`,
           data : forms
         })      
         .then(res => { // then print response status
@@ -164,6 +163,11 @@ function EditProduct() {
                   </Row>
                   <Row>
                     <Col md={{ span: 10, offset: 2 }}>
+                        <div>
+                          {showImg ? 
+                          <img style={{width : "86px"}} src={showImg}/>
+                          : (sendFile && <img style={{width : "86px"}} src={ `http://localhost:8000/public/img/Product/${sendFile}`}/>)}
+                        </div>
                         <input  defaultValue={sendFile} type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
                     </Col>
                     <Col md={{ span: 7, offset: 2 }}>
@@ -182,21 +186,23 @@ function EditProduct() {
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Featured</label>
                         <Switch
-                            isOn={status}
-                            handleToggle={() => setStatus(!status)}
+                          isOn={status}
+                          handleToggle={() => setStatus(!status)}
                         />             
                     </Col>
                   </Row>
                   <Row>
                       <Col md={{ span: 3, offset: 2 }}>
-                          <Button variant="outline-danger" >
+                          <Link to="/admin/listproduct">
+                            <Button variant="outline-danger" >
                               Close
-                          </Button>
+                            </Button>
+                          </Link>
                       </Col>
-                      <Col md={{ span: 3, offset: 2 }}>        
-                        <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>
-                        <Link to="#" >Save</Link>
-                        </Button>
+                      <Col md={{ span: 3, offset: 2 }}>
+                        <Link to="#" >
+                          <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>Save</Button>
+                        </Link>  
                       </Col>
                   </Row>
                   <div className="clearfix"></div>

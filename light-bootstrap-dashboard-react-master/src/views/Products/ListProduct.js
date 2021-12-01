@@ -54,9 +54,9 @@ function ListProduct(props) {
             <Card className="strpied-tabled-with-hover">
               <Card.Header style={{display: "flex"}}>               
                   <Card.Title as="h4">Products</Card.Title>
-                  <Button className="ml-auto p-2">
-                    <Link to="/admin/createproduct">Add Products</Link>
-                  </Button>
+                  <div className="ml-auto p-2">
+                    <Link to="/admin/createproduct"><Button>Add Products</Button></Link>
+                  </div>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
                 <Table className="table-hover table-striped">

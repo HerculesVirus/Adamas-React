@@ -46,12 +46,12 @@ const ListTableData = (props)=>{
     return(
       <>
       {
-        nameState && nameState.map((element ,index) => {
+        nameState && nameState.slice(0).reverse().map((element ,index) => {
               return(
               <tr key={index}>
                 <td>{index+1}</td>
+                <td>{<img style={{width : "86px"}} src={`http://localhost:8000/public/img/Product/${element.img}`}/>}</td>
                 <td>{element.Name}</td>
-                <td>{element.img}</td>
                 <td>{ReactHtmlParser(element.Description)}</td>
                 <td>{element.price}</td>
                 <td>{element.Category.name}</td>
@@ -59,8 +59,8 @@ const ListTableData = (props)=>{
                 <td>{element.Featured ? "Active": "Not Active"}</td>
                 <td>
                   {/* {console.log(element._id)} */}
-                    <Link to={`/admin/editproduct/${element._id}`}><Button onClick={(e)=> EditHandler(e)}><i className="fas fa-edit"></i></Button> </Link> 
-                    <Button onClick={ (e) => DeleteHandler(element._id)}><Link to="/admin/listproduct"><i className="fas fa-trash"></i></Link></Button>
+                    <Link to={`/admin/editproduct/${element._id}`}><Button onClick={(e)=> EditHandler(e)}><i className="fas fa-edit"></i></Button></Link> 
+                    <Link to="/admin/listproduct"><Button onClick={ (e) => DeleteHandler(element._id)}><i className="fas fa-trash"></i></Button></Link>
                 </td>
               </tr>
               )

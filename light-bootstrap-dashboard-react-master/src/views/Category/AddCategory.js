@@ -21,12 +21,14 @@ import {
 function AddCategory() {
     const [status, setStatus] = useState(false);
     let [sendFile,setSendFile] = useState(null);
+    let [showImg , setShowImg] = useState(null)
     let [Name, setName]= useState("")
     let [Des,setDescription] = useState('')
     let history= useHistory();
 
     const onChangeHandler = event => {
-        setSendFile(URL.createObjectURL(event.target.files[0]))
+        setSendFile(event.target.files[0])
+        setShowImg(URL.createObjectURL(event.target.files[0]))
     }
     const onChangeNameHandler = event => {
       
@@ -87,7 +89,7 @@ function AddCategory() {
                             // data="<p>Hello from CKEditor 5!</p>"
                             onReady={ editor => {
                                 // You can store the "editor" and use when it is needed.
-                                console.log( 'Editor is ready to use!', editor );
+                                //console.log( 'Editor is ready to use!', editor );
                             } }
                             onChange={ ( event, editor ) => {
                                 const dataCkeditor = editor.getData();
@@ -95,10 +97,10 @@ function AddCategory() {
                                 // console.log( { event, editor, dataCkeditor } );
                             } }
                             onBlur={ ( event, editor ) => {
-                                console.log( 'Blur.', editor );
+                                //console.log( 'Blur.', editor );
                             } }
                             onFocus={ ( event, editor ) => {
-                                console.log( 'Focus.', editor );
+                                //console.log( 'Focus.', editor );
                             } }
                         />
                       </Form.Group> 
@@ -106,27 +108,34 @@ function AddCategory() {
                   </Row>
                   <Row>
                     <Col md={{ span: 10, offset: 2 }}>
+                        {console.log(showImg)}
+                        <div>
+                        {showImg && 
+                          <img style={{width : "86px"}} src={showImg}/>
+                        }
+                        </div>
                         <input type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
-                        
                     </Col>
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Status</label>
                         <Switch
-                            isOn={status}
-                            handleToggle={() => setStatus(!status)}
+                          isOn={status}
+                          handleToggle={() => setStatus(!status)}
                         />             
                     </Col>
                   </Row>
                   <Row>
                       <Col md={{ span: 3, offset: 2 }}>
-                          <Button variant="outline-danger" >
+                          <Link to ="/admin/listcategory">
+                            <Button variant="outline-danger" >
                               Close
-                          </Button>{' '}
+                            </Button>
+                          </Link>
                       </Col>
                       <Col md={{ span: 3, offset: 2 }}>        
-                        <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>{' '}
-                        <Link to="">Save</Link>
-                        </Button>
+                        <Link to="">
+                          <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>Save</Button>
+                        </Link> 
                       </Col>
                   </Row>
                   <div className="clearfix"></div>

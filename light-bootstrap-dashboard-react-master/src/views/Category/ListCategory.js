@@ -36,9 +36,9 @@ function ListCategory(props) {
   }, [])
   const getAllRecords = () => {
     axios.get("http://localhost:8000/api/admin/listcategory")
-    .then( async res =>{   
-      await setVal(res.data)
-      //console.log()
+    .then( res =>{   
+      setVal(res.data)
+      //console.log(val)
     } )
     .catch( err => console.log(err))
 
@@ -53,9 +53,9 @@ function ListCategory(props) {
             <Card className="strpied-tabled-with-hover">
               <Card.Header style={{display: "flex"}}>               
                   <Card.Title as="h4">Categories</Card.Title>
-                  <Button className="ml-auto p-2">
-                    <Link to="/admin/addcategory">Add Category</Link>
-                  </Button>
+                    <div className="ml-auto p-2">
+                    <Link to="/admin/addcategory"><Button >Add Category</Button></Link>
+                    </div>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
                 <Table className="table-hover table-striped">

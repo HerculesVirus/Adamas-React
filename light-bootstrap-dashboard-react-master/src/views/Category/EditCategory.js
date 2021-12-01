@@ -26,6 +26,7 @@ function EditCategory() {
     const [sendFile,setSendFile] = useState(null);
     const [Name, setName]= useState("")
     const [Des,setDescription] = useState('')
+    let [showImg , setShowImg] = useState(null)
     let history = useHistory()
 
     //axios
@@ -33,17 +34,18 @@ function EditCategory() {
       useEffect(() => {
         let isActive = true;
        axios({
-          method: 'post' ,
-          url:"http://localhost:8000/api/admin/editcategory/:id",
-          data:id
+          method: 'get' ,
+          url:`http://localhost:8000/api/admin/editcategory/${id}`
         })
         .then(async res => {
           if (isActive){
+            
             await (setName(res.data.Name))
             await (setDescription(res.data.Description))
             await (setSendFile(res.data.img))
             await (setStatus(res.data.status))
-            console.log(Des)
+            console.log(res.data.img)
+            //console.log(Des)
           }     
         })
         .catch( err => console.log(err))
@@ -52,33 +54,33 @@ function EditCategory() {
     
     const onChangeHandler = event => {
         setSendFile(event.target.files[0])
+        setShowImg(URL.createObjectURL(event.target.files[0]))
     }
     const onChangeNameHandler = event => {
       setName(event.target.value)
     }
     const onClickHandler = async(e) => {   
-      console.log("Event Handler : "+status)  
+      //console.log("Event Handler : "+status)  
         e.preventDefault()
         const forms = new FormData()
         forms.append('title', Name)
         forms.append('desc', Des)
         forms.append('image', sendFile)
         forms.append('status',status)
-        forms.append('Myid', id)
+        
         await axios({
           method: 'put',
-          url: 'http://localhost:8000/api/admin/savedata',
+          url: `http://localhost:8000/api/admin/editcategory/${id}`,
           data : forms
         })      
         .then(res => { // then print response status
-        console.log(res.statusText)
+          console.log(res.statusText)
         })
         .catch(err => console.log("Try to tell the error name "+err) )    
         history.push('/admin/listcategory')  
     }
   return (
     <>
-    {console.log(Des)}
       <Container fluid>
         <Row>
           <Col md="8">
@@ -110,21 +112,16 @@ function EditCategory() {
                             editor={ ClassicEditor }
                             data= {Des}
                             onReady={ editor => {
-                                // You can store the "editor" and use when it is needed.
-                                // editor.setData(data);
-                                //console.log( 'Editor is ready to use!', editor );
                             } }
                             onChange={ ( event, editor ) => {
                                 const dataCkeditor = editor.getData();
                                 setDescription(dataCkeditor)
-
-                                //console.log( { event, editor, dataCkeditor } );
                             } }
                             onBlur={ ( event, editor ) => {
-                                console.log( 'Blur.', editor );
+                                // console.log( 'Blur.', editor );
                             } }
                             onFocus={ ( event, editor ) => {
-                                console.log( 'Focus.', editor );
+                                // console.log( 'Focus.', editor );
                             } }
                         />
                       </Form.Group> 
@@ -132,28 +129,33 @@ function EditCategory() {
                   </Row>
                   <Row>
                     <Col md={{ span: 10, offset: 2 }}>
+                      <div>
+                        {showImg ? 
+                        <img style={{width : "86px"}} src={showImg}/>
+                         : (sendFile && <img style={{width : "86px"}} src={ `http://localhost:8000/public/img/Category/${sendFile}`}/>)}
+                        </div>
                         <input  defaultValue={sendFile} type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
                     </Col>
                     <Col md={{ span: 3, offset: 2 }}>  
                         <label>Status</label>
                         <Switch
-                            isOn={status}
-                            handleToggle={() => setStatus(!status)}
-
-                        />  
-                        {console.log("After: "+status)}           
+                          isOn={status}
+                          handleToggle={() => setStatus(!status)}
+                        />
                     </Col>
                   </Row>
                   <Row>
                       <Col md={{ span: 3, offset: 2 }}>
+                        <Link to ="/admin/listcategory">
                           <Button variant="outline-danger" >
-                              Close
-                          </Button>{' '}
+                            Close
+                          </Button>
+                        </Link>
                       </Col>
                       <Col md={{ span: 3, offset: 2 }}>        
-                        <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>
-                        <Link to="#" >Save</Link>
-                        </Button>
+                        <Link to="" >
+                          <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>Save</Button>
+                        </Link>
                       </Col>
                   </Row>
                   <div className="clearfix"></div>

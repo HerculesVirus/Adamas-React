@@ -26,6 +26,7 @@ import {
 function CreateProduct() {
     const [status, setStatus] = useState(false);
     let [sendFile,setSendFile] = useState(null);
+    let [showImg , setShowImg] = useState(null)
     let [Name, setName]= useState("")
     let [Des,setDescription] = useState('')
     let [Price , setPrice] = useState("")
@@ -42,6 +43,7 @@ function CreateProduct() {
       }
       else if(event.target.files[0]){
         setSendFile(event.target.files[0])
+        setShowImg(URL.createObjectURL(event.target.files[0]))
       }  
     }
     //onChangeSelectHandler
@@ -145,6 +147,10 @@ function CreateProduct() {
                   </Row>
                   <Row>
                     <Col md={{ span: 7, offset: 2 }}>
+                      {showImg && 
+                        <div>
+                          <img style={{width : "86px"}} src={showImg}/>
+                        </div>}
                         <input type="file" name="file" encType="multipart/form-data" onChange={(event) => onChangeHandler(event)}/>
                     </Col>
                     <Col md={{ span: 7, offset: 2 }}>
@@ -168,14 +174,14 @@ function CreateProduct() {
                   </Row>
                   <Row>
                       <Col md={{ span: 3, offset: 2 }}>
-                          <Button variant="outline-danger" >
+                          <Link to="/admin/listproduct">
+                            <Button variant="outline-danger" >
                               Close
-                          </Button>{' '}
+                            </Button>
+                          </Link>
                       </Col>
-                      <Col md={{ span: 3, offset: 2 }}>        
-                        <Button variant="outline-success" onClick={(e) => onClickHandler(e)}>{' '}
-                        <Link to="">Save</Link>
-                        </Button>
+                      <Col md={{ span: 3, offset: 2 }}> 
+                        <Link to=""><Button variant="outline-success" onClick={(e) => onClickHandler(e)}>Save</Button></Link> 
                       </Col>
                   </Row>
                   <div className="clearfix"></div>

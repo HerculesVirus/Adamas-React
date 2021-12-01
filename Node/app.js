@@ -1,6 +1,7 @@
 var express = require('express');
+var path=require('path')
 var app = express();
-
+// app.use(express.static("public"))
 const bodyparser=require('body-parser')
 app.use(bodyparser.urlencoded({extended:true}))
 app.use(bodyparser.json())
@@ -15,6 +16,10 @@ const products = require('./Routes/api/products')
 app.use(cors())
 //Middleware
 app.use(express.urlencoded({extended: true}))
+
+// app.use('/public', express.static(path.join(__dirname, '/public/img/Category')))
+app.use('/public', express.static('public'));
+// app.use(express.static('public'));
 // use Routes
 app.use('/api', categories)
 app.use('/api', products) 
