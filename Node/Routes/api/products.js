@@ -52,12 +52,8 @@ return res.json({message : "Yes"})
 //Retrive Data from Mongo
 router.get('/admin/listproduct' , (req,res) => {
     Product.find({})
-    .then(data =>{
-        res.json(data)
-        //console.log(data)
-      } 
-    )
-    .catch(err => console.log("Error from Get RES"+data))
+    .then(data => res.json(data)  ) //console.log(data)
+    .catch(err => console.log("Error from Get REST API"+data))
   })
 //Findone data from Mongo on ID
 router.get('/admin/editproduct/:id' ,(req,res) => {

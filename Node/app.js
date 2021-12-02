@@ -12,6 +12,7 @@ connectDB();
 //routes
 const categories = require('./Routes/api/categories')
 const products = require('./Routes/api/products')
+const Publicsite = require('./Routes/api/Publicsite')
 //cors
 app.use(cors())
 //Middleware
@@ -22,7 +23,8 @@ app.use('/public', express.static('public'));
 // app.use(express.static('public'));
 // use Routes
 app.use('/api', categories)
-app.use('/api', products) 
+app.use('/api', products)
+app.use('/api' , Publicsite)
 
 
 app.listen(8000, function() {
