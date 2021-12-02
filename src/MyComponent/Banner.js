@@ -25,11 +25,4 @@ const Banner = () => {
     )
 }
 
-            {/* <!-- <div className="carousel-item">
-              <img src="images\bg.png" className="d-block w-100" alt="..."/>
-            </div>
-            <div className="carousel-item">
-              <img src="images\bg.png" className="d-block w-100" alt="..."/>
-            </div> --> */}
-
 export default Banner;

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 const Navbar = () => {
     return(
         <nav className="navbar navbar-expand-lg navbar-light">
@@ -8,12 +9,12 @@ const Navbar = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
-                        <Link className="nav-link " aria-current="page" to="#">Home</Link>
-                        <Link className="nav-link " aria-current="page" to="#">Apparel</Link>
-                        <Link className="nav-link " aria-current="page" to="#">Fashion</Link>
-                        <Link className="nav-link " aria-current="page" to="#">News</Link>
-                        <Link className="nav-link " aria-current="page" to="#">Portfolio</Link>
-                        <Link className="nav-link " aria-current="page" to="#">Contact</Link>
+                        <Link className="nav-link " aria-current="page" to="/">Home</Link>
+                        <Link className="nav-link " aria-current="page" to="/Apperal">Apparel</Link>
+                        <Link className="nav-link " aria-current="page" to="/*">Fashion</Link>
+                        <Link className="nav-link " aria-current="page" to="/*">News</Link>
+                        <Link className="nav-link " aria-current="page" to="/*">Portfolio</Link>
+                        <Link className="nav-link " aria-current="page" to="/*">Contact</Link>
                     </div>
                 </div>
             </div>

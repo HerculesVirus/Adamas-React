@@ -413,3 +413,10 @@ footer {
     align-items: center;
   }
 }
+
+.slick-prev::before{
+  color: #61dafb
+}
+.slick-next::before{
+  color: #61dafb
+}
