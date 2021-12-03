@@ -54,4 +54,30 @@ router.get('/admin/publicsite/product' , (req,res) => {
     .then( data => res.json(data))
     .catch(err => console.log(err))
 })
+
+router.get(`/admin/publicsite/product/:id`, (req,res) => {
+    console.log('Right API hit')
+    const {id} =req.params
+    console.log(id)
+    Product.find({"Category.id" : id})
+        .then(data => res.json(data))
+        .catch(err => console.log(err))
+    // return res.json({message : "Yes"})
+    //Product.findById()
+})
+
+//Pagination API
+router.get(`/admin/pagination` , async(req,res) => {
+    const PAGE_SIZE = 3
+    const page = parseInt(req.query.page || "0");
+    const total = await Product.countDocuments({});
+    const product = await Product.find({})
+    .limit(PAGE_SIZE)
+    .skip(PAGE_SIZE * page)
+    .then( data => {
+        res.json({totalPages: Math.ceil(total /PAGE_SIZE), data})
+    })
+    
+
+})
 module.exports = router ;
