@@ -50,8 +50,8 @@ const ProductSection = () => {
             {
                 product && product.map( items => {
                     return(
-                      <div className="col-lg-3 col-sm-6 " style={{width : '100%' }}>
-                        <ProductCard key={items.id} 
+                      <div className="col-lg-3 col-sm-6 " style={{width : '100%' }} key={items._id} >
+                        <ProductCard 
                         p_img={items.img} 
                         p_title={items.Name} 
                         p_description={items.Description}

@@ -32,7 +32,8 @@ const Collection = (props) => {
                       my_img={item.img} 
                       my_title={item.Name} 
                       my_des={item.Description} 
-                      my_button={"VISIT THE STORE"}  />
+                      // my_button={"VISIT THE STORE"}  
+                      />
                     </div>
                   )
                 })

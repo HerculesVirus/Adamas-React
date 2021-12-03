@@ -59,12 +59,12 @@ nav a{
     padding: 0px 8px ;
 }
 
-.slider{
+/* .slider{
     height: 427px;
-    background-image: url('../images/slider.jpg');
+    background-image: url('../../public/images/banner1.png');
     margin-bottom: 40px;
     padding:39px ;
-}
+} */
 
 .ring{
     background-color:#3bbdfb;
@@ -242,6 +242,11 @@ nav a{
  /* shop page main */
 .main{
     background-color: #f7f8fa;
+}
+.breadcrumb{
+    background-color: #e9ecef;
+    padding: .75rem !important ;
+    border-radius: .25rem;
 }
  .breadcrumb-content{
     background-color: #3bbdfb;

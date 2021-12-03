@@ -1,5 +1,5 @@
 
-
+import { Link } from "react-router-dom"
 const Cards = (props) => {
     const capitalize  =(value) => {
         var textArray = value.split(' ')
@@ -18,7 +18,9 @@ const Cards = (props) => {
                 <h5 className="card-title text-center pt-sans small-heading">{capitalize(props.my_title)}</h5>
                 <p className="card-text text-center pb-3" dangerouslySetInnerHTML={{__html: (props.my_des)}}/>
                     <div className="d-flex justify-content-center">
-                        <button className="product_button">{props.my_button}</button>
+                        <Link to='/categoryShop'>
+                            <button className="product_button">VISIT THE STORE</button>
+                        </Link>
                     </div>  
             </div>
         </div>
