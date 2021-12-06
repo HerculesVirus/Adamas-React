@@ -15,7 +15,7 @@ const Listitem = (props) => {
       }
     return(
         <>
-          <li class="catagory-items"><Button onClick={()=> onClickHandler(props.value._id)}>{capitalize(props.value.Name)}</Button></li>  
+          <li className="catagory-items"><Button onClick={()=> onClickHandler(props.value._id)}>{capitalize(props.value.Name)}</Button></li>  
         </>
     )
 }
