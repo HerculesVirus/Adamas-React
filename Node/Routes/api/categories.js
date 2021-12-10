@@ -1,10 +1,8 @@
 //Routes/api/categories
-const express = require('express')
+const express = require('express');
 const router = express.Router()
 const multer = require("multer");
-//const bodyParser = require('body-parser')
-const path = require('path')
-var fs = require('fs');
+
 //Load Model 
 const CategoryModel = require('../../models/Category')
 //Multer Config

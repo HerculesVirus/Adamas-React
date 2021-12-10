@@ -1,30 +1,39 @@
 var express = require('express');
-var path=require('path')
-var app = express();
-// app.use(express.static("public"))
 const bodyparser=require('body-parser')
-app.use(bodyparser.urlencoded({extended:true}))
-app.use(bodyparser.json())
-var cors = require('cors'); //Connect Front end routes with Backend
-const connectDB = require('./config/db'); //DB Connection 
+var cors = require('cors'); 
+var app = express();
+const cookieParser = require('cookie-parser')
+
+
+//DB Connection 
+const connectDB = require('./config/db'); 
 //Connect Database
 connectDB();
 //routes
 const categories = require('./Routes/api/categories')
 const products = require('./Routes/api/products')
 const Publicsite = require('./Routes/api/Publicsite')
-//cors
-app.use(cors())
-//Middleware
-app.use(express.urlencoded({extended: true}))
 
-// app.use('/public', express.static(path.join(__dirname, '/public/img/Category')))
+
+//cors
+//app.use(cors())
+app.use(cors({
+	origin: ['http://localhost:3000'],
+	credentials:true,
+	exposedHeaders: ["set-cookie"]
+}));
+app.options('*', cors());
+//Middleware
+app.use(bodyparser.urlencoded({extended:true}))
+app.use(bodyparser.json())
+app.use(cookieParser())
+app.use(express.urlencoded({extended: true}))
+// static Path for File Dump
 app.use('/public', express.static('public'));
-// app.use(express.static('public'));
 // use Routes
 app.use('/api', categories)
 app.use('/api', products)
-app.use('/api' , Publicsite)
+app.use('/api', Publicsite)
 
 
 app.listen(8000, function() {
