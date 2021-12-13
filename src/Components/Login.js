@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { useEffect ,useState } from 'react'
-import Cookies from 'js-cookie';
+import { useEffect , useState } from 'react'
+// import Cookies from 'js-cookie';
 import {
     Form ,
     Container ,
@@ -9,57 +9,43 @@ import {
     Button
 } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-// import { Social } from "../Data/SocialData";
-// import SocialMedia from './SocialMedia';
-import useToken from './useToken'
+
 
 const Login=() => {
     //Token
-    const { token, setToken } = useToken();
-    // const [token , setToken] = useState();
-    
-
-    if(token || setToken){
-        console.log(`Token : ${setToken}`)
-        console.log(`token : ${token}`)
-    }
     const navigate = useNavigate();
+    //State
     const [Data , setData] = useState(null)
     const [user , setUser] = useState({
         email: '',
         password : ''
     })
-    // useEffect(()=>{
-    //     if( Data && Data.data.user){
-    //         navigate('/categoryShop')
-    //     }
-    // },[navigate,Data])
+    useEffect(()=>{
+        if( Data && Data.data.user){
+            // console.log(Data.data.token)
+            localStorage.setItem('token' ,Data.data.token)
+            navigate('/categoryShop')
+        }
+    },[navigate,Data])
+    //HandleChange
     const handleOnChange = (e)=> {
         setUser({
             ...user,
             [e.target.name] : e.target.value
         })
     }
+    //submit
     const handleSubmit = (e)=>{
         e.preventDefault();
-
         axios.post('http://localhost:8000/api/publicsite/signin', user)
         .then(data => {
-            setData(data)
-            if(data && data.token){
-                console.log('this is Token')
-                Cookies.set('jwt', data.token )
-                console.log(data.token)
-                setToken(data.token)
-            }
-            
+            setData(data)            
         })
         .catch(err => console.log(err))
     }
     return(
         <>
-         {console.log(Data)}
-         {console.log(`token is here: ${token}`)}
+         {/* {console.log(Data)} */}
             <Container>
                 <Row>
                     <Col>

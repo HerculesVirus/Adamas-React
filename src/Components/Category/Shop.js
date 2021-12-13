@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 import AsideCategory from './aside/AsideCategory';
-// import Header from '../../Common/Header/Header';
-// import Footer from '../../Common/Footer/Footer';
 import CardsGrid from './CardsGrid';
 import '../../assets/style.css'
 import axios from 'axios';
@@ -10,6 +9,22 @@ import Pagination from './Pagination';
 
 
 const Shop = ()=> {
+    //Dashboard
+    const history = useNavigate()
+        useEffect(()=>{
+            const token = localStorage.getItem('token')
+            if(token){
+                const user = jwt.decode(token)
+                if(!user){ //user is not exist
+                    localStorage.removeItem('token')
+                    history.replace = '/signin'
+                }
+                else{
+                    history('/categoryShop')
+                }
+            }
+        },[history])
+    //state
     const [goal,setGoal]=useState(false)
     const [id,setId] =useState(null)
     const [Category,setCategory] = useState(null);
@@ -46,7 +61,13 @@ const Shop = ()=> {
         }
         else if(goal === true){
              // Other button's except ALL button
-            axios.get(`http://localhost:8000/api/publicsite/category/product?page=${currentPage}&id=${id}`)
+            axios({
+                method : 'get' ,
+                url:`http://localhost:8000/api/publicsite/category/product?page=${currentPage}&id=${id?id:''}` ,
+                headers:{
+                    'x-access-token': localStorage.getItem('token')
+                }
+            })
             .then(res => {
                 setShortlistProduct(res.data.data)
                 SetTotalPage(res.data.totalPages)

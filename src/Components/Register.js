@@ -1,3 +1,7 @@
+//import Swal from 'sweetalert2';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
     Form,
     Button,
@@ -5,10 +9,7 @@ import {
     Row,
     Col
 } from 'react-bootstrap';
-//import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+
 
 
 const Register = ()=> {
@@ -20,6 +21,7 @@ const Register = ()=> {
     //     showConfirmButton: false,
     //     timer: 1500
     // })
+    //Similar to History
     let navigate = useNavigate();
     //states
     const [user,setUser] = useState({
@@ -29,19 +31,23 @@ const Register = ()=> {
         cpass : ''
     })
     const [err , setErr] = useState(null)
-    const [newData , setnewData] = useState(null)
+    const [Reg , setReg] = useState(null)
+    //HandleChange
     const handleOnChange =(e) => {
         setUser({
             ...user,
             [e.target.name] : e.target.value
         })
     }
-
+    //ComponentDidUpdate
     useEffect(()=>{
-        if(newData && newData.data.user){
+        if(Reg && Reg.data.user){
+            console.log(Reg.data.token)
+            localStorage.setItem('token', Reg.data.token)
             navigate('/signin')
         }
-    },[newData,navigate])
+    },[Reg,navigate])
+    //Submit
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(user)
@@ -54,12 +60,10 @@ const Register = ()=> {
               }) 
               .then( async data =>{
                 console.log('I am here')
-                await setnewData(data)
+                await setReg(data)
               } )
               .catch(err => console.log(`goes in err part${err}`))
-              setErr('')
-
-              
+              setErr('')  
         }
         else{
             console.log("password is not matched")
@@ -68,7 +72,6 @@ const Register = ()=> {
     }
     return(
         <>
-        {console.log(newData)}
             <Container>
                 <Row>
                     <Col>
@@ -76,29 +79,19 @@ const Register = ()=> {
                             <Form.Group className="mb-3" controlId="formFirstName">
                                 <Form.Label>Full Name</Form.Label>
                                 <Form.Control type="text" name='fname' placeholder="Enter your Full Name" onChange={(e)=>handleOnChange(e)}/>
-                                <div className='error'>{newData && newData.data.name}</div>
+                                <div className='error'>{Reg && Reg.data.name}</div>
                             </Form.Group>
-
-                            {/* <Form.Group className="mb-3" controlId="formLastName">
-                                <Form.Label>Last Name</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your Last Name" onChange={(e)=>handleOnChange(e)}/>
-                            </Form.Group> */}
-
-                            {/* <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                <Form.Label>Address</Form.Label>
-                                <Form.Control as="textarea" rows={3} onChange={(e)=>handleOnChange(e)} />
-                            </Form.Group> */}
-                            
+                           
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address<span>*</span></Form.Label>
                                 <Form.Control type="email" name='email' placeholder="Enter email" onChange={(e)=>handleOnChange(e)}/>
-                                <div className='error'>{newData && newData.data.email}</div>
+                                <div className='error'>{Reg && Reg.data.email}</div>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Password<span>*</span></Form.Label>
                                 <Form.Control type="password" name='password' placeholder="Password"  onChange={(e)=>handleOnChange(e)} />
-                                <div className='error'>{newData && newData.data.password}</div>
+                                <div className='error'>{Reg && Reg.data.password}</div>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formConfirmPassword">
@@ -112,9 +105,9 @@ const Register = ()=> {
                                 </Button>
 
                             </div>
-                            {(newData && newData.data.message) ? 
+                            {(Reg && Reg.data.message) ? 
                                 <Form.Text className='success'>
-                                    {newData && newData.data.message}   
+                                    {Reg && Reg.data.message}   
                                 </Form.Text> 
                                 :
                                     ''
