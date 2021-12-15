@@ -5,12 +5,9 @@ import { useParams } from "react-router-dom";
 
 const ProductPreview = ()=>{
     let {id}= useParams();
+    console.log("Hello from ProductPreview")
     console.log(id)
     let [productData, setProductData]= useState(null)
-
-    useEffect(async() => {
-        getProduct()
-    }, [])
 
     const getProduct=async()=>{
         await axios(`http://localhost:8000/api/product/${id}`)
@@ -21,6 +18,10 @@ const ProductPreview = ()=>{
             .catch(err => console.log(err))
     }
     
+    useEffect(() => {
+        getProduct()
+    })
+
     return(
         <div className="container">
           {productData &&  <div className="row">

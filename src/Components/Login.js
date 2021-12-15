@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { useEffect , useState } from 'react'
-// import Cookies from 'js-cookie';
+import { useEffect , useState } from 'react';
+import '../App.css'
 import {
     Form ,
     Container ,
@@ -9,11 +9,18 @@ import {
     Button
 } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import isLoginAction from '../redux/login/loginAction';
+// import isLoginAction from '../redux/login/loginAction';
 
 
 const Login=() => {
     //Token
-    const navigate = useNavigate();
+     const dispatch = useDispatch()
+     const navigate = useNavigate();
+    // const currentState = useSelector( state => 
+    //     state.bool
+    // )
     //State
     const [Data , setData] = useState(null)
     const [user , setUser] = useState({
@@ -23,10 +30,11 @@ const Login=() => {
     useEffect(()=>{
         if( Data && Data.data.user){
             // console.log(Data.data.token)
+            dispatch(isLoginAction(true))
             localStorage.setItem('token' ,Data.data.token)
             navigate('/categoryShop')
         }
-    },[navigate,Data])
+    },[navigate,Data,dispatch])
     //HandleChange
     const handleOnChange = (e)=> {
         setUser({
@@ -42,6 +50,10 @@ const Login=() => {
             setData(data)            
         })
         .catch(err => console.log(err))
+        // if(isLogin){     
+        //     console.log(`currentState : ${currentState}`)
+        //     dispatch(isLoginAction(isLogin))
+        // }
     }
     return(
         <>

@@ -10,7 +10,7 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
                         <Link className="nav-link " aria-current="page" to="/">Home</Link>
-                        <Link className="nav-link " aria-current="page" to="/Apperal">Apparel</Link>
+                        <Link className="nav-link " aria-current="page" to="/categoryShop">CategoryShop</Link>
                         <Link className="nav-link " aria-current="page" to="/*">Fashion</Link>
                         <Link className="nav-link " aria-current="page" to="/*">News</Link>
                         <Link className="nav-link " aria-current="page" to="/*">Portfolio</Link>

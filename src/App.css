@@ -420,3 +420,7 @@ footer {
 .slick-next::before{
   color: #61dafb
 }
+.error{
+  color: red;
+  font-size: bold;
+}

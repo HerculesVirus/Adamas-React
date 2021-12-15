@@ -13,21 +13,28 @@ import PageNotFound from './PageNotFound/PageNotFound';
 import ApperalNotFound from './PageNotFound/ApperalNotFound';
 import Login from './Components/Login';
 import Register from './Components/Register';
-
+import ProductPreview from './Components/ProductPreview';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 function App() {
   return (
     <>
-    <Header/>
-    <Routes> 
-      <Route path="/" element={<Main/>}/>
-      <Route path="/*" element={<PageNotFound/>}/>
-      <Route path="/Apperal" element={<ApperalNotFound/>}/>
-      <Route path="/categoryShop" element={<Shop/>}/>
-      <Route path="/signin" element={<Login/>}/>
-      <Route path="/register" element={<Register/>}/>
-    </Routes>
-    <Footer/>
+    <Provider store={store}>
+      <Header/>
+        <Routes> 
+          <Route path="/" element={<Main/>}/>
+          {/* Pages */}
+          <Route path="/*" element={<PageNotFound/>}/>
+          <Route path="/Apperal" element={<ApperalNotFound/>}/>
+          <Route path="/categoryShop" element={<Shop/>}/>
+          <Route path="/ProductPreview" element={<ProductPreview/>}/>
+          {/* Validation Route */}
+          <Route path="/signin" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
+        </Routes>
+      <Footer/>
+    </Provider>
     </>
   );
 }

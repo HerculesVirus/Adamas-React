@@ -52,7 +52,13 @@ const Shop = ()=> {
         .catch( (err)=> console.log(err))
 
         if(goal === false){
-            axios.get(`http://localhost:8000/api/publicsite/category/product?page=${currentPage}`)
+            axios({
+                method : 'get' ,
+                url : `http://localhost:8000/api/publicsite/category/product?page=${currentPage}` ,
+                headers:{
+                    'x-access-token': localStorage.getItem('token')
+                }
+        })
             .then( res =>{
                 SetTotalPage(res.data.totalPages)
                 setProduct(res.data.data)
