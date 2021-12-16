@@ -1,40 +1,30 @@
-import {createStore, compose, applyMiddleware} from 'redux';
+import { createStore } from 'redux';
 import LoginReducer from "./login/loginReducer";
-import logger from "redux-logger";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from 'redux-devtools-extension';
 
-const loadState = () => {
-    try {
-      const serializedState = localStorage.getItem('state');
-      if(serializedState === null) {
-        return undefined;
-      }
-      return JSON.parse(serializedState);
-    } catch (e) {
-      return undefined;
-    }
-  };
-  
-  const saveState = (state) => {
-    try {
-      const serializedState = JSON.stringify(state);
-      localStorage.setItem('state', serializedState);
-    } catch (e) {
-      // Ignore write errors;
-    }
-  };
-  
-  const peristedState = loadState();
-  
 
+
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+// const rootReducer = combineReducers({ })
+const persistedReducer = persistReducer(persistConfig, LoginReducer)
+ 
+
+  let store = createStore(persistedReducer)
+  export let persistor = persistStore(store)
+  // exports= persistor 
+
+
+
+// const peristedState = loadState();
 //const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const enhancer = [peristedState,composeWithDevTools(applyMiddleware(logger,thunk))]
+// const enhancer = [ composeWithDevTools(applyMiddleware(logger,thunk))]
 
 
-const store = createStore(LoginReducer,compose(...enhancer) )
-store.subscribe(() => {
-    saveState(store.getState());
-});
+// const store = createStore(rootReducer,compose(...enhancer) )
+
 
 export default store;

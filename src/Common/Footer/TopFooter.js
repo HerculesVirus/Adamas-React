@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+
+
 const TopFooter = () => {
     return(
         <>
+        
         <div className="col-lg-3 col-sm-6 pb-3">
             <div className="footer_logo_container">
                 <div className="footer_logo">

@@ -1,5 +1,6 @@
 
-
+import { Link } from "react-router-dom";
+import {Button} from 'react-bootstrap'
 const ProductCards = (props)=> {
     return(
         <>
@@ -13,7 +14,7 @@ const ProductCards = (props)=> {
                             <strong>${props.values.price}</strong>
                         </div>
                         <div className="col-md-6 col-12 p-0">
-                            <button>BUY NOW</button>
+                            <Link  to={`/ProductPreview/${props.values._id}`}><Button>BUY NOW</Button></Link>
                         </div>
                     </div>
                 </div>

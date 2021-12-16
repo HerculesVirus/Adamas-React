@@ -10,27 +10,26 @@ import {
 } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import isLoginAction from '../redux/login/loginAction';
-// import isLoginAction from '../redux/login/loginAction';
+import isLoginAction, { fetchLogin } from '../redux/login/loginAction';
 
 
 const Login=() => {
     //Token
      const dispatch = useDispatch()
      const navigate = useNavigate();
-    // const currentState = useSelector( state => 
-    //     state.bool
-    // )
     //State
     const [Data , setData] = useState(null)
+    //REQ state
     const [user , setUser] = useState({
         email: '',
         password : ''
     })
+
     useEffect(()=>{
         if( Data && Data.data.user){
-            // console.log(Data.data.token)
+            //disptach(action)
             dispatch(isLoginAction(true))
+
             localStorage.setItem('token' ,Data.data.token)
             navigate('/categoryShop')
         }
@@ -45,19 +44,15 @@ const Login=() => {
     //submit
     const handleSubmit = (e)=>{
         e.preventDefault();
+        //dispatch(fetchLogin(user))
         axios.post('http://localhost:8000/api/publicsite/signin', user)
         .then(data => {
             setData(data)            
         })
         .catch(err => console.log(err))
-        // if(isLogin){     
-        //     console.log(`currentState : ${currentState}`)
-        //     dispatch(isLoginAction(isLogin))
-        // }
     }
     return(
         <>
-         {/* {console.log(Data)} */}
             <Container>
                 <Row>
                     <Col>

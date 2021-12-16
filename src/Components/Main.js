@@ -1,19 +1,12 @@
-
 import Banner from "./Banner";
 import Collection  from "./Collection";
 import LatestProduct from "./LatestProduct";
 import ProductSection from "./ProductSection";
-import SocialMedia from "./SocialMedia";
 import { LatestOne } from "../Data/LatestData";
 import { LatestTwo } from "../Data/LatestData";
-import { Social } from "../Data/SocialData";
-
 
 const Main = () => {
-
-
-
-    
+ 
     return(
         <>
             <Banner/>
@@ -22,7 +15,6 @@ const Main = () => {
             <ProductSection/>
             <LatestProduct title={LatestTwo.title} p_start={LatestTwo.p_start} p_span={LatestTwo.p_span} p_end ={LatestTwo.p_end}/>
             <ProductSection/>
-            <SocialMedia p_twitter={Social.p_start} p_icon={Social.p_end}/>
         </>
 
     )

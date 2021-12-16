@@ -15,12 +15,18 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import ProductPreview from './Components/ProductPreview';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import store,{persistor} from './redux/store';
+
+import { PersistGate } from 'redux-persist/integration/react'
+
+
+
 
 function App() {
   return (
     <>
     <Provider store={store}>
+    <PersistGate  persistor={persistor}>
       <Header/>
         <Routes> 
           <Route path="/" element={<Main/>}/>
@@ -28,12 +34,14 @@ function App() {
           <Route path="/*" element={<PageNotFound/>}/>
           <Route path="/Apperal" element={<ApperalNotFound/>}/>
           <Route path="/categoryShop" element={<Shop/>}/>
-          <Route path="/ProductPreview" element={<ProductPreview/>}/>
+          <Route path="/ProductPreview/:id" element={<ProductPreview/>}/>
           {/* Validation Route */}
           <Route path="/signin" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
         </Routes>
       <Footer/>
+      
+</PersistGate>
     </Provider>
     </>
   );
