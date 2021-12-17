@@ -1,7 +1,8 @@
 import Slider from "react-slick";
-import ProductCard from "./LatestProductCard";
+import ProductCard from "./ProductCard";
 import { useState , useEffect } from "react";
 import axios from "axios";
+
 const ProductSection = () => {
     const [product,setProduct] = useState(null)
     useEffect(()=>{

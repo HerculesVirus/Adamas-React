@@ -2,13 +2,24 @@ import Cards from './CollectionCards'
 import Slider from "react-slick";
 import { useEffect , useState} from 'react';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCollection } from '../redux/Home/Collection/CollectionActions';
+
+
 const Collection = (props) => {
+
   const [collection , setCollection] = useState(null)
+    let dispatch = useDispatch()
+
+    const selector = useSelector(state => state)
+    console.log(selector)
+
     useEffect(()=>{
       //admin/Publicsite/Categries
       axios.get(`http://localhost:8000/api/publicsite/categries`)
       .then(res => setCollection(res.data))
-    },[])
+      dispatch(fetchCollection())
+    },[dispatch])
 
     const settings = {
       dots: true,
