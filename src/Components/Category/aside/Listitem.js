@@ -1,5 +1,7 @@
-
 import Button from '@restart/ui/esm/Button';
+import { useDispatch} from 'react-redux'
+import { fetchCategoryShop } from '../../../redux/Home/Shop/ShopAction';
+
 const Listitem = (props) => {
     const capitalize  =(value) => {
         var textArray = value.split(' ')
@@ -9,13 +11,17 @@ const Listitem = (props) => {
         }
         return capitalizedText
       }
-      const onClickHandler = (id)=> {
+      const dispatch = useDispatch()
+      // const selector = useSelector
+      const onClickHandler = (obj)=> {
         console.log("Hello form Listitem")
-       return props.fun(id)    
+        dispatch(fetchCategoryShop(obj._id,props.currentPage))
+       //return props.fun(id)    
+
       }
     return(
         <>
-          <li className="catagory-items"><Button onClick={()=> onClickHandler(props.value._id)}>{capitalize(props.value.Name)}</Button></li>  
+          <li className="catagory-items"><Button onClick={()=> onClickHandler(props.value)}>{capitalize(props.value.Name)}</Button></li>  
         </>
     )
 }

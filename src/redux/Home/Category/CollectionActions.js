@@ -13,7 +13,7 @@ export const fetchCollection = ()=> {
         axios.get(`http://localhost:8000/api/publicsite/categries`)
         .then(res =>{
             const category = res.data
-            console.log(`${category}`)
+            //console.log(`${category}`)
             dispatch(fetchCollectionSucess(category))
         })
         .catch( err => dispatch(fetchCollectionFailure(err)))    

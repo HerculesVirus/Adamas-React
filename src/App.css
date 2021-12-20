@@ -415,10 +415,10 @@ footer {
 }
 
 .slick-prev::before{
-  color: #61dafb
+  color: #61dafb !important;
 }
 .slick-next::before{
-  color: #61dafb
+  color: #61dafb !important;
 }
 .error{
   color: red;

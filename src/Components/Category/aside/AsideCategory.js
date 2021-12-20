@@ -1,9 +1,13 @@
 import Button from "@restart/ui/esm/Button";
+import { useDispatch } from "react-redux";
+import { fetchCategoryShop } from "../../../redux/Home/Shop/ShopAction";
 import Listitem from "./Listitem";
 
 const AsideCategory = (props)=>{
+    const dispatch = useDispatch()
     const allProduct = ()=>{
-        props.Decision(false)
+        dispatch(fetchCategoryShop(null , props.page))
+        // props.Decision(false)
     }
     return(
         <>
@@ -13,7 +17,7 @@ const AsideCategory = (props)=>{
                     <li className="catagory-items"><Button onClick={() => allProduct()}>All</Button></li>
                     {props.Categories && props.Categories.map((items,index)=>{
                         return(
-                            <Listitem value={items} key={index} fun={props.ClickedCatName}/>
+                            <Listitem value={items} key={index} currentPage={props.page}/>
                         )
                     })}
                 </ul>

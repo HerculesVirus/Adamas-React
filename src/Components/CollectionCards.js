@@ -1,6 +1,7 @@
-
 import { Link } from "react-router-dom"
+
 const Cards = (props) => {
+
     const capitalize  =(value) => {
         var textArray = value.split(' ')
         var capitalizedText = ''
@@ -8,7 +9,8 @@ const Cards = (props) => {
           capitalizedText += textArray[i].charAt(0).toUpperCase() + textArray[i].slice(1) + ' '
         }
         return capitalizedText
-      }
+    }
+    
     return(
         <div className="card" style={{margin : "6px"}} >
             <div className="product-img-container">

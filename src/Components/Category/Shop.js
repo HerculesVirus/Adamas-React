@@ -6,6 +6,8 @@ import CardsGrid from './CardsGrid';
 import '../../assets/style.css'
 import axios from 'axios';
 import Pagination from './Pagination';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategoryShop } from '../../redux/Home/Shop/ShopAction';
 
 
 const Shop = ()=> {
@@ -25,63 +27,80 @@ const Shop = ()=> {
             }
         },[history])
     //state
-    const [goal,setGoal]=useState(false)
+    const [goal,setGoal]=useState(false) // ALL Category vs Other Category
     const [id,setId] =useState(null)
-    const [Category,setCategory] = useState(null);
     const [Product , setProduct] = useState(null);
     const [currentPage ,setCurrentPage] = useState(0);
     const [totalPage , SetTotalPage] = useState(0);
     const [shortlistProduct , setShortlistProduct] = useState(null)
-
+    
+    
     //All Button Clicked
-    const AllClicked = (value)=>{
-        setGoal(value)
+    // const AllClicked = (value)=>{
+    //     setGoal(value)
 
-    }
-    const HandleCatName = async (id) => {
-        console.log(id)
-        if(id){
-            await setGoal(true)
-            await setId(id)
-            setCurrentPage(0)
-        }
-    }
+    // }
+    // const HandleCatName = async (id) => {
+    //     console.log(id)
+    //     if(id){
+    //         await setGoal(true)
+    //         await setId(id)
+    //         setCurrentPage(0)
+    //     }
+    // }
+
+    //Category ~ that is coming from Category/CollectionReducer
+    //Selector
+    const category = useSelector(state => state.collection.data)
+    // console.log(`Same CAT's from collection`)
+    // console.log(selector)
+    const shopID = useSelector( state => state.shop.data?._id )
+    const cardItem = useSelector( state => state.shop.data)
+    const dispatch = useDispatch()
     useEffect(()=>{
-        axios.get(`http://localhost:8000/api/publicsite/categries`)
-        .then(res => setCategory(res.data))
-        .catch( (err)=> console.log(err))
+        // axios.get(`http://localhost:8000/api/publicsite/categries`)
+        // .then(res => setCategory(res.data))
+        // .catch( (err)=> console.log(err))
 
-        if(goal === false){
-            axios({
-                method : 'get' ,
-                url : `http://localhost:8000/api/publicsite/category/product?page=${currentPage}` ,
-                headers:{
-                    'x-access-token': localStorage.getItem('token')
-                }
-        })
-            .then( res =>{
-                SetTotalPage(res.data.totalPages)
-                setProduct(res.data.data)
-            })
-            .catch( (err)=> console.log(err))
+        console.log(shopID)
+        if(shopID){
+            dispatch(fetchCategoryShop(shopID  , currentPage))
         }
-        else if(goal === true){
-             // Other button's except ALL button
-            axios({
-                method : 'get' ,
-                url:`http://localhost:8000/api/publicsite/category/product?page=${currentPage}&id=${id?id:''}` ,
-                headers:{
-                    'x-access-token': localStorage.getItem('token')
-                }
-            })
-            .then(res => {
-                setShortlistProduct(res.data.data)
-                SetTotalPage(res.data.totalPages)
-            })
-            .catch(err => console.log(err))            
+        else if(shopID === undefined){
+            dispatch(fetchCategoryShop(null))
         }
 
-    },[currentPage, id, goal])
+        // if(goal === false){
+        //     axios({
+        //         method : 'get' ,
+        //         url : `http://localhost:8000/api/publicsite/category/product?page=${currentPage}` ,
+        //         headers:{
+        //             'x-access-token': localStorage.getItem('token')
+        //         }
+        // })
+        //     .then( res =>{
+        //         SetTotalPage(res.data.totalPages)
+        //         setProduct(res.data.data)
+        //     })
+        //     .catch( (err)=> console.log(err))
+        // }
+        // else if(goal === true){
+        //      // Other button's except ALL button
+        //     axios({
+        //         method : 'get' ,
+        //         url:`http://localhost:8000/api/publicsite/category/product?page=${currentPage}&id=${id?id:''}` ,
+        //         headers:{
+        //             'x-access-token': localStorage.getItem('token')
+        //         }
+        //     })
+        //     .then(res => {
+        //         setShortlistProduct(res.data.data)
+        //         SetTotalPage(res.data.totalPages)
+        //     })
+        //     .catch(err => console.log(err))            
+        // }
+
+    },[currentPage ,dispatch ,shopID]) //[currentPage, id, goal]
 
     //pagination
     const PageHandler =(num) => {
@@ -134,12 +153,13 @@ const Shop = ()=> {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-3 col-12">
-                            <AsideCategory Categories={Category} ClickedCatName={HandleCatName} Decision={AllClicked}/>
+                            <AsideCategory Categories={category} page={currentPage}  />
                         </div>
                         <div className="col-md-9 col-12">
-                            {goal ? 
+
+                            {/* {goal ? 
                             <CardsGrid Products={shortlistProduct}/> : 
-                            <CardsGrid Products={Product}/> }
+                            <CardsGrid Products={Product}/> } */}
                         </div>
                         <Pagination page={pages} onClickHandler={PageHandler} prev={goToPrevious} next={goToNext}/>
                     </div>

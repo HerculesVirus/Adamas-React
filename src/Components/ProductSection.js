@@ -1,14 +1,23 @@
 import Slider from "react-slick";
 import ProductCard from "./ProductCard";
-import { useState , useEffect } from "react";
-import axios from "axios";
+import { useEffect } from "react";
+import { fetchProduct } from "../redux/Home/Product/ProductActions";
+import { useDispatch, useSelector } from "react-redux";
+import MUI_BACKDROP from "./MUI_BackDrop";
 
 const ProductSection = () => {
-    const [product,setProduct] = useState(null)
+    // const [product,setProduct] = useState(null)
+
+    const dispatch = useDispatch()
+    const selector = useSelector(state => state.product)
+
+    // console.log(`Product Component`)
+    // console.log(selector)
+    
     useEffect(()=>{
-      axios.get(`http://localhost:8000/api/publicsite/product`)
-      .then(res => setProduct(res.data))
-    },[])
+      dispatch(fetchProduct())
+    },[dispatch])
+    
     var settings = {
       dots: true,
       infinite: false,
@@ -47,23 +56,31 @@ const ProductSection = () => {
         <section className="product_section_bg">
         <div className="container ">
           <div className="row">
-            <Slider {...settings}>
-            {
-                product && product.map( items => {
-                    return(
-                      <div className="col-lg-3 col-sm-6 " style={{width : '100%' }} key={items._id} >
-                        <ProductCard 
-                        p_img={items.img} 
-                        p_title={items.Name} 
-                        p_description={items.Description}
-                        p_price = {items.price}
-                        p_priceBtn= {"BUY NOW"}
-                        p_categoryTitle= {"Categories"}/> 
-                      </div>
-                    )
-                })
+            {              
+            selector.loading  || null ?
+              <>  
+                <MUI_BACKDROP loading = {selector.loading}/>
+              </>
+              :
+              <Slider {...settings}>
+              {
+                  selector?.data && selector.data.map( items => {
+                      return(
+                        <div className="col-lg-3 col-sm-6 " style={{width : '100%' }} key={items._id} >
+                          <ProductCard 
+                          p_img={items.img} 
+                          p_title={items.Name} 
+                          p_description={items.Description}
+                          p_price = {items.price}
+                          p_priceBtn= {"BUY NOW"}
+                          p_categoryTitle= {"Categories"}/> 
+                        </div>
+                      )
+                  })
+              }
+              </Slider>
             }
-            </Slider>
+
           </div>
         </div>  
       </section>

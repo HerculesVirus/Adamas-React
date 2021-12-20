@@ -1,23 +1,22 @@
 import Cards from './CollectionCards'
 import Slider from "react-slick";
-import { useEffect , useState} from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+// import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCollection } from '../redux/Home/Collection/CollectionActions';
+import { fetchCollection } from '../redux/Home/Category/CollectionActions';
+import MUI_BACKDROP from './MUI_BackDrop'
 
 
 const Collection = (props) => {
 
-  const [collection , setCollection] = useState(null)
+  // const [collection , setCollection] = useState(null)
     let dispatch = useDispatch()
 
-    const selector = useSelector(state => state)
-    console.log(selector)
+    const selector = useSelector(state => state.collection)
+    // console.log(`Collection Component`)
+    // console.log(selector)
 
     useEffect(()=>{
-      //admin/Publicsite/Categries
-      axios.get(`http://localhost:8000/api/publicsite/categries`)
-      .then(res => setCollection(res.data))
       dispatch(fetchCollection())
     },[dispatch])
 
@@ -33,23 +32,31 @@ const Collection = (props) => {
         <section className="collection py-5">
         <div className="container">
           <div className="row">
-            <Slider {...settings}>
             {
-                collection && collection.map( (item)=> {
+              selector.loading  || null ?
+              <>  
+                <MUI_BACKDROP loading = {selector.loading}/>
+              </>
+              :
+              <>
+                <Slider {...settings}>
+                {
+                  selector?.data &&  selector.data.map( (item)=> {
                   //console.log(item)
-                  return(
-                    <div className="col-md-4" key={item._id}>
-                    <Cards 
-                      my_img={item.img} 
-                      my_title={item.Name} 
-                      my_des={item.Description} 
-                      />
-                    </div>
-                  )
-                })
+                    return(
+                      <div className="col-md-4" key={item._id}>
+                        <Cards 
+                          my_img={item.img} 
+                          my_title={item.Name} 
+                          my_des={item.Description} 
+                        />
+                      </div>
+                    )
+                  })
+                }
+                </Slider>
+              </>
             }
-            </Slider>
-
           </div>
         </div>
       </section>

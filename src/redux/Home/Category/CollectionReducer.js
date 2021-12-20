@@ -1,7 +1,7 @@
 import { COLLECTION_FAILURE, COLLECTION_REQUEST, COLLECTION_SUCCESS } from "./CollectionTypes"
 
 const initialState = {
-    loading : false , 
+    loading : true , 
     data : '' ,
     error : ''
 }
