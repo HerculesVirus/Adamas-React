@@ -5,6 +5,7 @@ import Listitem from "./Listitem";
 
 const AsideCategory = (props)=>{
     const dispatch = useDispatch()
+    
     const allProduct = ()=>{
         dispatch(fetchCategoryShop(null , props.page))
         // props.Decision(false)

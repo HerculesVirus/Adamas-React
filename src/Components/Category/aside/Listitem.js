@@ -11,13 +11,12 @@ const Listitem = (props) => {
         }
         return capitalizedText
       }
-      const dispatch = useDispatch()
-      // const selector = useSelector
-      const onClickHandler = (obj)=> {
-        console.log("Hello form Listitem")
-        dispatch(fetchCategoryShop(obj._id,props.currentPage))
-       //return props.fun(id)    
 
+      const dispatch = useDispatch()
+
+      const onClickHandler = (obj)=> {
+        // console.log("Hello form Listitem")
+        dispatch(fetchCategoryShop(obj._id,props.currentPage))   
       }
     return(
         <>

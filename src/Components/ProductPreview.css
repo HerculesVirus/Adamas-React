@@ -1,0 +1,28 @@
+
+.breadcrumb{
+    background-color: #3bbdfb;
+    
+  }
+.stars{
+    padding-left: 0%;
+}
+.stars > li {
+    list-style-type: none;
+}
+.review,.rating {
+    font-size: 14px;
+    list-style-type: none ;
+    padding-left: 0% ;
+}
+button{
+    color : #3bbdfb;
+    background-color: white;
+    padding: 0px;
+}
+.cart{
+    background-color: #3bbdfb !important;
+    color: white;
+}
+.price{
+    font-size: 14px;
+}

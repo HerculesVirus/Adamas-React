@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import { Container,Row ,Col, Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {Link} from "react-router-dom"
-
+import Dropdown from 'muicss/lib/react/dropdown';
+import DropdownItem from 'muicss/lib/react/dropdown-item';
+import "./ProductPreview.css"
 const ProductPreview = ()=>{
     let {id}= useParams();
     console.log("Hello from ProductPreview")
@@ -21,7 +23,10 @@ const ProductPreview = ()=>{
     },[id])
     
 
-
+    let dropdownItems = [
+        <DropdownItem key="1">Extra Small</DropdownItem>,
+        <DropdownItem key="2">Option 2</DropdownItem>
+      ];
     return(
         <>
         {console.log(productData)}
@@ -29,7 +34,7 @@ const ProductPreview = ()=>{
                 <Container>
                     <Row>
                         <Col md="9 col-12">
-                            <h1 className="text-white">Shop with a Sidebar on left</h1>
+                            <h1 className="text-white">{productData && productData.Name}</h1>
                             <div style={{"--bs-breadcrumb-divider": '>'}} aria-label="breadcrumb">
                                 <ol className="breadcrumb">
                                     <li className="breadcrumb-item ">
@@ -37,7 +42,7 @@ const ProductPreview = ()=>{
                                             <i className="fa fa-angle-double-right fa-sm"></i>
                                         </Link>
                                     </li>
-                                    <li className="breadcrumb-item text-white" aria-current="page">Shop with Sidebar</li>
+                                    <li className="breadcrumb-item text-white" aria-current="page">Shop</li>
                                 </ol>
                             </div>
                         </Col>
@@ -66,14 +71,48 @@ const ProductPreview = ()=>{
                     </div>
                 </div>
                 <div className="col-4">
-                    <h4>{productData.Name}</h4>
-                    <p dangerouslySetInnerHTML={{__html: productData.Description}}/>
-                    {/* <p  dangerouslySetInnerHTML={{__html: description}}/> */}
-                    <div>
-                        <label>Qty:</label>
-                        <input type="number" />
-                        <p>{productData.price}</p> 
-                        <button>ADD TO CART</button>
+                    <div className="Main mb-2" style={{borderBottom : '2px dotted darkgray'}}>
+                        <h4>{productData.Name}</h4>
+                        <div>               
+                            <ul className="d-flex justify-content-start align-item-center p-0"> 
+                                <li><i className="s1 fa fa-star"></i></li>
+                                <li><i className="s2 fa fa-star"></i></li>
+                                <li><i className="s3 fa fa-star"></i></li>
+                                <li><i className="s4 fa fa-star"></i></li>
+                                <li><i className="s5 fa fa-star"></i></li>
+                                <div className="rating px-2">12 Reviews</div>
+                                <div className="review">Add your view</div>
+                            </ul>   
+                        </div>
+                    </div>
+                    <div className="description mb-2" style={{borderBottom : '2px dotted darkgray'}}>
+                        <p dangerouslySetInnerHTML={{__html: productData.Description}}/>
+                    </div>
+                    <div className="colorSize "style={{borderBottom : '2px dotted darkgray'}}>
+                        <ul className="d-flex justify-content-start align-item-center p-0">
+                            <label>Color: </label> 
+                                <li><i className="s1 fa fa-star"></i></li>
+                                <li><i className="s2 fa fa-star"></i></li>
+                                <li><i className="s3 fa fa-star"></i></li>
+                                <li><i className="s4 fa fa-star"></i></li>
+                                <li><i className="s5 fa fa-star"></i></li>
+                        </ul>
+                        <div className="d-flex mb-2">     
+                            <label>Size: </label>     
+                            <Dropdown label="Select Size" size="small">
+                                {dropdownItems}
+                            </Dropdown>
+                        </div>
+                    </div>
+                    <div className="d-flex justify-content-start align-item-center pt-0">
+                        <label className="align-self-center">Qty: </label>
+                        {/* <button className="inline-flex" dangerouslySetInnerHTML={{__html :"<"}}/> */}
+                        <div className="align-self-center px-4" >
+                            <input  type="number" style={{width : '45px'}}/>
+                        </div>
+                        {/* <button className="" dangerouslySetInnerHTML={{__html :">"}}/> */}
+                        <p className="align-self-center price px-2 mb-0" >{`$`}{productData.price}</p>
+                        <button className="Cart">ADD TO CART</button>
                     </div>
                 </div>
             </div>}

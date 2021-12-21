@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MUI_BACKDROP from "./MUI_BackDrop";
 
 const ProductSection = () => {
-    // const [product,setProduct] = useState(null)
-
+  
     const dispatch = useDispatch()
     const selector = useSelector(state => state.product)
 

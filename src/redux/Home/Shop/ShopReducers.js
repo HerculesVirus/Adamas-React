@@ -1,4 +1,4 @@
-import { SHOP_REQUEST, SHOP_SUCCESS } from "./ShopTypes";
+import { SHOP_FAILURE, SHOP_REQUEST, SHOP_SUCCESS } from "./ShopTypes";
 
 const initialState = {
     loading : true,
@@ -17,6 +17,11 @@ const ShopReducer = (state = initialState , action)=> {
         case SHOP_SUCCESS:
             return {
                 loading : false ,
+                data : action.payload
+            }
+        case SHOP_FAILURE:
+            return {
+                loading : true , 
                 data : action.payload
             }
         default: return state

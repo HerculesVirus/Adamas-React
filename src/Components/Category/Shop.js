@@ -1,107 +1,55 @@
 import { useEffect, useState } from 'react';
-import { Link , useNavigate } from 'react-router-dom';
-import jwt from 'jsonwebtoken';
+import { Link } from 'react-router-dom';
 import AsideCategory from './aside/AsideCategory';
 import CardsGrid from './CardsGrid';
-import '../../assets/style.css'
-import axios from 'axios';
+
 import Pagination from './Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategoryShop } from '../../redux/Home/Shop/ShopAction';
+import MUI_BACKDROP from '../../Components/MUI_BackDrop';
+import '../../assets/style.css'
 
 
 const Shop = ()=> {
-    //Dashboard
-    const history = useNavigate()
-        useEffect(()=>{
-            const token = localStorage.getItem('token')
-            if(token){
-                const user = jwt.decode(token)
-                if(!user){ //user is not exist
-                    localStorage.removeItem('token')
-                    history.replace = '/signin'
-                }
-                else{
-                    history('/categoryShop')
-                }
-            }
-        },[history])
     //state
-    const [goal,setGoal]=useState(false) // ALL Category vs Other Category
-    const [id,setId] =useState(null)
-    const [Product , setProduct] = useState(null);
     const [currentPage ,setCurrentPage] = useState(0);
     const [totalPage , SetTotalPage] = useState(0);
-    const [shortlistProduct , setShortlistProduct] = useState(null)
-    
-    
-    //All Button Clicked
-    // const AllClicked = (value)=>{
-    //     setGoal(value)
-
-    // }
-    // const HandleCatName = async (id) => {
-    //     console.log(id)
-    //     if(id){
-    //         await setGoal(true)
-    //         await setId(id)
-    //         setCurrentPage(0)
-    //     }
-    // }
-
+const [pages,setpages]=useState()
     //Category ~ that is coming from Category/CollectionReducer
-    //Selector
     const category = useSelector(state => state.collection.data)
     // console.log(`Same CAT's from collection`)
     // console.log(selector)
+    const shop = useSelector ( state => state.shop)
+    console.log('Shop is Whole Object')
+    console.log(shop)
     const shopID = useSelector( state => state.shop.data?._id )
-    const cardItem = useSelector( state => state.shop.data)
+    const cardItem = useSelector( state => state.shop.data && state.shop?.data)
+    
+
     const dispatch = useDispatch()
     useEffect(()=>{
-        // axios.get(`http://localhost:8000/api/publicsite/categries`)
-        // .then(res => setCategory(res.data))
-        // .catch( (err)=> console.log(err))
-
         console.log(shopID)
         if(shopID){
             dispatch(fetchCategoryShop(shopID  , currentPage))
         }
         else if(shopID === undefined){
-            dispatch(fetchCategoryShop(null))
+            dispatch(fetchCategoryShop(null , currentPage))
         }
+    },[currentPage ,dispatch ,shopID])
+    //cardItem
+    useEffect(()=>{
+        if(cardItem){
+        SetTotalPage(cardItem.Totalpages)
+        }
+    },[cardItem])
 
-        // if(goal === false){
-        //     axios({
-        //         method : 'get' ,
-        //         url : `http://localhost:8000/api/publicsite/category/product?page=${currentPage}` ,
-        //         headers:{
-        //             'x-access-token': localStorage.getItem('token')
-        //         }
-        // })
-        //     .then( res =>{
-        //         SetTotalPage(res.data.totalPages)
-        //         setProduct(res.data.data)
-        //     })
-        //     .catch( (err)=> console.log(err))
-        // }
-        // else if(goal === true){
-        //      // Other button's except ALL button
-        //     axios({
-        //         method : 'get' ,
-        //         url:`http://localhost:8000/api/publicsite/category/product?page=${currentPage}&id=${id?id:''}` ,
-        //         headers:{
-        //             'x-access-token': localStorage.getItem('token')
-        //         }
-        //     })
-        //     .then(res => {
-        //         setShortlistProduct(res.data.data)
-        //         SetTotalPage(res.data.totalPages)
-        //     })
-        //     .catch(err => console.log(err))            
-        // }
+    useEffect(()=>{
+        // alert(totalPage)
+        const p = new Array(totalPage).fill(null).map((v,i)=> i)
+        setpages(p)
 
-    },[currentPage ,dispatch ,shopID]) //[currentPage, id, goal]
-
+    },[totalPage])
+    
     //pagination
     const PageHandler =(num) => {
         // console.log("PageHandler : "+num)
@@ -113,7 +61,8 @@ const Shop = ()=> {
     const goToNext =()=>{
         setCurrentPage(Math.min(totalPage-1,currentPage + 1));
     }
-    const pages = new Array(totalPage).fill(null).map((v,i)=> i)
+
+    // setpages(p)
     return(
         <>
         {/* {console.log("currentPage : "+currentPage )} */}
@@ -155,13 +104,21 @@ const Shop = ()=> {
                         <div className="col-md-3 col-12">
                             <AsideCategory Categories={category} page={currentPage}  />
                         </div>
-                        <div className="col-md-9 col-12">
+                        {shop.loading  || null?
+                        <>
+                            <MUI_BACKDROP loading ={shop.loading}/>
+                        </> 
+                        :
+                        <>
+                        {                        
+                            <div className="col-md-9 col-12">
+                                <CardsGrid Products={cardItem}/>
+                            </div>
+                        }
+                        </>
+                        }
 
-                            {/* {goal ? 
-                            <CardsGrid Products={shortlistProduct}/> : 
-                            <CardsGrid Products={Product}/> } */}
-                        </div>
-                        <Pagination page={pages} onClickHandler={PageHandler} prev={goToPrevious} next={goToNext}/>
+                        {totalPage && <Pagination page={pages} onClickHandler={PageHandler} prev={goToPrevious} next={goToNext}/>}
                     </div>
                 </div>
             </div>
