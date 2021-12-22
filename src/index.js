@@ -6,7 +6,6 @@ import App from './App';
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap"
 import  "@fortawesome/react-fontawesome"
-import './index.css';
 
 ReactDOM.render(
   <BrowserRouter>

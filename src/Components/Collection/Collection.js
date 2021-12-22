@@ -3,8 +3,8 @@ import Slider from "react-slick";
 import { useEffect } from 'react';
 // import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCollection } from '../redux/Home/Category/CollectionActions';
-import MUI_BACKDROP from './MUI_BackDrop'
+import { fetchCollection } from '../../redux/Home/Category/CollectionActions';
+import BACKDROP from '../MUI/BackDrop'
 
 
 const Collection = (props) => {
@@ -35,7 +35,7 @@ const Collection = (props) => {
             {
               selector.loading  || null ?
               <>  
-                <MUI_BACKDROP loading = {selector.loading}/>
+                <BACKDROP loading = {selector.loading}/>
               </>
               :
               <>

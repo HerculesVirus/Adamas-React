@@ -6,8 +6,8 @@ import CardsGrid from './CardsGrid';
 import Pagination from './Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategoryShop } from '../../redux/Home/Shop/ShopAction';
-import MUI_BACKDROP from '../../Components/MUI_BackDrop';
-import '../../assets/style.css'
+import MUI_BACKDROP from '../MUI/BackDrop';
+import '../../assets/css/Shop.css'
 
 
 const Shop = ()=> {

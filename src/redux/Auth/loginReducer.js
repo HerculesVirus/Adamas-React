@@ -8,7 +8,6 @@ import {
 
 const initialState = {
     isLogin : false,
-    loading : false ,
     user : '',
     error : null
 } 
@@ -18,11 +17,10 @@ const LoginReducer = (state = initialState , action) => {
         case FETCH_LOGIN_REQUEST:
             return{
                 ...state , 
-                loading : true
+                isLogin : true
             }
         case FETCH_LOGOUT_REQUEST:
             return{
-                loading: false ,
                 isLogin  : false,
                 user: action.payload,
                 error : null

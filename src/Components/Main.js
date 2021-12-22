@@ -1,7 +1,7 @@
-import Banner from "./Banner";
-import Collection  from "./Collection";
-import LatestProduct from "./LatestProduct";
-import ProductSection from "./ProductSection";
+import Banner from "./Banner/Banner";
+import Collection  from "./Collection/Collection";
+import LatestProduct from "./LatestProduct/LatestProduct";
+import ProductSection from "./Product/ProductSection";
 import { LatestOne } from "../Data/LatestData";
 import { LatestTwo } from "../Data/LatestData";
 

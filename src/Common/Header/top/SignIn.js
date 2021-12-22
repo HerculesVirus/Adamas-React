@@ -11,13 +11,6 @@ const SignIn =(props)  => {
     const isLogin  = useSelector( state => state.auth.isLogin)
     const full = useSelector( state => state.auth)
 
-    // const token = localStorage.getItem('token')
-    // console.log(selector)
-    // useEffect(()=>{       
-    //      if(token){
-
-    //     }
-    // },[token,selector]) 
     const handleLogout = ()=> {
         const token = localStorage.getItem('token')
         if(token){
@@ -39,6 +32,7 @@ const SignIn =(props)  => {
             <>
                 <li className="text-decoration-none text-light slash">{full && full.user.user?.email}</li>
                 <li><Link className="text-decoration-none text-light" to="#" onClick={()=>handleLogout()}> LOGOUT</Link></li>
+                <li><Link className="text-decoration-none text-light" to="#">   YOUR CART (0)</Link></li> 
             </>
             :
             <>

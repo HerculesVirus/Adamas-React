@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useState , useEffect} from 'react';
 // import Button from '@mui/material/Button';
 
-const MUI_BackDrop = (props) => {
+const BackDrop = (props) => {
     //State
     const [open, setOpen] = useState(true);
     //ComponentDidUpdate
@@ -28,4 +28,4 @@ const MUI_BackDrop = (props) => {
     )
 }
 
-export default MUI_BackDrop
+export default BackDrop

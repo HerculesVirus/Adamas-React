@@ -1,7 +1,7 @@
 
 import TopFooter from "./TopFooter";
 import BottomFooter from "./BottomFooter";
-import SocialMedia from '../../Components/SocialMedia';
+import SocialMedia from '../../Components/SocialMedia/SocialMedia';
 import { Social } from "../../Data/SocialData";
 const Footer = () => {
     return(

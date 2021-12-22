@@ -1,6 +1,6 @@
 //import axios from 'axios'
 import { useEffect , useState } from 'react';
-import '../App.css'
+import '../../App.css'
 import {
     Form ,
     Container ,
@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin } from '../redux/Auth/loginAction';
+import { fetchLogin } from '../../redux/Auth/loginAction';
 
 
 const Login=() => {

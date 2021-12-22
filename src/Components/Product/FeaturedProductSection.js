@@ -1,11 +1,12 @@
+//Not Connected with the ProductSection
 import Slider from "react-slick";
 import ProductCard from "./ProductCard";
 import { useEffect } from "react";
-import { fetchProduct } from "../redux/Home/Product/ProductActions";
+import { fetchProduct } from "../../redux/Home/Product/ProductActions";
 import { useDispatch, useSelector } from "react-redux";
-import MUI_BACKDROP from "./MUI_BackDrop";
+import MUI_BACKDROP from "../MUI/BackDrop";
 
-const ProductSection = () => {
+const FeaturedProductSection = () => {
   
     const dispatch = useDispatch()
     const selector = useSelector(state => state.product)
@@ -86,4 +87,4 @@ const ProductSection = () => {
     )
 }
 
-export default ProductSection;
+export default FeaturedProductSection;

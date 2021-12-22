@@ -8,13 +8,14 @@ import thunk from 'redux-thunk';
 import CollectionReducer from './Home/Category/CollectionReducer';
 import ProductReducer from './Home/Product/ProductReducer';
 import ShopReducer from './Home/Shop/ShopReducers';
+import ProductPreviewReducer from './Home/ProductPreview/ProductPreviewReducers';
 
 
 const persistConfig = {
   key: 'root',
   storage,
 }
-const rootReducer = combineReducers({ auth : LoginReducer , collection : CollectionReducer ,product : ProductReducer , shop : ShopReducer})
+const rootReducer = combineReducers({ auth : LoginReducer , collection : CollectionReducer ,product : ProductReducer , shop : ShopReducer , productPreview : ProductPreviewReducer})
 const persistedReducer = persistReducer( persistConfig , rootReducer)
  
 
