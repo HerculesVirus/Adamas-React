@@ -21,7 +21,7 @@ const ShopReducer = (state = initialState , action)=> {
             }
         case SHOP_FAILURE:
             return {
-                loading : true , 
+                loading : false , 
                 data : action.payload
             }
         default: return state

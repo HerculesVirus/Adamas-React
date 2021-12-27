@@ -3,6 +3,7 @@ import {  PRODUCTPREVIEW_REQUEST ,PRODUCTPREVIEW_SUCCESS , PRODUCTPREVIEW_FAILUR
 
 export const fetchProductPreview =  (id)=>{
     return(dispatch) => {
+        console.log(id)
         dispatch(fetchProductPreviewRequest())
         axios.get(`http://localhost:8000/api/publicsite/ProductPreview/${id}`)
         .then(res =>{

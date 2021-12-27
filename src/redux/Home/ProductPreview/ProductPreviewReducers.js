@@ -12,7 +12,6 @@ const ProductPreviewReducer = (state = initialState , action)=> {
     switch (action.type){
         case PRODUCTPREVIEW_REQUEST:
             return {
-                ...state,
                 loading : true
             }
         case PRODUCTPREVIEW_SUCCESS:
@@ -22,7 +21,7 @@ const ProductPreviewReducer = (state = initialState , action)=> {
             }
         case PRODUCTPREVIEW_FAILURE:
             return {
-                loading : true ,
+                loading : false ,
                 error : action.payload
             }
         default: return state

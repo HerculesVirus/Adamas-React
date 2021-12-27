@@ -26,13 +26,27 @@ const SignIn =(props)  => {
             }
         }
     }
+
+    const handleCartList =()=>{
+        return(
+            <>
+            <div className="carlist">
+                <ul>
+                    <li>Red Ring</li>
+                    <li>Red Ring</li>
+                    <li>Red Ring</li>
+                </ul>
+            </div>
+            </>
+        )
+    }
     return(
         <ul className="d-flex list-unstyled align-items-center my-auto">
             {isLogin ?
             <>
                 <li className="text-decoration-none text-light slash">{full && full.user.user?.email}</li>
-                <li><Link className="text-decoration-none text-light" to="#" onClick={()=>handleLogout()}> LOGOUT</Link></li>
-                <li><Link className="text-decoration-none text-light" to="#">   YOUR CART (0)</Link></li> 
+                <li><Link className="text-decoration-none text-light slash" to="#" onClick={()=>handleLogout()}> LOGOUT</Link></li>
+                <li><Link className="text-decoration-none text-light" to="#" onClick={()=>handleCartList()}>   YOUR CART (0)</Link></li> 
             </>
             :
             <>

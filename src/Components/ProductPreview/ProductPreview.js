@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { Container,Row ,Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductPreview } from "../../redux/Home/ProductPreview/ProductPreviewActions";
+import { fetchPostCart } from '../../redux/Home/cart/cartActions'
 import BackDrop from "../MUI/BackDrop";
 import { useParams } from "react-router-dom";
 import {Link} from "react-router-dom";
@@ -14,15 +15,40 @@ import "../../assets/css/ProductPreview.css"
 
 
 const ProductPreview = ()=>{
-    let {id}= useParams();
+    //STATE 
+    const [quantity , setQuantity] = useState(0)
+    let { id }= useParams(); //productId
+
     let dispatch = useDispatch()
     const productData = useSelector(state => state.productPreview.data)
+    // console.log(productData)
     const loading = useSelector(state => state.productPreview.loading)
+    const userID = useSelector(state => state.auth.user.user._id)
+    console.log(userID)
 
     useEffect(() => {
         dispatch(fetchProductPreview(id))
     },[id,dispatch])
-    
+
+    const cartHandler =(e)=>{
+        if(productData){
+            const cartInfo = {
+                price : productData.price ,
+                Qty : quantity ,
+                productId : id
+            }
+            // const cartInfo = new FormData();
+            // cartInfo.append('price' , productData.price)
+            // cartInfo.append('Qty' , quantity)
+            // cartInfo.append('productId' , id)
+            dispatch(fetchPostCart(userID , cartInfo))
+        }
+        
+    }
+
+    const quantityHandler=(e)=>{
+        setQuantity(e.target.value)
+    }
 
     let dropdownItems = [
         <DropdownItem key="1">Extra Small</DropdownItem>,
@@ -64,13 +90,15 @@ const ProductPreview = ()=>{
         <Container>
             <Row>
                 {
-                    loading || null
+                    loading || null || productData===undefined
                     ? 
                     <>
+                        {console.log(` part ${loading}`)}
                         <BackDrop loading ={loading}/>
                     </>
                     :
                     <>
+                        {console.log(`else part ${loading}`)}
                         <Col xs="8">
                             <div className="img-container d-flex justify-content-center">
                                 <img src={`http://localhost:8000/public/img/Product/${productData.img}`} alt={productData.name} />
@@ -114,11 +142,11 @@ const ProductPreview = ()=>{
                                 <label className="align-self-center">Qty: </label>
                                 
                                 <div className="align-self-center px-4" >
-                                    <input  type="number" style={{width : '45px'}} min="1"/>
+                                    <input onChange={(e)=> quantityHandler(e)} type="number" style={{width : '45px'}} min="1"/>
                                 </div>
                                 
                                 <p className="align-self-center price px-2 mb-0" >{`$`}{productData.price}</p>
-                                <Link to="/PaymentCard"><button className="Cart">ADD TO CART</button></Link>
+                                <button className="Cart" onClick={(e) => cartHandler(e)}>ADD TO CART</button>
                             </div>
                         </Col>
                     </>

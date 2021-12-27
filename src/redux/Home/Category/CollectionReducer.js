@@ -19,7 +19,7 @@ const CollectionReducer = (state = initialState , action)=> {
             }
         case COLLECTION_FAILURE : 
             return {
-                loading : true , 
+                loading : false , 
                 error : action.payload
             }
         default : return state;

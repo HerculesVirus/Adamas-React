@@ -42,6 +42,7 @@ function App() {
             <Route path="/*" element={<PageNotFound/>}/>
             <Route path="/Apperal" element={<ApperalNotFound/>}/>
             <Route path="/Contact" element={<Contact/>}/>
+            <Route path="/cardlist" element={<cardList/>}/>
             <Route path="/PaymentCard" element={<PaymentCard/>}/>
 
             {/*Private Route */}

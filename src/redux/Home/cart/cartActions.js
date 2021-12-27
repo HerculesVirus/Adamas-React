@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { useSelector } from 'react-redux'
 import {
     GET_CART_REQUEST,
     GET_CART_SUCCESS,
@@ -10,32 +9,34 @@ import {
     POST_CART_FAILURE 
 } from './cartTypes'
 
-export const fetchCart = (id)=>{
+export const fetchPostCart = (id ,data)=>{
     return(dispatch)=>{
         if(id){
-            //check for Cart already exist
-            //POST
-            const user = useSelector(state => state.auth.user.user._id)
-            console.log(user)
-            axios.post(`http://localhost:8000/api/publicsite/Cart` , user)
+            console.log(data)
+            fetchPostCartRequest()
+            //create a cart
+            axios.post(`http://localhost:8000/api/publicsite/Cart?id=${id?id:''}` , data)
             .then(res =>{
-                const massage = res.message
+                let massage = res.message
                 dispatch(fetchPostCartSuccess(massage))
             } )
             .catch(err => dispatch(fetchPostCartFailure(err)))
         }
         else{
-            //GET is Hit here
-            axios.get('http://localhost:8000/api/publicsite/Cart')
-            .then(res => {
-                const cart =res.data
-                dispatch(fetchGetCartSuccess(cart))
-            })
-            .catch(err => dispatch(fetchGetCartFailure(err)) )
+            console.log(`Hello form the fetchPostCart`)
         }
     }
 }
+// export const fetchGetCart = (id) => {
+//     return(dispatch)=>{
+//         fetchGetCartRequest()
+//         if(id){
+//             axios.get(`http://localhost:8000/api/publicsite/cartItem?id=${id?id:''}`)
 
+//         }
+       
+//     }    
+// }
 export const fetchGetCartRequest = ()=> {
     return {
         type : GET_CART_REQUEST
