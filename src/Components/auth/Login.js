@@ -11,6 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLogin } from '../../redux/Auth/loginAction';
+import { LoginWithGoogle } from '../../redux/Auth/loginAction';
 
 
 const Login=() => {
@@ -33,25 +34,23 @@ const Login=() => {
         })
     }
     useEffect(()=>{
-
-        
         if(selector?.user){
             console.log(selector.user)
             localStorage.setItem('token' , selector.user.token)
             navigate("/");
         }
-        
-       
-
-
-
     })
+    const handleGoogleSignIn = (e) => {
+        console.log(`Button is pressed`)
+        dispatch(LoginWithGoogle())
+    }
     //submit
     const handleSubmit = (e)=>{
         e.preventDefault();
         dispatch(fetchLogin(user))
     //     localStorage.setItem('token' , selector?.user && selector.user.token)
     }
+
     return(
         <>
             <Container>
@@ -70,12 +69,16 @@ const Login=() => {
                                 <div className='error'>{selector?.error && selector?.error.password}</div>
                             </Form.Group>
 
-                            <div className="d-flex justify-content-center">
-                                <Button variant="primary" type="submit" >
+                            <div className="d-flex justify-content-center Form-button">
+                                <Button className="bg-color mb-3" variant="primary" type="submit" >
                                     Sign in
+                                </Button>
+                                <Button className="bg-color " onClick={(e)=>handleGoogleSignIn(e)}>
+                                    Sign in with google
                                 </Button>
                             </div>
                         </Form>
+
                     </Col>
                 </Row>
             </Container>  

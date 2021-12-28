@@ -425,3 +425,13 @@ footer {
   font-size: bold;
 }
 
+.Form-button{
+  flex-direction: column;
+  width: 30%;
+}
+.bg-color{
+  background-color: #3bbdfb !important;
+  border-color: #3bbdfb !important;
+  
+}
+

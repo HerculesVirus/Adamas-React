@@ -17,7 +17,7 @@ const LoginReducer = (state = initialState , action) => {
         case FETCH_LOGIN_REQUEST:
             return{
                 ...state , 
-                isLogin : true
+                isLogin : false
             }
         case FETCH_LOGOUT_REQUEST:
             return{

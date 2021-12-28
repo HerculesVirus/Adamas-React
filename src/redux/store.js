@@ -9,13 +9,21 @@ import CollectionReducer from './Home/Category/CollectionReducer';
 import ProductReducer from './Home/Product/ProductReducer';
 import ShopReducer from './Home/Shop/ShopReducers';
 import ProductPreviewReducer from './Home/ProductPreview/ProductPreviewReducers';
+import CartReducer from './Home/cart/cartReducer';
 
 
 const persistConfig = {
   key: 'root',
   storage,
 }
-const rootReducer = combineReducers({ auth : LoginReducer , collection : CollectionReducer ,product : ProductReducer , shop : ShopReducer , productPreview : ProductPreviewReducer})
+const rootReducer = combineReducers({ 
+  auth : LoginReducer , 
+  collection : CollectionReducer ,
+  product : ProductReducer , 
+  shop : ShopReducer , 
+  productPreview : ProductPreviewReducer , 
+  cart : CartReducer
+})
 const persistedReducer = persistReducer( persistConfig , rootReducer)
  
 

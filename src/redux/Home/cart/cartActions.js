@@ -27,16 +27,22 @@ export const fetchPostCart = (id ,data)=>{
         }
     }
 }
-// export const fetchGetCart = (id) => {
-//     return(dispatch)=>{
-//         fetchGetCartRequest()
-//         if(id){
-//             axios.get(`http://localhost:8000/api/publicsite/cartItem?id=${id?id:''}`)
+export const fetchGetCart = (id) => {
+    return(dispatch)=>{
+        fetchGetCartRequest()
+        if(id){
+            axios.get(`http://localhost:8000/api/publicsite/Cart?id=${id?id:''}`)
+            .then((res) => {
+                let data = res.data
+                console.log(data)
+                dispatch(fetchGetCartSuccess(data))
 
-//         }
+            })
+            .catch(err => dispatch(fetchGetCartFailure(err)))
+        }
        
-//     }    
-// }
+    }    
+}
 export const fetchGetCartRequest = ()=> {
     return {
         type : GET_CART_REQUEST

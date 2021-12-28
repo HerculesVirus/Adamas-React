@@ -66,7 +66,7 @@ const LatestProductSection = () => {
               {
                   selector?.data && selector.data.map( items => {
                       return(
-                        <div className="col-lg-3 col-sm-6 " style={{width : '100%' }} key={items._id} >
+                        <div className="col-lg-3 col-sm-6 " key={items._id} >
                           <ProductCard 
                           p_img={items.img} 
                           p_title={items.Name} 

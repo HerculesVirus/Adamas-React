@@ -23,6 +23,7 @@ import store,{persistor} from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import PaymentCard from './Components/Cart/PaymentCard';
 import Contact from './Components/Contact/Contact';
+import CartList from './Components/Cart/CartList';
 
 
 
@@ -44,6 +45,7 @@ function App() {
             <Route path="/Contact" element={<Contact/>}/>
             <Route path="/cardlist" element={<cardList/>}/>
             <Route path="/PaymentCard" element={<PaymentCard/>}/>
+            <Route path="/Cartlist" element={<CartList/>}/>
 
             {/*Private Route */}
             <Route  element={<PrivateOutlet />}>
