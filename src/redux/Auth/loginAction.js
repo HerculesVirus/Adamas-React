@@ -36,7 +36,11 @@ export const fetchLogin = (data) => {
 export const LoginWithGoogle= ()=>{
     return(dispatch)=>{
         dispatch(LoginWithGoogleRequest())
-        axios.get(`http://localhost:8000/api/publicsite/signin/google`)
+        axios({
+            method : 'get' , 
+            URL : `http://localhost:8000/api/google` ,
+            withCredentials: true,
+        })
         .then(res => {
             const  newUser= res.data
             dispatch(LoginWithGoogleSuccess(newUser))

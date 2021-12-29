@@ -1,6 +1,3 @@
-
-
-
 import Left from "./left";
 import SignIn from "./SignIn";
 const topHeader = () => {

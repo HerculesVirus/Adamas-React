@@ -432,6 +432,46 @@ footer {
 .bg-color{
   background-color: #3bbdfb !important;
   border-color: #3bbdfb !important;
-  
 }
+
+/*CartDropDown*/
+.cart-dropdown {
+  position: absolute;
+  /* width: 240px; */
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid black;
+  background-color: white;
+  top: 43px;
+  right: 9%;
+
+  z-index: 1; 
+}
+button {
+  margin-top: auto;
+}
+.cart-items {
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  /* overflow: scroll; */
+}
+.empty-message {
+  font-size: 18px;
+  margin: 50px auto;
+}
+.carlistItem{
+  gap: 20px;
+  align-items: center;
+}
+.cardlist-pic{
+  height:  50px;
+}
+.cart-items ul, li{
+  margin-bottom: 10px;
+  /* border-bottom: 2px dotted darkgray ; */
+  /* style={{borderBottom : '2px dotted darkgray'}} */
+}
+/*CartDropDown*/
 

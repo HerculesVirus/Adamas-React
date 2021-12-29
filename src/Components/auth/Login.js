@@ -11,7 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLogin } from '../../redux/Auth/loginAction';
-import { LoginWithGoogle } from '../../redux/Auth/loginAction';
+// import { LoginWithGoogle } from '../../redux/Auth/loginAction';
 
 
 const Login=() => {
@@ -40,13 +40,14 @@ const Login=() => {
             navigate("/");
         }
     })
-    const handleGoogleSignIn = (e) => {
-        console.log(`Button is pressed`)
-        dispatch(LoginWithGoogle())
-    }
+    // const handleGoogleSignIn = (e) => {
+    //     console.log(`Button is pressed`)
+    //     dispatch(LoginWithGoogle())
+    // }
     //submit
     const handleSubmit = (e)=>{
         e.preventDefault();
+        // window.open(`http://localhost:8000/api/google`)
         dispatch(fetchLogin(user))
     //     localStorage.setItem('token' , selector?.user && selector.user.token)
     }
@@ -73,12 +74,15 @@ const Login=() => {
                                 <Button className="bg-color mb-3" variant="primary" type="submit" >
                                     Sign in
                                 </Button>
-                                <Button className="bg-color " onClick={(e)=>handleGoogleSignIn(e)}>
-                                    Sign in with google
-                                </Button>
-                            </div>
-                        </Form>
 
+                            </div>
+
+                        </Form>
+                        <div>
+                                <a href={`http://localhost:8000/api/google`}>
+                                    Sign in with google
+                                </a>
+                        </div>
                     </Col>
                 </Row>
             </Container>  
