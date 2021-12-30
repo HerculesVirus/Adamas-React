@@ -1,18 +1,18 @@
 import {Link} from 'react-router-dom';
-import '../../assets/css/check.css'
+import '../../assets/css/check.css';
+import { Col ,Container , Row ,Form } from 'react-bootstrap';
 
 
 const PaymentCard =()=> {
     return (
         <div className="checkout-form mt-4">
-            <div className="row">
-                <div className="container">
-                    <div className="col-md-9">
-                        <div className="checkout-container">
-                            <form action="/">
-
-                                <div className="row">
-                                    <div className="col-50">
+            <Container>
+                <Row>
+                    <Col md={9} className='left-container'>
+                        {/* <div className="checkout-container"> */}
+                            <Form >
+                                <div className="checkout-container">
+                                    <div className="form-address">
                                         <h3>Billing Address</h3>
                                         <label for="fname"><i className="fa fa-user"></i> Full Name</label>
                                         <input type="text" id="fname" name="firstname" placeholder="John M. Doe" />
@@ -22,20 +22,12 @@ const PaymentCard =()=> {
                                         <input type="text" id="adr" name="address" placeholder="542 W. 15th Street" />
                                         <label for="city"><i className="fa fa-institution"></i> City</label>
                                         <input type="text" id="city" name="city" placeholder="New York" />
-
-                                        <div className="row">
-                                            <div className="col-50">
-                                                <label for="state">State</label>
-                                                <input type="text" id="state" name="state" placeholder="NY" />
-                                            </div>
-                                            <div className="col-50">
-                                                <label for="zip">Zip</label>
-                                                <input type="text" id="zip" name="zip" placeholder="10001" />
-                                            </div>
-                                        </div>
+                                        <label for="state">State</label>
+                                        <input type="text" id="state" name="state" placeholder="NY" />
+                                        <label for="zip">Zip</label>
+                                        <input type="text" id="zip" name="zip" placeholder="10001" />
                                     </div>
-
-                                    <div className="col-50">
+                                    <div className='billing-address'>
                                         <h3>Payment</h3>
                                         <label for="fname">Accepted Cards</label>
                                         <div className="icon-container">
@@ -50,29 +42,24 @@ const PaymentCard =()=> {
                                         <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" />
                                         <label for="expmonth">Exp Month</label>
                                         <input type="text" id="expmonth" name="expmonth" placeholder="September" />
-                                        <div className="row">
-                                            <div className="col-50">
-                                                <label for="expyear">Exp Year</label>
-                                                <input type="text" id="expyear" name="expyear" placeholder="2018" />
-                                            </div>
-                                            <div className="col-50">
-                                                <label for="cvv">CVV</label>
-                                                <input type="text" id="cvv" name="cvv" placeholder="352" />
-                                            </div>
-                                        </div>
+                                        <label for="expyear">Exp Year</label>
+                                        <input type="text" id="expyear" name="expyear" placeholder="2018" />
+                                        <label for="cvv">CVV</label>
+                                        <input type="text" id="cvv" name="cvv" placeholder="352" />
+                                        
+
                                     </div>
-                                    <div>
+                                </div>
+                                <div>
                                         <input type="checkbox" checked="checked" name="sameadr" /> Shipping address same as billing
                                         <div className="butt">
                                             <input type="submit" value="Continue to checkout" className="btn" />
                                         </div>
-                                    </div>
                                 </div>
-
-                            </form>
-                        </div>
-                    </div>
-                    <div className="col-md-3">
+                            </Form>
+                        {/* </div> */}
+                    </Col>
+                    <Col md={3}>
                         <div className="checkout-container">
                             <h4>Cart <span className="price" style={{ color: "black" }}><i className="fa fa-shopping-cart"></i> <b>4</b></span></h4>
                             <p><Link to="#">Product 1</Link> <span className="price">$15</span></p>
@@ -82,9 +69,9 @@ const PaymentCard =()=> {
                             <hr />
                             <p>Total <span className="price" style={{ color: "black" }}><b>$30</b></span></p>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         </div>
 
     )

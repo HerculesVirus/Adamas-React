@@ -1,9 +1,17 @@
+import {useState } from "react";
 import CartItem from './CartItem';
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const CartDropdown = (props) => {
-    console.log(props.cardList)
-    return (
+  
+  console.log(props.cardList)
+  const handleDropDown = ()=> {
+    props.show();
+  }
+  return (
         <div className="cart-dropdown">
           <div className="cart-items">
               <ul>
@@ -19,18 +27,17 @@ const CartDropdown = (props) => {
                     )
                     :
                     <> 
-                        <li className="empty-message"> Your cart is empty</li>
+                      <Box sx={{ display: 'flex' }}>
+                        <CircularProgress />
+                      </Box>
                     </>
                 }
               </ul>
-            {/* {props.products  && props.products.length ? (
-              props.products.map((item,index) => <CartItem key={index} item={item} />)
-            ) : (
-              <span className="empty-message"> Your cart is empty </span>
-            )} */}
           </div>
-          <Button>
-            GO TO CHECKOUT
+          <Button className="pt-2 " onClick={()=>handleDropDown()}>
+            
+            <Link className="checkout" to = "/PaymentCard" >GO TO CHECKOUT</Link>
+          
           </Button>
         </div>
       );

@@ -3,30 +3,27 @@ import "@fortawesome/react-fontawesome";
 import jwt from 'jsonwebtoken';
 import { useSelector , useDispatch} from "react-redux";
 import { fetchLogoutRequest } from "../../../redux/Auth/loginAction";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CartDropDown from '../../../Components/Cart/CartDropDown'
+import { getCart } from "../../../redux/Home/cart/cartActions";
 //MUI
 
 
 const SignIn =(props)  => {
 
-    //State
+    //Local State
+    const [Products , setProducts] = useState('')
     const [hidden , setHidden] = useState(true)
-    //
+    //Hooks
     let navigate = useNavigate()
     const dispatch = useDispatch()
+    //boolean to check user Login or not
     const isLogin  = useSelector( state => state.auth.isLogin)
+    //User is Autherized or not
     const full = useSelector( state => state.auth)
-    const Products = useSelector( state => state.cart.data)
-    console.log(Products)
-    //Count Carts
-    const [countCart , setCountCart] = useState(0)
-    useEffect(()=>{
-        if(Products){
-            setCountCart(Products.length)
-        }
-    },[Products])
-
+    //HOOK FOR user id 
+    const userID = useSelector(state => state.auth.user.user._id)
+    // console.log(`userID : ${userID}`) 
 
     //using Old technique Jwt
     const handleLogout = ()=> {
@@ -44,12 +41,18 @@ const SignIn =(props)  => {
             }
         }
     }
-    // const toggleHidden = ()=>{
-    //     setHidden(!hidden);
-    // }
     const handleDropDown = ()=>{
         console.log(`Button is pressed`)
+        const callback= (data)=>{
+            setProducts(data)
+        }
+        dispatch(getCart(userID,callback))
+        
         setHidden(!hidden);
+    }
+    const toggle= ()=>{
+        console.log("hello gg ")
+        setHidden(true)
     }
     return(
         <>
@@ -58,7 +61,7 @@ const SignIn =(props)  => {
             <>
                 <li className="text-decoration-none text-light slash">{full && full.user.user?.email}</li>
                 <li><Link className="text-decoration-none text-light slash" to="#" onClick={()=>handleLogout()}> LOGOUT</Link></li>
-                <li><button className="text-decoration-none text-light" onClick={() => handleDropDown()} >   YOUR CART ({countCart})</button></li> 
+                <li><button className="text-decoration-none text-light" onClick={() => handleDropDown()} >   YOUR CART (0)</button></li> 
                 
                 {/*mui Modal */}
 
@@ -74,13 +77,12 @@ const SignIn =(props)  => {
         </ul> 
         {console.log(`hidden : ${hidden}`)}    
         <div>
-            {hidden ? 
+            {hidden  ? 
             <>
-                {/* <div><button className="text-decoration-none text-light" onClick={() => handleDropDown()} >   YOUR CART ({countCart})</button></div> */}
             </> 
             : 
             <>
-                <CartDropDown cardList={Products}/>
+                <CartDropDown cardList={Products} show={toggle}/>
             </>
             }   
         </div>

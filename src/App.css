@@ -444,18 +444,19 @@ footer {
   border: 1px solid black;
   background-color: white;
   top: 43px;
-  right: 9%;
-
+  right: 9.5%;
   z-index: 1; 
 }
 button {
   margin-top: auto;
 }
 .cart-items {
-  height: 210px;
   display: flex;
   flex-direction: column;
   /* overflow: scroll; */
+}
+.cart-items>ul{
+  padding-left: 0px;
 }
 .empty-message {
   font-size: 18px;
@@ -468,10 +469,14 @@ button {
 .cardlist-pic{
   height:  50px;
 }
-.cart-items ul, li{
+.cart-items>ul>li>ul{
   margin-bottom: 10px;
   /* border-bottom: 2px dotted darkgray ; */
   /* style={{borderBottom : '2px dotted darkgray'}} */
 }
 /*CartDropDown*/
+.checkout{
+  text-decoration: none ;
+  color: white !important;
+}
 

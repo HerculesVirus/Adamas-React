@@ -1,4 +1,12 @@
-import { GET_CART_FAILURE, GET_CART_REQUEST, GET_CART_SUCCESS, POST_CART_FAILURE, POST_CART_REQUEST, POST_CART_SUCCESS } from "./cartTypes";
+import {  
+    GET_CART_REQUEST, 
+    GET_CART_SUCCESS ,
+    GET_CART_FAILURE , 
+
+    POST_CART_FAILURE, 
+    POST_CART_REQUEST, 
+    POST_CART_SUCCESS 
+} from "./cartTypes";
 
 const initialState = {
     loading : false ,
@@ -8,20 +16,7 @@ const initialState = {
 
 const CartReducer = (state = initialState , action) => {
     switch(action.type){
-        case GET_CART_REQUEST:
-            return {
-                loading : true
-            }
-        case GET_CART_FAILURE:
-            return {
-                loading : false ,
-                error : action.payload
-            }
-        case GET_CART_SUCCESS:
-            return{
-                loading : false ,
-                data : action.payload
-            }
+        //POST ACTIONS
         case POST_CART_REQUEST:
             return{
                 loading : true ,
@@ -36,6 +31,21 @@ const CartReducer = (state = initialState , action) => {
                 loading : false,
                 error : action.payload
             }
+        //GET ACTIONS
+        case GET_CART_REQUEST:
+            return{
+                loading : true ,
+        }
+        case GET_CART_SUCCESS:
+            return{
+                    loading : false ,
+                    data : action.payload
+                }
+        case GET_CART_FAILURE:
+                return{
+                    loading : false,
+                    error : action.payload
+                }
         default : return state
     }
 }

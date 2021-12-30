@@ -3,10 +3,12 @@ import { useEffect } from "react";
 import { Container,Row ,Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductPreview } from "../../redux/Home/ProductPreview/ProductPreviewActions";
-import { fetchPostCart } from '../../redux/Home/cart/cartActions'
+import { postCart } from '../../redux/Home/cart/cartActions'
 import BackDrop from "../MUI/BackDrop";
 import { useParams } from "react-router-dom";
 import {Link} from "react-router-dom";
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2'
 //MUI
 import Dropdown from 'muicss/lib/react/dropdown';
 import DropdownItem from 'muicss/lib/react/dropdown-item';
@@ -17,6 +19,9 @@ import "../../assets/css/ProductPreview.css"
 const ProductPreview = ()=>{
     //STATE 
     const [quantity , setQuantity] = useState(0)
+    // const [resMessage , setMessage] = useState('')
+    //local State
+
     let { id }= useParams(); //productId
 
     let dispatch = useDispatch()
@@ -24,11 +29,26 @@ const ProductPreview = ()=>{
     // console.log(productData)
     const loading = useSelector(state => state.productPreview.loading)
     const userID = useSelector(state => state.auth.user.user._id)
-    console.log(userID)
+    // console.log(`userID : ${userID}`)
+    // const sweetAlert = useSelector(state => state.cart.message)
+    // console.log(`sweetAlert : ${sweetAlert}`)
 
     useEffect(() => {
         dispatch(fetchProductPreview(id))
     },[id,dispatch])
+
+    // useEffect(()=>{
+    //     if(resMessage)
+    //     {
+    //         Swal.fire({
+    //           position: 'center',
+    //           icon: 'success',
+    //           title: resMessage,
+    //           showConfirmButton: false,
+    //           timer: 1500
+    //         })
+    //     }
+    // },[resMessage])
 
     const cartHandler =(e)=>{
         if(productData){
@@ -37,13 +57,18 @@ const ProductPreview = ()=>{
                 Qty : quantity ,
                 productId : id
             }
-            // const cartInfo = new FormData();
-            // cartInfo.append('price' , productData.price)
-            // cartInfo.append('Qty' , quantity)
-            // cartInfo.append('productId' , id)
-            dispatch(fetchPostCart(userID , cartInfo))
-        }
-        
+            const callback=(msg)=>
+            {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: msg,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+            dispatch(postCart(userID , cartInfo,callback))
+        }  
     }
 
     const quantityHandler=(e)=>{
@@ -93,12 +118,12 @@ const ProductPreview = ()=>{
                     loading || null || productData===undefined
                     ? 
                     <>
-                        {console.log(` part ${loading}`)}
+                        {/* {console.log(` part ${loading}`)} */}
                         <BackDrop loading ={loading}/>
                     </>
                     :
                     <>
-                        {console.log(`else part ${loading}`)}
+                        {/* {console.log(`else part ${loading}`)} */}
                         <Col xs="8">
                             <div className="img-container d-flex justify-content-center">
                                 <img src={`http://localhost:8000/public/img/Product/${productData.img}`} alt={productData.name} />
@@ -168,6 +193,22 @@ const ProductPreview = ()=>{
                 </Col>
             </Row>
         </Container>
+        {/* {
+            resMessage
+            ? 
+            // <></>
+                Swal.fire({
+                    // position: 'center',
+                    // icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            
+            :
+            <>
+            </>
+        } */}
         </>
     )
     
