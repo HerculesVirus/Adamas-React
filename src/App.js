@@ -21,8 +21,9 @@ import { Provider } from 'react-redux';
 // import store from './redux/store';
 import store,{persistor} from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
-import PaymentCard from './Components/Cart/PaymentCard';
+import PaymentMethod from './Components/PaymentMethod/PaymentMethod';
 import Contact from './Components/Contact/Contact';
+import ViewCarts from './Components/Cart/ViewCarts';
 
 
 
@@ -43,7 +44,8 @@ function App() {
             <Route path="/*" element={<PageNotFound/>}/>
             <Route path="/Apperal" element={<ApperalNotFound/>}/>
             <Route path="/Contact" element={<Contact/>}/>
-            <Route path="/PaymentCard" element={<PaymentCard/>}/>
+            <Route path="/PaymentCard" element={<PaymentMethod/>}/>
+            <Route path="/CartList" element={<ViewCarts/>}/>
             {/* <Route path="/Cartlist" element={<CartList/>}/> */}
 
             {/*Private Route */}

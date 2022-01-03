@@ -2,7 +2,7 @@
 import Slider from "react-slick";
 import ProductCard from "./ProductCard";
 import { useEffect } from "react";
-import { fetchProduct } from "../../redux/Home/Product/ProductActions";
+import { latestProduct } from "../../redux/Home/Product/ProductActions";
 import { useDispatch, useSelector } from "react-redux";
 import MUI_BACKDROP from "../MUI/BackDrop";
 
@@ -12,10 +12,11 @@ const LatestProductSection = () => {
     const selector = useSelector(state => state.product)
 
     // console.log(`Product Component`)
-    // console.log(selector)
+    console.log(selector)
+    console.log(selector.latestData)
     
     useEffect(()=>{
-      dispatch(fetchProduct())
+      dispatch(latestProduct())
     },[dispatch])
     
     var settings = {
@@ -64,7 +65,7 @@ const LatestProductSection = () => {
               :
               <Slider {...settings}>
               {
-                  selector?.data && selector.data.map( items => {
+                  selector?.latestData && selector.latestData.map( items => {
                       return(
                         <div className="col-lg-3 col-sm-6 " key={items._id} >
                           <ProductCard 

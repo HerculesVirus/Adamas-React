@@ -2,7 +2,7 @@
 import Slider from "react-slick";
 import ProductCard from "./ProductCard";
 import { useEffect } from "react";
-import { fetchProduct } from "../../redux/Home/Product/ProductActions";
+import { featuredProduct } from "../../redux/Home/Product/ProductActions";
 import { useDispatch, useSelector } from "react-redux";
 import MUI_BACKDROP from "../MUI/BackDrop";
 
@@ -11,11 +11,12 @@ const FeaturedProductSection = () => {
     const dispatch = useDispatch()
     const selector = useSelector(state => state.product)
 
-    // console.log(`Product Component`)
-    // console.log(selector)
+    //console.log(`Product Component FeaturedProductSection`)
+    console.log(selector)
+    console.log(selector.featuredData)
     
     useEffect(()=>{
-      dispatch(fetchProduct())
+      dispatch(featuredProduct())
     },[dispatch])
     
     var settings = {
@@ -64,7 +65,7 @@ const FeaturedProductSection = () => {
               :
               <Slider {...settings}>
               {
-                  selector?.data && selector.data.map( items => {
+                  selector?.featuredData && selector.featuredData.map( items => {
                       return(
                         <div className="col-lg-3 col-sm-6 " style={{width : '100%' }} key={items._id} >
                           <ProductCard 

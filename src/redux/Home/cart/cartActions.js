@@ -6,7 +6,17 @@ import {
 
     POST_CART_REQUEST ,
     POST_CART_SUCCESS , 
-    POST_CART_FAILURE 
+    POST_CART_FAILURE ,
+
+    PUT_CART_REQUEST ,
+    PUT_CART_SUCCESS ,
+    PUT_CART_FAILURE ,
+
+    
+    DEL_CART_REQUEST ,
+    DEL_CART_SUCCESS ,
+    DEL_CART_FAILURE 
+
 } from './cartTypes'
 
 //GET------------------------------
@@ -26,6 +36,7 @@ export const getCart = (id,callback) => {
         }
     }    
 }
+//Action Creator
 export const getCartRequest = ()=> {
     return {
         type : GET_CART_REQUEST
@@ -65,6 +76,7 @@ export const postCart = (id ,data,callback)=>{
         }
     }
 }
+//Action Creator
 export const postCartRequest = ()=> {
     return {
         type : POST_CART_REQUEST , 
@@ -80,6 +92,82 @@ export const postCartSuccess = (data)=> {
 export const postCartFailure = (err)=> {
     return {
         type : POST_CART_FAILURE ,
+        payload : err
+    }
+}
+
+//Update---------------------------------
+export const updateCart =(cartItem,Qty,callback)=>{
+    return(dispatch)=>{
+        
+            console.log(`fetchPostCart`)
+            console.log("cartItem : ",cartItem, "Qty : ",Qty)
+            const data ={cartItem,Qty}
+            updateCartRequest()
+            //create a cart
+            axios.put(`http://localhost:8000/api/publicsite/Cart`,data)
+            .then(res =>{
+                let  data = res.data
+                console.log(data)
+                dispatch(updateCartSuccess(data))
+                callback(data)
+            } )
+            .catch(err => dispatch(updateCartFailure(err)))
+        
+    }
+}
+//Action Creator
+export const updateCartRequest =()=>{
+    return{
+        type: PUT_CART_REQUEST   
+    }
+}
+export const updateCartSuccess =(data)=>{
+    return {
+        type : PUT_CART_SUCCESS ,
+        payload : data
+    }
+}
+export const updateCartFailure =(err)=>{
+    return {
+        type : PUT_CART_FAILURE ,
+        payload : err
+    }
+}
+//DELETE------------------------------------
+export const deleteCart = (cartItem)=>{
+    return(dispatch)=>{
+        
+            console.log(`fetchDeleteCart`)
+            console.log(cartItem)
+
+            delRequest()
+            //create a cart
+            axios.delete(`http://localhost:8000/api/publicsite/CartDel` ,{data:cartItem})
+            .then(res =>{
+                let massage = res.data.message
+                console.log(massage)
+                dispatch(deleteCartSuccess(massage))
+                
+            } )
+            .catch(err => dispatch(deleteCartFailure(err)))
+    }
+}
+//Action Creater --------------------------------
+export const delRequest=()=>{
+    return{
+        type : DEL_CART_REQUEST
+    }
+}
+export const deleteCartSuccess=(data)=>{
+    return{
+        type : DEL_CART_SUCCESS ,
+        payload : data
+    }
+}
+export const deleteCartFailure =(err)=>{
+    return {
+        type : DEL_CART_FAILURE ,
         payload : err
     }
 }

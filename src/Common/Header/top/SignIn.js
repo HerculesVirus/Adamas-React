@@ -18,12 +18,18 @@ const SignIn =(props)  => {
     let navigate = useNavigate()
     const dispatch = useDispatch()
     //boolean to check user Login or not
-    const isLogin  = useSelector( state => state.auth.isLogin)
+    const isLogin  = useSelector( state => state.auth?.isLogin)
     //User is Autherized or not
-    const full = useSelector( state => state.auth)
+    const full = useSelector( state => state?.auth)
     //HOOK FOR user id 
-    const userID = useSelector(state => state.auth.user.user._id)
-    // console.log(`userID : ${userID}`) 
+    const userID = useSelector(state => state.auth.user.user?._id)
+    console.log(`userID : ${userID}`) 
+    //cart
+    const obj = useSelector(state => state.cart)
+    console.log(obj)
+    const cart = useSelector(state => state.cart?.data)
+    console.log(cart)
+    const[numberOfCart , setNumberOfCart] = useState(cart ? cart.length : 0)
 
     //using Old technique Jwt
     const handleLogout = ()=> {
@@ -44,24 +50,27 @@ const SignIn =(props)  => {
     const handleDropDown = ()=>{
         console.log(`Button is pressed`)
         const callback= (data)=>{
+            setNumberOfCart(data.length)
             setProducts(data)
         }
         dispatch(getCart(userID,callback))
+
         
         setHidden(!hidden);
     }
     const toggle= ()=>{
-        console.log("hello gg ")
+        //console.log("Your Cart toggle is working")
         setHidden(true)
     }
     return(
         <>
+        {console.log(`numberOfCart : ${numberOfCart}`)}
         <ul className="d-flex list-unstyled align-items-center my-auto">
-            {isLogin ?
+            {isLogin !==(null || undefined) && userID !==(null || undefined) ?
             <>
                 <li className="text-decoration-none text-light slash">{full && full.user.user?.email}</li>
                 <li><Link className="text-decoration-none text-light slash" to="#" onClick={()=>handleLogout()}> LOGOUT</Link></li>
-                <li><button className="text-decoration-none text-light" onClick={() => handleDropDown()} >   YOUR CART (0)</button></li> 
+                <li><button className="text-decoration-none text-light" onClick={() => handleDropDown()} >   YOUR CART ({numberOfCart})</button></li> 
                 
                 {/*mui Modal */}
 
@@ -71,7 +80,7 @@ const SignIn =(props)  => {
                 {/* <li><Link className="text-decoration-none text-light slash" to="#" onClick={()=>handleLogout()}> LOGOUT</Link></li> */}
                 <li><Link className="text-decoration-none text-light slash" to="/signin">SIGN IN </Link></li>
                 <li><Link className="text-decoration-none text-light slash" to="/register" > REGISTER</Link></li>
-                <li><Link className="text-decoration-none text-light" to="#">   YOUR CART (0)</Link></li>    
+                <li><Link className="text-decoration-none text-light" to="#">   YOUR CART ()</Link></li>    
             </>
             }            
         </ul> 

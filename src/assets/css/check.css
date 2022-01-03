@@ -80,15 +80,17 @@
     float: right;
     color: grey;
   }
-  .checkout-container{
+  /* .checkout-container{
     display: flex;
-    justify-content: space-between;
-  }
-  .form-address{
-    width:50%;
+    justify-content: center;
+  } */
+  .billing-address{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 10px;
   }
-  .billing-address{
+  .payment-address{
     width: 50%;
     padding: 10px;
   }
