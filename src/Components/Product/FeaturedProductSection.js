@@ -12,8 +12,8 @@ const FeaturedProductSection = () => {
     const selector = useSelector(state => state.product)
 
     //console.log(`Product Component FeaturedProductSection`)
-    console.log(selector)
-    console.log(selector.featuredData)
+    // console.log(selector)
+    // console.log(selector.featuredData)
     
     useEffect(()=>{
       dispatch(featuredProduct())

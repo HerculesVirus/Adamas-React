@@ -12,8 +12,8 @@ const LatestProductSection = () => {
     const selector = useSelector(state => state.product)
 
     // console.log(`Product Component`)
-    console.log(selector)
-    console.log(selector.latestData)
+    // console.log(selector)
+    // console.log(selector.latestData)
     
     useEffect(()=>{
       dispatch(latestProduct())

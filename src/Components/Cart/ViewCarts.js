@@ -1,14 +1,25 @@
 import { Button } from "react-bootstrap";
 import { useSelector ,useDispatch } from "react-redux";
-import { useState , useEffect, useCallback} from "react";
+import { useEffect, useState  } from "react";
 import { deleteCart, getCart, updateCart } from "../../redux/Home/cart/cartActions";
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2';
 
 const ViewCarts = ()=>{
     const cart = useSelector(state => state.cart?.data)
-    const obj = useSelector(state => state.cart)
-
-    console.log(obj)
-    console.log("sdasdasdaadasdad",cart)
+    console.log("cartArray : ",cart)
+    const userID = useSelector(state => state.auth.user?.user._id )
+    console.log(`userID : ${userID}`)
+    let dispatch = useDispatch()
+    useEffect(()=>{
+        if(userID){
+            const callback =(data)=>{
+                console.log(`getcart Callback is running`)
+                console.log(data)
+            }
+            dispatch(getCart(userID,callback))
+        } 
+    },[dispatch,userID])
     return(
         <>
 
@@ -33,8 +44,6 @@ const ViewCarts = ()=>{
                             cart.map((cartItem, i)=>{
                                 return <TableRow key={i} cartItem={cartItem}/>;
                             })
-                            
-                        
                         :<></>
                         }
                         </tbody>
@@ -48,23 +57,44 @@ const ViewCarts = ()=>{
     )
 }
 const TableRow=({cartItem})=>{
-    const userID = useSelector(state => state.user?.user._id )
-    console.log(userID)
-
     let [qty, setQty] = useState(cartItem.Qty)
     const dispatch= useDispatch();
     
-    // useEffect(()=>{
-    //     console.log(qty)
-    //     dispatch(updateCart(cartItem, qty))
-    // },[qty])
-    
+    useEffect(()=>{
+        console.log(qty)
+        console.log(`your are in update quantity mode`)
+        const callback =(data)=>{
+            console.log(`Your are in Callback of updateCart`)
+            console.log(data)
+
+        }
+        dispatch(updateCart(cartItem, qty,callback))
+    },[qty])
+
     const handleChange=(e)=>{
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: "Qty is Updated",
+            showConfirmButton: false,
+            timer: 1500
+        })
         setQty(e.target.value)
     }
-    
     const handleDelete=()=>{
-        dispatch(deleteCart(cartItem))
+        const callback =(data)=>{
+            // console.log("callback of ViewCart")
+            // console.log(data)
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: "Deleted Sucessfully ",
+                showConfirmButton: false,
+                timer: 1500
+            })
+
+        }
+        dispatch(deleteCart(cartItem,callback))
     }
 
     return(
@@ -74,7 +104,13 @@ const TableRow=({cartItem})=>{
                 <td>{cartItem.productInfo.Name}</td>
                 <td>{cartItem.productInfo.price}</td>
                 <td><input  type="number" onChange={(e)=>handleChange(e)} min="1" value={qty} style={{width: "50px"}}/></td>
-                <td><Button onClick={()=>handleDelete()}>Delete</Button></td>
+                <td>
+                    <div className="d-flex viewCart-button-section">
+                        
+                        <Button onClick={()=>handleDelete()}variant="danger"><i className="fa fa-trash"></i></Button>
+                    </div>
+                </td>
+           
             </tr>
         </>
     )

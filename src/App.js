@@ -21,7 +21,7 @@ import { Provider } from 'react-redux';
 // import store from './redux/store';
 import store,{persistor} from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
-import PaymentMethod from './Components/PaymentMethod/PaymentMethod';
+import PaymentComponent from './Components/PaymentWidget/PaymentComponent';
 import Contact from './Components/Contact/Contact';
 import ViewCarts from './Components/Cart/ViewCarts';
 
@@ -44,7 +44,11 @@ function App() {
             <Route path="/*" element={<PageNotFound/>}/>
             <Route path="/Apperal" element={<ApperalNotFound/>}/>
             <Route path="/Contact" element={<Contact/>}/>
-            <Route path="/PaymentCard" element={<PaymentMethod/>}/>
+            <Route path="/PaymentCart" element={<PaymentComponent
+                      keys={{
+                          stripe: "pk_test_51KEBJqLmuMhZJPFDswRS7AJiGrQYaTJCBVRVAsya9iIZSetbcpp79qq3Ww3HvuLeGFu6YeZeBuI8yCYpigWgF9Vi00QajtFBwc",
+                      }}
+                  />}/>
             <Route path="/CartList" element={<ViewCarts/>}/>
             {/* <Route path="/Cartlist" element={<CartList/>}/> */}
 

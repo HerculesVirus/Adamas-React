@@ -8,7 +8,7 @@ import BackDrop from "../MUI/BackDrop";
 import { useParams } from "react-router-dom";
 import {Link} from "react-router-dom";
 // ES6 Modules or TypeScript
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 //MUI
 import Dropdown from 'muicss/lib/react/dropdown';
 import DropdownItem from 'muicss/lib/react/dropdown-item';
@@ -19,36 +19,17 @@ import "../../assets/css/ProductPreview.css"
 const ProductPreview = ()=>{
     //STATE 
     const [quantity , setQuantity] = useState(0)
-    // const [resMessage , setMessage] = useState('')
-    //local State
-
+    //Hooks
     let { id }= useParams(); //productId
-
     let dispatch = useDispatch()
     const productData = useSelector(state => state.productPreview.data)
-    // console.log(productData)
     const loading = useSelector(state => state.productPreview.loading)
     const userID = useSelector(state => state.auth.user.user._id)
-    // console.log(`userID : ${userID}`)
-    // const sweetAlert = useSelector(state => state.cart.message)
-    // console.log(`sweetAlert : ${sweetAlert}`)
 
+    
     useEffect(() => {
         dispatch(fetchProductPreview(id))
     },[id,dispatch])
-
-    // useEffect(()=>{
-    //     if(resMessage)
-    //     {
-    //         Swal.fire({
-    //           position: 'center',
-    //           icon: 'success',
-    //           title: resMessage,
-    //           showConfirmButton: false,
-    //           timer: 1500
-    //         })
-    //     }
-    // },[resMessage])
 
     const cartHandler =(e)=>{
         if(productData){
@@ -193,22 +174,6 @@ const ProductPreview = ()=>{
                 </Col>
             </Row>
         </Container>
-        {/* {
-            resMessage
-            ? 
-            // <></>
-                Swal.fire({
-                    // position: 'center',
-                    // icon: 'success',
-                    title: 'Your work has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            
-            :
-            <>
-            </>
-        } */}
         </>
     )
     

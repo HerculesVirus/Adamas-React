@@ -22,13 +22,13 @@ const SignIn =(props)  => {
     //User is Autherized or not
     const full = useSelector( state => state?.auth)
     //HOOK FOR user id 
-    const userID = useSelector(state => state.auth.user.user?._id)
-    console.log(`userID : ${userID}`) 
+    const userID = useSelector(state => state.auth.user?.user._id)
+    //console.log(`userID : ${userID}`) 
     //cart
-    const obj = useSelector(state => state.cart)
-    console.log(obj)
+    // const obj = useSelector(state => state.cart)
+    //console.log(obj)
     const cart = useSelector(state => state.cart?.data)
-    console.log(cart)
+    //console.log(cart)
     const[numberOfCart , setNumberOfCart] = useState(cart ? cart.length : 0)
 
     //using Old technique Jwt
@@ -48,7 +48,7 @@ const SignIn =(props)  => {
         }
     }
     const handleDropDown = ()=>{
-        console.log(`Button is pressed`)
+        //console.log(`Button is pressed`)
         const callback= (data)=>{
             setNumberOfCart(data.length)
             setProducts(data)
@@ -64,7 +64,7 @@ const SignIn =(props)  => {
     }
     return(
         <>
-        {console.log(`numberOfCart : ${numberOfCart}`)}
+        {/* {console.log(`numberOfCart : ${numberOfCart}`)} */}
         <ul className="d-flex list-unstyled align-items-center my-auto">
             {isLogin !==(null || undefined) && userID !==(null || undefined) ?
             <>
@@ -84,7 +84,7 @@ const SignIn =(props)  => {
             </>
             }            
         </ul> 
-        {console.log(`hidden : ${hidden}`)}    
+        {/* {console.log(`hidden : ${hidden}`)}     */}
         <div>
             {hidden  ? 
             <>

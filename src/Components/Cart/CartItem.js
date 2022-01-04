@@ -1,9 +1,9 @@
 
 const CartItem = ({children ,i})=>{
-    console.log(`index :${i}`)
+    // console.log(`index :${i}`)
     return(
         <>
-            <li key={i} style={{borderBottom : '2px dotted darkgray'}}>
+            <li key={i} style={{borderBottom : '1px dotted darkgray' , padding : "10px"}}>
                 {children}
             </li>
         </>

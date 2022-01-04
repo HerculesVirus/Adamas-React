@@ -15,7 +15,8 @@ import {
     
     DEL_CART_REQUEST ,
     DEL_CART_SUCCESS ,
-    DEL_CART_FAILURE 
+    DEL_CART_FAILURE, 
+    SUMBIT_ORDER_PRICE
 
 } from './cartTypes'
 
@@ -100,12 +101,11 @@ export const postCartFailure = (err)=> {
 export const updateCart =(cartItem,Qty,callback)=>{
     return(dispatch)=>{
         
-            console.log(`fetchPostCart`)
-            console.log("cartItem : ",cartItem, "Qty : ",Qty)
-            const data ={cartItem,Qty}
+            console.log(`updateCart`)
+            console.log("cartItem : ",cartItem, "updated Qty : ",Qty)
             updateCartRequest()
             //create a cart
-            axios.put(`http://localhost:8000/api/publicsite/Cart`,data)
+            axios.put(`http://localhost:8000/api/publicsite/CartUpdate`,{data :{cartItem,Qty}  })
             .then(res =>{
                 let  data = res.data
                 console.log(data)
@@ -122,10 +122,10 @@ export const updateCartRequest =()=>{
         type: PUT_CART_REQUEST   
     }
 }
-export const updateCartSuccess =(data)=>{
+export const updateCartSuccess =(msg)=>{
     return {
         type : PUT_CART_SUCCESS ,
-        payload : data
+        payload : msg
     }
 }
 export const updateCartFailure =(err)=>{
@@ -135,7 +135,7 @@ export const updateCartFailure =(err)=>{
     }
 }
 //DELETE------------------------------------
-export const deleteCart = (cartItem)=>{
+export const deleteCart = (cartItem,callback)=>{
     return(dispatch)=>{
         
             console.log(`fetchDeleteCart`)
@@ -145,9 +145,10 @@ export const deleteCart = (cartItem)=>{
             //create a cart
             axios.delete(`http://localhost:8000/api/publicsite/CartDel` ,{data:cartItem})
             .then(res =>{
-                let massage = res.data.message
-                console.log(massage)
-                dispatch(deleteCartSuccess(massage))
+                let data = res.data
+                console.log(data)
+                dispatch(deleteCartSuccess(data))
+                callback(data)
                 
             } )
             .catch(err => dispatch(deleteCartFailure(err)))
@@ -170,4 +171,14 @@ export const deleteCartFailure =(err)=>{
         type : DEL_CART_FAILURE ,
         payload : err
     }
+}
+
+//set Total
+
+export const setTotal =(price)=>{
+    return{
+        type : SUMBIT_ORDER_PRICE ,
+        payload : price
+    }
+
 }

@@ -437,14 +437,13 @@ footer {
 /*CartDropDown*/
 .cart-dropdown {
   position: absolute;
-  /* width: 240px; */
+  width: 340px;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  border: 1px solid black;
+  border: 1px solid rgb(255, 255, 255);
   background-color: white;
-  top: 43px;
-  right: 9.5%;
+  top: 44px;
+  right: 9%;
   z-index: 1; 
 }
 button {
@@ -466,11 +465,14 @@ button {
   gap: 20px;
   align-items: center;
 }
+.circularprogress{
+  gap: 69px;
+}
 .cardlist-pic{
   height:  50px;
 }
 .cart-items>ul>li>ul{
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   /* border-bottom: 2px dotted darkgray ; */
   /* style={{borderBottom : '2px dotted darkgray'}} */
 }
@@ -479,4 +481,11 @@ button {
   text-decoration: none ;
   color: white !important;
 }
-
+.cart-button{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.viewCart-button-section{
+  gap: 10px;
+}

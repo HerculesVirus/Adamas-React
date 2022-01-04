@@ -13,13 +13,16 @@ import {
 
     DEL_CART_REQUEST,
     DEL_CART_SUCCESS,
-    DEL_CART_FAILURE
+    DEL_CART_FAILURE,
+    SUMBIT_ORDER_PRICE
     
 } from "./cartTypes";
 
 const initialState = {
     loading : false ,
     data : '' ,
+    total : '' ,
+    msg : '' ,
     error : ''
 }
 
@@ -28,62 +31,79 @@ const CartReducer = (state = initialState , action) => {
         //GET ACTIONS
         case GET_CART_REQUEST:
             return{
+                ...state ,
                 loading : true ,
             }
         case GET_CART_SUCCESS:
             return{
+                    ...state ,
                     loading : false ,
                     data : action.payload
                 }
         case GET_CART_FAILURE:
             return{
+                ...state ,
                 loading : false,
                 error : action.payload
             }
         //POST ACTIONS
         case POST_CART_REQUEST:
             return{
+                ...state,
                 loading : true ,
             }
         case POST_CART_SUCCESS:
             return{
+                ...state,
                 loading : false ,
                 data : action.payload
             }
         case POST_CART_FAILURE:
             return{
+                ...state,
                 loading : false,
                 error : action.payload
             }
         //PUT Actions
         case PUT_CART_REQUEST:
             return{
+                ...state,
                 loading : true ,
         }
         case PUT_CART_SUCCESS:
             return{
+                    ...state,
                     loading : false ,
-                    data : action.payload
+                    msg : action.payload
                 }
         case PUT_CART_FAILURE:
             return{
+                ...state,
                 loading : false,
                 error : action.payload
             }
         //DELETE ACTIONS
         case DEL_CART_REQUEST:
             return{
+                ...state,
                 loading : true ,
             }
         case DEL_CART_SUCCESS:
             return{
+                ...state ,
                 loading : false ,
                 data : action.payload
             }
         case DEL_CART_FAILURE:
             return{
+                ...state,
                 loading : false,
                 error : action.payload
+            }
+        case SUMBIT_ORDER_PRICE:
+            return {
+                ...state ,
+                total: action.payload
             }
         default : return state
     }
