@@ -9,19 +9,13 @@ import {
     Row,
     Col
 } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { fetchRegister } from '../../redux/Auth/loginAction';
 
 
 
 const Register = ()=> {
-     //SweetAlert
-    // Swal.fire({
-    //     position: 'center',
-    //     icon: 'success',
-    //     title: 'Your work has been saved',
-    //     showConfirmButton: false,
-    //     timer: 1500
-    // })
-    //Similar to History
+    let dispatch = useDispatch();
     let navigate = useNavigate();
     //states
     const [user,setUser] = useState({
@@ -52,6 +46,7 @@ const Register = ()=> {
         e.preventDefault();
         console.log(user)
         if(user.password === user.cpass){
+            dispatch(fetchRegister())
             axios({
                 method: 'post',
                 url: 'http://localhost:8000/api/publicsite/register',

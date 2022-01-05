@@ -5,6 +5,11 @@ import {
     FETCH_LOGIN_SUCCESS,
     FETCH_LOGIN_FAILURE,
     FETCH_LOGOUT_REQUEST,
+
+    FETCH_REGISTER_REQUEST,
+    FETCH_REGISTER_SUCCESS,
+    FETCH_REGISTER_FAILURE,
+
     LOGIN_WITH_GOOGLE_REQUEST,
     LOGIN_WITH_GOOGLE_FAILURE,
     LOGIN_WITH_GOOGLE_SUCCESS
@@ -14,18 +19,16 @@ export const fetchLogin = (data) => {
     return (dispatch) => {
         // console.log(`fetchLogin : ${data}`)
         dispatch(fetchLoginRequest())
-        axios.post('http://localhost:8000/api/publicsite/signin' , data)
+        console.log("process.env.REACT_APP_URL : ",process.env.REACT_APP_URL)
+        axios.post(`http://localhost:8000/v1/site-auth/signin` , data)
         .then(res => {
             const user = res.data
             if(user.token ){
-                //console.log(`user : ${Object.values(user)}`)
                 dispatch(fetchLoginSuccess(user))
             }
             else{
-                //console.log(`error : ${Object.values(user)}`)
                 dispatch(fetchLoginFailure(user))
             }
-            
         })
         .catch(err=> {
             dispatch(fetchLoginFailure(err.message))
@@ -33,12 +36,54 @@ export const fetchLogin = (data) => {
     }
 }
 
+export const fetchRegister = (data)=>{
+    return (dispatch) => {
+        // console.log(`fetchLogin : ${data}`)
+        dispatch(fetchRegisterRequest())
+        axios.post(`http://localhost:8000/v1/site-auth/register` , data)
+        .then(res => {
+            const user = res.data
+            if(user.token ){
+                dispatch(fetchRegisterSuccess(user))
+            }
+            else{
+                dispatch(fetchRegisterFailure(user))
+            }    
+        })
+        .catch(err=> {
+            dispatch(fetchLoginFailure(err.message))
+        })
+    }
+}
+
+export const fetchRegisterRequest = ()=>{
+    return{
+        type : FETCH_REGISTER_REQUEST
+    }
+}
+
+export const fetchRegisterSuccess = (data)=>{
+    return{
+        type : FETCH_REGISTER_SUCCESS ,
+        payload: data
+    }
+}
+
+export const fetchRegisterFailure =(err) =>{
+    return{
+        type: FETCH_REGISTER_FAILURE ,
+        payload : err
+    }
+}
+
+
+
 export const LoginWithGoogle= ()=>{
     return(dispatch)=>{
         dispatch(LoginWithGoogleRequest())
         axios({
             method : 'get' , 
-            URL : `http://localhost:8000/api/google` ,
+            URL : `http://localhost:8000/v1/site-auth/google` ,
             withCredentials: true,
         })
         .then(res => {
