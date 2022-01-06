@@ -1,7 +1,6 @@
 //import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {
     Form,
     Button,
@@ -45,20 +44,14 @@ const Register = ()=> {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(user)
+        const data = {'name' : user.fname , email : user.email , password : user.password}
         if(user.password === user.cpass){
-            dispatch(fetchRegister())
-            axios({
-                method: 'post',
-                url: 'http://localhost:8000/api/publicsite/register',
-                data: {'name' : user.fname , email : user.email , password : user.password},
-                withCredentials: true
-              }) 
-              .then( async data =>{
+            const callback= async (data)=>{
                 console.log('I am here')
                 await setReg(data)
-              } )
-              .catch(err => console.log(`goes in err part${err}`))
-              setErr('')  
+            }
+            dispatch(fetchRegister(data,callback))
+            setErr('')  
         }
         else{
             console.log("password is not matched")

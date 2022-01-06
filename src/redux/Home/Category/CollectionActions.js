@@ -10,7 +10,7 @@ from './CollectionTypes'
 export const fetchCollection = ()=> {
     return(dispatch) => {
         dispatch(fetchCollectionRequest())
-        axios.get(`http://localhost:8000/api/publicsite/categries`)
+        axios.get(`http://localhost:8000/v1/site-categories/categries`)
         .then(res =>{
             const category = res.data
             //console.log(`${category}`)

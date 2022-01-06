@@ -6,7 +6,7 @@ import { FEATURED_PRODUCT_FAILURE, FEATURED_PRODUCT_REQUEST, FEATURED_PRODUCT_SU
 export const fetchProduct = ()=> {
     return(dispatch) => {
         dispatch(fetchProductRequest())
-        axios.get(`http://localhost:8000/api/publicsite/product`)
+        axios.get(`http://localhost:8000/v1/site-product/product`)
         .then(res =>{
             const product = res.data
             // console.log(`Product Actions`)
@@ -22,7 +22,7 @@ export const fetchProduct = ()=> {
 export const featuredProduct = ()=> {
     return(dispatch) => {
         dispatch(featuredRequest())
-        axios.get(`http://localhost:8000/api/publicsite/product/featured`)
+        axios.get(`http://localhost:8000/v1/site-product/product/featured`)
         .then(res =>{
             const featuredProduct = res.data
             // console.log(`Product Actions`)
@@ -54,7 +54,7 @@ export const featuredFailure = error => {
 export const latestProduct = ()=> {
     return(dispatch) => {
         dispatch(latestRequest())
-        axios.get(`http://localhost:8000/api/publicsite/product/latest`)
+        axios.get(`http://localhost:8000/v1/site-product/product/latest`)
         .then(res =>{
             const product = res.data
             // console.log(`Product Actions`)

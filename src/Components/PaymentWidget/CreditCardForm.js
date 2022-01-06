@@ -45,14 +45,17 @@ const CardField = ({onChange}) => (
 
 //submit button sub component
 const SubmitButton = ({ processing, error, children, disabled }) => (
-    <button
-        className={`SubmitButton ${error ? "SubmitButton--error" : ""}`}
-        type="submit"
-        disabled={processing || disabled}
-    >
-        {processing ? "Processing..." : children}
-    </button>
-);
+    <>
+    {console.log(`processing : ${processing} children , ${children}`)}
+        <button
+            className={`SubmitButton ${error ? "SubmitButton--error" : ""}`}
+            type="submit"
+            disabled={processing || disabled}
+        >
+            {processing ? "Processing..." : children}
+        </button>
+    </>
+)
 
 //component declaration
 export default function CreditCardForm(props) {
@@ -66,7 +69,7 @@ export default function CreditCardForm(props) {
     const [success, setSuccess] = useState(false)
     const [cardComplete, setCardComplete] = useState(false);
     const [processing, setProcessing] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState('');
+    // const [paymentMethod, setPaymentMethod] = useState(''); // eslint-disable-next-line
     const [price, setPrice] = useState(0);
     const [billingDetails, setBillingDetails] = useState({
         email: '',
@@ -81,7 +84,7 @@ export default function CreditCardForm(props) {
     const reset = () => {
         setError(null);
         setProcessing(false);
-        setPaymentMethod('');
+        // setPaymentMethod(''); // eslint-disable-next-line
         setPrice(0);
         setSuccess(false);
         setCardComplete(false);
@@ -108,6 +111,7 @@ export default function CreditCardForm(props) {
     const handleSubmit = async (event) => {
         //prevent default form values
         event.preventDefault();
+        console.log(`cardComplete : ${cardComplete}`)
 
         ///if stripe api is loaded
         if (!stripe || !elements) {
@@ -127,7 +131,7 @@ export default function CreditCardForm(props) {
 
         //start processing animation on submit button
         if (cardComplete) {
-            setProcessing(true);
+            await setProcessing(true);
         } else {
             return;
         }
@@ -145,13 +149,13 @@ export default function CreditCardForm(props) {
             setError(payload.error);
             return;
         } 
-		
+		alert('yes')
 		//STEP 2:
         //create a new payment request and get irs client secret + id from the server
         const intentData = 
         
             await axios
-            .post("http://localhost:7000/stripe", {
+            .post("http://localhost:8000/v1/site-payment/stripe", {
                 //include the bet amount
                 price: total, //price
             })
@@ -188,7 +192,7 @@ export default function CreditCardForm(props) {
         // The payment has been processed! send a confirmation to the server
         if (result.paymentIntent.status === "succeeded") {
             const confirmedPayment = await axios
-                .post("http://localhost:7000/confirm-payment", {
+                .post("http://localhost:8000/v1/site-payment/confirm-payment", {
                     //include id of payment
                     payment_id: intentData.id,
                     payment_type: "stripe",
@@ -226,7 +230,10 @@ export default function CreditCardForm(props) {
 
     //render
     return (
+        
         // the credit card form
+        <>
+        {console.log(`processing : ${processing}`)}
         <Form className="Form" onSubmit={handleSubmit}>
 
             {/* Error modal */}
@@ -344,9 +351,10 @@ export default function CreditCardForm(props) {
             <fieldset className="FormGroup">
                 {/* card */}
                 <CardField
-                    onChange={(event) => {
-                        setError(event.error);
-                        setCardComplete(event.complete);
+                    onChange={async(event) => {
+                        await setError(event.error);
+                        console.log(`event.complete : ${event.complete}`)
+                        await setCardComplete(event.complete);
                     }}
                 />
                 
@@ -360,6 +368,7 @@ export default function CreditCardForm(props) {
                     Make Payment
             </SubmitButton>
         </Form>
+        </>
     );
     
 }

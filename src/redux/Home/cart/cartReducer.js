@@ -22,6 +22,7 @@ const initialState = {
     loading : false ,
     data : '' ,
     total : '' ,
+    yourCartSize : '' ,
     msg : '' ,
     error : ''
 }

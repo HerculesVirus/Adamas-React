@@ -16,6 +16,7 @@ import {
     DEL_CART_REQUEST ,
     DEL_CART_SUCCESS ,
     DEL_CART_FAILURE, 
+    
     SUMBIT_ORDER_PRICE
 
 } from './cartTypes'
@@ -26,7 +27,7 @@ export const getCart = (id,callback) => {
         console.log(`Why you running`)
         getCartRequest()
         if(id){
-            axios.get(`http://localhost:8000/api/publicsite/Cart?id=${id?id:''}`)
+            axios.get(`http://localhost:8000/v1/site-cart/Cart?id=${id?id:''}`)
             .then((res) => {
                 let data = res.data
                 console.log(data) //issue is here
@@ -63,7 +64,7 @@ export const postCart = (id ,data,callback)=>{
             console.log(data)
             postCartRequest()
             //create a cart
-            axios.post(`http://localhost:8000/api/publicsite/Cart?id=${id?id:''}` , data)
+            axios.post(`http://localhost:8000/v1/site-cart/Cart?id=${id?id:''}` , data)
             .then(res =>{
                 let massage = res.data.message
                 console.log(massage)
@@ -105,7 +106,7 @@ export const updateCart =(cartItem,Qty,callback)=>{
             console.log("cartItem : ",cartItem, "updated Qty : ",Qty)
             updateCartRequest()
             //create a cart
-            axios.put(`http://localhost:8000/api/publicsite/CartUpdate`,{data :{cartItem,Qty}  })
+            axios.put(`http://localhost:8000/v1/site-cart/CartUpdate`,{data :{cartItem,Qty}  })
             .then(res =>{
                 let  data = res.data
                 console.log(data)
@@ -143,7 +144,7 @@ export const deleteCart = (cartItem,callback)=>{
 
             delRequest()
             //create a cart
-            axios.delete(`http://localhost:8000/api/publicsite/CartDel` ,{data:cartItem})
+            axios.delete(`http://localhost:8000/v1/site-cart/CartDel` ,{data:cartItem})
             .then(res =>{
                 let data = res.data
                 console.log(data)

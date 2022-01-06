@@ -36,15 +36,21 @@ export const fetchLogin = (data) => {
     }
 }
 
-export const fetchRegister = (data)=>{
+export const fetchRegister = (data,callback)=>{
     return (dispatch) => {
         // console.log(`fetchLogin : ${data}`)
         dispatch(fetchRegisterRequest())
-        axios.post(`http://localhost:8000/v1/site-auth/register` , data)
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/api/publicsite/register',
+            data,
+            withCredentials: true
+        }) 
         .then(res => {
             const user = res.data
             if(user.token ){
                 dispatch(fetchRegisterSuccess(user))
+                callback(user)
             }
             else{
                 dispatch(fetchRegisterFailure(user))

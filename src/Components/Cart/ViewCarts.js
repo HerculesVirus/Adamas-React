@@ -4,12 +4,17 @@ import { useEffect, useState  } from "react";
 import { deleteCart, getCart, updateCart } from "../../redux/Home/cart/cartActions";
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 
 const ViewCarts = ()=>{
+    let navigate = useNavigate()
     const cart = useSelector(state => state.cart?.data)
     console.log("cartArray : ",cart)
     const userID = useSelector(state => state.auth.user?.user._id )
     console.log(`userID : ${userID}`)
+
+    const total = useSelector (state => state.cart?.total)
+
     let dispatch = useDispatch()
     useEffect(()=>{
         if(userID){
@@ -49,7 +54,7 @@ const ViewCarts = ()=>{
                         </tbody>
                     </table>
                     <div className='d-flex justify-content-center '>
-                        <Button >Proceed to Check Out </Button>
+                        <Button onClick={()=> navigate('/PaymentCart')}>Proceed to Check Out ${total ? total : 0} </Button>
                     </div>
                 </div>
             </div>
@@ -69,7 +74,7 @@ const TableRow=({cartItem})=>{
 
         }
         dispatch(updateCart(cartItem, qty,callback))
-    },[qty])
+    },[qty,cartItem,dispatch])
 
     const handleChange=(e)=>{
         Swal.fire({

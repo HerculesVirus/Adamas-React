@@ -73,19 +73,33 @@ const CartDropdown = (props) => {
                       </div> 
                     </>
                     :
-                    <> 
-                      <div className="d-flex list-unstyled justify-content-center carlistItem p-2">
-                        <Box sx={{ display: 'flex' }}>
-                          <CircularProgress />
-                        </Box>
-                      </div>
-                      <div style={{borderBottom : '1px dotted darkgray' , padding : "10px"}}>
-                        <div className='d-flex list-unstyled justify-content-between'>
-                              <span>Subtotal:</span>
-                              <span  className="px-3">${0}</span>
+                      props.cardList.length === 0 
+                      ?
+                      <>
+                        <div className="d-flex list-unstyled justify-content-center carlistItem p-2">
+                            <p>Your Cart is empty</p>
                         </div>
-                      </div>
-                    </>
+                        <div style={{borderBottom : '1px dotted darkgray' , padding : "10px"}}>
+                          <div className='d-flex list-unstyled justify-content-between'>
+                                <span>Subtotal:</span>
+                                <span  className="px-3">${subTotal}</span>
+                          </div>
+                        </div>
+                      </>
+                      :
+                      <> 
+                        <div className="d-flex list-unstyled justify-content-center carlistItem p-2">
+                          <Box sx={{ display: 'flex' }}>
+                            <CircularProgress />
+                          </Box>
+                        </div>
+                        <div style={{borderBottom : '1px dotted darkgray' , padding : "10px"}}>
+                          <div className='d-flex list-unstyled justify-content-between'>
+                                <span>Subtotal:</span>
+                                <span  className="px-3">${0}</span>
+                          </div>
+                        </div>
+                      </>
                 }
               </ul>
           </div>

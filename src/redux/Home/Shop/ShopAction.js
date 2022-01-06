@@ -12,7 +12,7 @@ export const fetchCategoryShop = (id ,currentPage)=>{
         console.log(id)
         axios({
             method : 'get' ,
-            url:`http://localhost:8000/api/publicsite/category/product?page=${currentPage}&id=${id?id:''}` ,
+            url:`http://localhost:8000/v1/site-product/category/product?page=${currentPage}&id=${id?id:''}` ,
             headers:{
                 'x-access-token': localStorage.getItem('token')
             }
