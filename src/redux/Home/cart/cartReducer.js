@@ -14,7 +14,6 @@ import {
     DEL_CART_REQUEST,
     DEL_CART_SUCCESS,
     DEL_CART_FAILURE,
-    SUMBIT_ORDER_PRICE
     
 } from "./cartTypes";
 
@@ -22,7 +21,6 @@ const initialState = {
     loading : false ,
     data : '' ,
     total : '' ,
-    yourCartSize : '' ,
     msg : '' ,
     error : ''
 }
@@ -39,7 +37,8 @@ const CartReducer = (state = initialState , action) => {
             return{
                     ...state ,
                     loading : false ,
-                    data : action.payload
+                    data : action.payload.data ,
+                    total : action.payload.sum
                 }
         case GET_CART_FAILURE:
             return{
@@ -57,7 +56,9 @@ const CartReducer = (state = initialState , action) => {
             return{
                 ...state,
                 loading : false ,
-                data : action.payload
+                msg : action.payload.message ,
+                data : action.payload.data ? action.payload.data : '' ,
+                total : action.payload.sum
             }
         case POST_CART_FAILURE:
             return{
@@ -75,7 +76,9 @@ const CartReducer = (state = initialState , action) => {
             return{
                     ...state,
                     loading : false ,
-                    msg : action.payload
+                    msg : action.payload.message ,
+                    data : action.payload.data ,
+                    total : action.payload.sum
                 }
         case PUT_CART_FAILURE:
             return{
@@ -93,18 +96,14 @@ const CartReducer = (state = initialState , action) => {
             return{
                 ...state ,
                 loading : false ,
-                data : action.payload
+                data : action.payload.data ,
+                total : action.payload.sum
             }
         case DEL_CART_FAILURE:
             return{
                 ...state,
                 loading : false,
                 error : action.payload
-            }
-        case SUMBIT_ORDER_PRICE:
-            return {
-                ...state ,
-                total: action.payload
             }
         default : return state
     }

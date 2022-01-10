@@ -38,11 +38,12 @@ export const fetchLogin = (data) => {
 
 export const fetchRegister = (data,callback)=>{
     return (dispatch) => {
-        // console.log(`fetchLogin : ${data}`)
+        console.log(`fetchLogin : ${data}`)
+        console.log(data)
         dispatch(fetchRegisterRequest())
         axios({
             method: 'post',
-            url: 'http://localhost:8000/api/publicsite/register',
+            url: 'http://localhost:8000/v1/site-auth/register',
             data,
             withCredentials: true
         }) 
@@ -56,9 +57,7 @@ export const fetchRegister = (data,callback)=>{
                 dispatch(fetchRegisterFailure(user))
             }    
         })
-        .catch(err=> {
-            dispatch(fetchLoginFailure(err.message))
-        })
+        .catch(err=> { dispatch(fetchLoginFailure(err.message)) })
     }
 }
 

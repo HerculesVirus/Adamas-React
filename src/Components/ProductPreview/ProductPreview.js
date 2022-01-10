@@ -148,7 +148,7 @@ const ProductPreview = ()=>{
                                 <label className="align-self-center">Qty: </label>
                                 
                                 <div className="align-self-center px-4" >
-                                    <input onChange={(e)=> quantityHandler(e)} type="number" style={{width : '45px'}} min="1"/>
+                                    <input onChange={(e)=> quantityHandler(e)} type="number" style={{width : '62px'}} min="1"/>
                                 </div>
                                 
                                 <p className="align-self-center price px-2 mb-0" >{`$`}{productData.price}</p>

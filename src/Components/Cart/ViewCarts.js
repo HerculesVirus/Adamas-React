@@ -13,16 +13,13 @@ const ViewCarts = ()=>{
     const userID = useSelector(state => state.auth.user?.user._id )
     console.log(`userID : ${userID}`)
 
-    const total = useSelector (state => state.cart?.total)
+    const total = useSelector (state => state.cart.total)
+    console.log(`total in viewCarts : ${total}`)
 
     let dispatch = useDispatch()
     useEffect(()=>{
         if(userID){
-            const callback =(data)=>{
-                console.log(`getcart Callback is running`)
-                console.log(data)
-            }
-            dispatch(getCart(userID,callback))
+            dispatch(getCart(userID))
         } 
     },[dispatch,userID])
     return(
@@ -66,17 +63,12 @@ const TableRow=({cartItem})=>{
     const dispatch= useDispatch();
     
     useEffect(()=>{
-        console.log(qty)
-        console.log(`your are in update quantity mode`)
-        const callback =(data)=>{
-            console.log(`Your are in Callback of updateCart`)
-            console.log(data)
+        // console.log(qty)
+        // console.log(`your are in update quantity mode`)
+        dispatch(updateCart(cartItem, qty))
+    },[qty])
 
-        }
-        dispatch(updateCart(cartItem, qty,callback))
-    },[qty,cartItem,dispatch])
-
-    const handleChange=(e)=>{
+    const handleOnBlur=(e)=>{
         Swal.fire({
             position: 'center',
             icon: 'success',
@@ -108,7 +100,7 @@ const TableRow=({cartItem})=>{
                 <td><img src={`http://localhost:8000/public/img/Product/${cartItem.productInfo.img}`} style={{width:"100px"}} alt="" /></td>
                 <td>{cartItem.productInfo.Name}</td>
                 <td>{cartItem.productInfo.price}</td>
-                <td><input  type="number" onChange={(e)=>handleChange(e)} min="1" value={qty} style={{width: "50px"}}/></td>
+                <td><input  type="number" onBlur={(e)=>handleOnBlur(e)}  min="1" defaultValue={qty} style={{width: "50px"}}/></td>
                 <td>
                     <div className="d-flex viewCart-button-section">
                         

@@ -14,21 +14,21 @@ const Shop = ()=> {
     //state
     const [currentPage ,setCurrentPage] = useState(0);
     const [totalPage , SetTotalPage] = useState(0);
-const [pages,setpages]=useState()
+    const [pages,setpages] = useState()
     //Category ~ that is coming from Category/CollectionReducer
     const category = useSelector(state => state.collection.data)
     // console.log(`Same CAT's from collection`)
     // console.log(selector)
     const shop = useSelector ( state => state.shop)
-    console.log('Shop is Whole Object')
-    console.log(shop)
+    // console.log('Shop is Whole Object')
+    // console.log(shop)
     const shopID = useSelector( state => state.shop.data?._id )
     const cardItem = useSelector( state => state.shop.data && state.shop?.data)
     
 
     const dispatch = useDispatch()
     useEffect(()=>{
-        console.log(shopID)
+        // console.log(shopID)
         if(shopID){
             dispatch(fetchCategoryShop(shopID  , currentPage))
         }

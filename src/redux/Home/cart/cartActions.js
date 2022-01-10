@@ -17,22 +17,26 @@ import {
     DEL_CART_SUCCESS ,
     DEL_CART_FAILURE, 
     
-    SUMBIT_ORDER_PRICE
-
 } from './cartTypes'
 
 //GET------------------------------
-export const getCart = (id,callback) => {
+export const getCart = (id) => {
     return(dispatch)=>{
         console.log(`Why you running`)
         getCartRequest()
         if(id){
+            let sum=0
             axios.get(`http://localhost:8000/v1/site-cart/Cart?id=${id?id:''}`)
             .then((res) => {
                 let data = res.data
-                console.log(data) //issue is here
-                dispatch(getCartSuccess(data,callback))
-                callback(data)
+                data.map(item =>{
+                    //console.log(`item.Qty :  ${item.Qty} , item.productInfo.price : ${item.productInfo.price}`)
+                    return (sum = sum + (parseInt(item.Qty) * parseInt(item.productInfo.price)))
+                   
+                })
+                // console.log(`sum : ${sum}`)
+                // console.log(data) //issue is here
+                dispatch(getCartSuccess(data ,sum))
             })
             .catch(err => dispatch(getCartFailure(err)))
         }
@@ -44,10 +48,10 @@ export const getCartRequest = ()=> {
         type : GET_CART_REQUEST
     }
 }
-export const getCartSuccess = (data)=> {
+export const getCartSuccess = (data,sum)=> {
     return {
         type : GET_CART_SUCCESS,
-        payload : data
+        payload : {data: data ,sum : sum}
     }
 }
 export const getCartFailure = (err)=> {
@@ -61,15 +65,24 @@ export const postCart = (id ,data,callback)=>{
     return(dispatch)=>{
         if(id){
             console.log(`fetchPostCart`)
-            console.log(data)
+            // console.log(data)
             postCartRequest()
             //create a cart
             axios.post(`http://localhost:8000/v1/site-cart/Cart?id=${id?id:''}` , data)
             .then(res =>{
-                let massage = res.data.message
-                console.log(massage)
-                dispatch(postCartSuccess(massage))
-                callback(massage)
+                let message = res.data.message
+                let data = res.data?.data
+                let sum = 0
+                // console.log(res.data)
+                // console.log(message)
+                if(data){
+                    data.map(item =>{
+                        console.log(`item.Qty :  ${item.Qty} , item.productInfo.price : ${item.productInfo.price}`)
+                        return (sum = sum + (parseInt(item.Qty) * parseInt(item.productInfo.price)))
+                    })
+                }
+                dispatch(postCartSuccess(message,sum,data))
+                callback(message)
             } )
             .catch(err => dispatch(postCartFailure(err)))
         }
@@ -85,10 +98,10 @@ export const postCartRequest = ()=> {
         message : ''
     }
 }
-export const postCartSuccess = (data)=> {
+export const postCartSuccess = (message ,sum, data)=> {
     return {
         type : POST_CART_SUCCESS,
-        payload : data
+        payload : {message:message , sum:sum , data:data}
     }
 }
 export const postCartFailure = (err)=> {
@@ -99,19 +112,26 @@ export const postCartFailure = (err)=> {
 }
 
 //Update---------------------------------
-export const updateCart =(cartItem,Qty,callback)=>{
+export const updateCart =(cartItem,Qty)=>{
     return(dispatch)=>{
         
             console.log(`updateCart`)
-            console.log("cartItem : ",cartItem, "updated Qty : ",Qty)
+            // console.log("cartItem : ",cartItem, "updated Qty : ",Qty)
             updateCartRequest()
             //create a cart
             axios.put(`http://localhost:8000/v1/site-cart/CartUpdate`,{data :{cartItem,Qty}  })
             .then(res =>{
-                let  data = res.data
-                console.log(data)
-                dispatch(updateCartSuccess(data))
-                callback(data)
+                let  data = res.data.data
+                let message = res.data.message
+                let sum =0
+                // console.log(message)
+                // console.log(data)
+                data.map(item =>{
+                    console.log(`item.Qty :  ${item.Qty} , item.productInfo.price : ${item.productInfo.price}`)
+                    return (sum = sum + (parseInt(item.Qty) * parseInt(item.productInfo.price)))
+                })
+                // console.log(`sum : ${sum}`)
+                dispatch(updateCartSuccess(message,sum ,data))
             } )
             .catch(err => dispatch(updateCartFailure(err)))
         
@@ -123,10 +143,10 @@ export const updateCartRequest =()=>{
         type: PUT_CART_REQUEST   
     }
 }
-export const updateCartSuccess =(msg)=>{
+export const updateCartSuccess =(message ,sum ,data)=>{
     return {
         type : PUT_CART_SUCCESS ,
-        payload : msg
+        payload : {message : message ,sum : sum , data : data}
     }
 }
 export const updateCartFailure =(err)=>{
@@ -147,8 +167,13 @@ export const deleteCart = (cartItem,callback)=>{
             axios.delete(`http://localhost:8000/v1/site-cart/CartDel` ,{data:cartItem})
             .then(res =>{
                 let data = res.data
-                console.log(data)
-                dispatch(deleteCartSuccess(data))
+                let sum=0
+                // console.log(data)
+                data.map(item => {
+                    console.log(`item.Qty :  ${item.Qty} , item.productInfo.price : ${item.productInfo.price}`)
+                    return (sum = sum + (parseInt(item.Qty) * parseInt(item.productInfo.price)))
+                })
+                dispatch(deleteCartSuccess(data ,sum))
                 callback(data)
                 
             } )
@@ -161,10 +186,10 @@ export const delRequest=()=>{
         type : DEL_CART_REQUEST
     }
 }
-export const deleteCartSuccess=(data)=>{
+export const deleteCartSuccess=(data ,sum)=>{
     return{
         type : DEL_CART_SUCCESS ,
-        payload : data
+        payload : {data: data , sum : sum}
     }
 }
 export const deleteCartFailure =(err)=>{
@@ -176,10 +201,3 @@ export const deleteCartFailure =(err)=>{
 
 //set Total
 
-export const setTotal =(price)=>{
-    return{
-        type : SUMBIT_ORDER_PRICE ,
-        payload : price
-    }
-
-}

@@ -2,8 +2,8 @@
 import CategoryCards from "./ProductCards";
 
 const CardsGrid = (props)=> {
-    console.log("Product : ")
-    console.log(props.Products)
+    // console.log("Product : ")
+    // console.log(props.Products)
     return(
         <>
         <div className="row text-center">

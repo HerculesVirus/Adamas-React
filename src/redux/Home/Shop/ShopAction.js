@@ -8,8 +8,8 @@ export const fetchCategoryShop = (id ,currentPage)=>{
     return (dispatch) => {
         dispatch(fetchCategoryShopRequest())
         //BOTH Products should decision here
-        console.log('FetchCategoryShop : ')
-        console.log(id)
+        // console.log('FetchCategoryShop : ')
+        // console.log(id)
         axios({
             method : 'get' ,
             url:`http://localhost:8000/v1/site-product/category/product?page=${currentPage}&id=${id?id:''}` ,
@@ -20,8 +20,8 @@ export const fetchCategoryShop = (id ,currentPage)=>{
         .then( res =>{
                 const Totalpages = res.data.totalPages 
                 const data = res.data.data
-                console.log('FetchShop Res : ')
-                console.log(data)
+                // console.log('FetchShop Res : ')
+                // console.log(data)
                 dispatch(fetchCategoryShopSuccess({data, Totalpages}))
             }
         )
