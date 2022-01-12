@@ -5,7 +5,7 @@ export const fetchProductPreview =  (id)=>{
     return(dispatch) => {
         console.log(id)
         dispatch(fetchProductPreviewRequest())
-        axios.get(`http://localhost:8000/v1/site-product/ProductPreview/${id}`)
+        axios.get(`${process.env.REACT_APP_URL}/v1/site-product/ProductPreview/${id}`,{withCredentials: true})
         .then(res =>{
             const product = res.data
             // console.log(`Product Actions`)

@@ -26,7 +26,7 @@ export const getCart = (id) => {
         getCartRequest()
         if(id){
             let sum=0
-            axios.get(`http://localhost:8000/v1/site-cart/Cart?id=${id?id:''}`)
+            axios.get(`${process.env.REACT_APP_URL}/v1/site-cart/Cart?id=${id?id:''}`,{withCredentials: true})
             .then((res) => {
                 let data = res.data
                 data.map(item =>{
@@ -68,7 +68,7 @@ export const postCart = (id ,data,callback)=>{
             // console.log(data)
             postCartRequest()
             //create a cart
-            axios.post(`http://localhost:8000/v1/site-cart/Cart?id=${id?id:''}` , data)
+            axios.post(`${process.env.REACT_APP_URL}/v1/site-cart/Cart?id=${id?id:''}` , data , {withCredentials: true})
             .then(res =>{
                 let message = res.data.message
                 let data = res.data?.data
@@ -112,14 +112,14 @@ export const postCartFailure = (err)=> {
 }
 
 //Update---------------------------------
-export const updateCart =(cartItem,Qty)=>{
+export const updateCart =(id,Qty,user)=>{
     return(dispatch)=>{
         
             console.log(`updateCart`)
             // console.log("cartItem : ",cartItem, "updated Qty : ",Qty)
             updateCartRequest()
             //create a cart
-            axios.put(`http://localhost:8000/v1/site-cart/CartUpdate`,{data :{cartItem,Qty}  })
+            axios.put(`${process.env.REACT_APP_URL}/v1/site-cart/CartUpdate/${id}`,{data :{Qty,user}  })
             .then(res =>{
                 let  data = res.data.data
                 let message = res.data.message
@@ -164,7 +164,7 @@ export const deleteCart = (cartItem,callback)=>{
 
             delRequest()
             //create a cart
-            axios.delete(`http://localhost:8000/v1/site-cart/CartDel` ,{data:cartItem})
+            axios.delete(`${process.env.REACT_APP_URL}/v1/site-cart/CartDel` ,{data:cartItem})
             .then(res =>{
                 let data = res.data
                 let sum=0

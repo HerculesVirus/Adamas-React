@@ -4,7 +4,7 @@ import {
     FETCH_LOGIN_REQUEST ,
     FETCH_LOGIN_SUCCESS,
     FETCH_LOGIN_FAILURE,
-    FETCH_LOGOUT_REQUEST,
+    
 
     FETCH_REGISTER_REQUEST,
     FETCH_REGISTER_SUCCESS,
@@ -12,7 +12,12 @@ import {
 
     LOGIN_WITH_GOOGLE_REQUEST,
     LOGIN_WITH_GOOGLE_FAILURE,
-    LOGIN_WITH_GOOGLE_SUCCESS
+    LOGIN_WITH_GOOGLE_SUCCESS,
+
+    
+    FETCH_LOGOUT_SUCCESS,
+    FETCH_LOGOUT_FAILURE,
+    FETCH_LOGOUT_REQUEST
 } from './loginTypes'
 
 export const fetchLogin = (data) => {
@@ -20,21 +25,55 @@ export const fetchLogin = (data) => {
         // console.log(`fetchLogin : ${data}`)
         dispatch(fetchLoginRequest())
         console.log("process.env.REACT_APP_URL : ",process.env.REACT_APP_URL)
-        axios.post(`http://localhost:8000/v1/site-auth/signin` , data)
+        console.log(data)
+        // axios.post(`${process.env.REACT_APP_URL}/v1/site-auth/signin` , data ,{withCredentials: true,credentials:'include',headers: {"Access-Control-Allow-Origin": true}} )
+        
+        axios({
+            url : `${process.env.REACT_APP_URL}/v1/site-auth/signin`,
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            withCredentials: true,
+            data
+        })
         .then(res => {
-            const user = res.data
-            if(user.token ){
-                dispatch(fetchLoginSuccess(user))
-            }
-            else{
-                dispatch(fetchLoginFailure(user))
-            }
+            console.log('signin response is running')
+            console.log(res)
+            const user = res.data.user
+            console.log(user)
+            dispatch(fetchLoginSuccess(user))
         })
         .catch(err=> {
             dispatch(fetchLoginFailure(err.message))
         })
     }
 }
+
+
+export const fetchLoginRequest =()=>{
+    return {
+        type : FETCH_LOGIN_REQUEST
+    }
+}
+
+export const fetchLoginSuccess = (user)=> {
+    return { 
+        type : FETCH_LOGIN_SUCCESS ,
+        payload : user
+    }
+}
+export const fetchLoginFailure = (error)=> {
+    return { 
+        type : FETCH_LOGIN_FAILURE,
+        payload : error
+    }
+}
+
+
+
 
 export const fetchRegister = (data,callback)=>{
     return (dispatch) => {
@@ -43,7 +82,7 @@ export const fetchRegister = (data,callback)=>{
         dispatch(fetchRegisterRequest())
         axios({
             method: 'post',
-            url: 'http://localhost:8000/v1/site-auth/register',
+            url: `${process.env.REACT_APP_URL}/v1/site-auth/register`,
             data,
             withCredentials: true
         }) 
@@ -88,7 +127,7 @@ export const LoginWithGoogle= ()=>{
         dispatch(LoginWithGoogleRequest())
         axios({
             method : 'get' , 
-            URL : `http://localhost:8000/v1/site-auth/google` ,
+            URL : `${process.env.REACT_APP_URL}/v1/site-auth/google` ,
             withCredentials: true,
         })
         .then(res => {
@@ -116,27 +155,38 @@ export const LoginWithGoogleFailure = (err)=>{
         payload : err
     }
 }
-export const fetchLoginSuccess = (user)=> {
-    return { 
-        type : FETCH_LOGIN_SUCCESS ,
-        payload : user
-    }
-}
-export const fetchLoginFailure = (error)=> {
-    return { 
-        type : FETCH_LOGIN_FAILURE,
-        payload : error
-    }
-}
-export const fetchLoginRequest =()=>{
-    return {
-        type : FETCH_LOGIN_REQUEST
+
+
+
+export const fetchLogout = () => {
+    return(dispatch)=>{
+        dispatch(fetchLogoutRequest())
+        axios.get(`${process.env.REACT_APP_URL}/v1/site-auth/logout`)
+        .then(res=>{
+            const message = res.data.message
+            console.log(`Logout data : ${message}`)
+            dispatch(fetchLogoutSuccess(message))
+        })
+        .catch(err => dispatch(fetchLogoutFailure(err)) )
     }
 }
 export const fetchLogoutRequest = ()=> {
     return {
-        type : FETCH_LOGOUT_REQUEST ,
-        payload : null
+        type : FETCH_LOGOUT_REQUEST 
+    }
+}
 
+export const fetchLogoutSuccess = (message)=>{
+    console.log(`fetchLogoutSuccess : ${message}`)
+    return {
+        type : FETCH_LOGOUT_SUCCESS ,
+        payload : {user : null , isLogin : false, msg : message}
+    }
+}
+
+export const fetchLogoutFailure = (err) => {
+    return {
+        type : FETCH_LOGOUT_FAILURE ,
+        payload : err
     }
 }

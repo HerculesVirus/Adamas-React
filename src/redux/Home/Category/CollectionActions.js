@@ -10,7 +10,16 @@ from './CollectionTypes'
 export const fetchCollection = ()=> {
     return(dispatch) => {
         dispatch(fetchCollectionRequest())
-        axios.get(`http://localhost:8000/v1/site-categories/categries`)
+        // axios.get(`${process.env.REACT_APP_URL}/v1/site-categories/categries`,{},{withCredentials: true,credentials:'include',headers: {"Access-Control-Allow-Origin": true}})
+        fetch(`${process.env.REACT_APP_URL}/v1/site-categories/categries`, {
+            method: 'get',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            withCredentials: true,
+        })
         .then(res =>{
             const category = res.data
             //console.log(`${category}`)

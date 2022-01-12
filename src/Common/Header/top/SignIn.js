@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "@fortawesome/react-fontawesome";
 import jwt from 'jsonwebtoken';
 import { useSelector , useDispatch} from "react-redux";
-import { fetchLogoutRequest } from "../../../redux/Auth/loginAction";
+import { fetchLogout } from "../../../redux/Auth/loginAction";
 import { useState } from "react";
 import CartDropDown from '../../../Components/Cart/CartDropDown'
 import { getCart } from "../../../redux/Home/cart/cartActions";
@@ -19,9 +19,9 @@ const SignIn =(props)  => {
     //boolean to check user Login or not
     const isLogin  = useSelector( state => state.auth?.isLogin)
     //User is Autherized or not
-    const full = useSelector( state => state?.auth)
+    const user = useSelector( state => state.auth?.user)
     //HOOK FOR user id 
-    const userID = useSelector(state => state.auth.user?.user?._id)
+    const userID = useSelector(state => state.auth?.user?._id)
     //console.log(`userID : ${userID}`) 
     //cart
     // const obj = useSelector(state => state.cart)
@@ -32,19 +32,19 @@ const SignIn =(props)  => {
 
     //using Old technique Jwt
     const handleLogout = ()=> {
-        const token = localStorage.getItem('token')
-        if(token){
-            const user = jwt.decode(token)
-            if(user){
-                console.log(`Logout User`)
-                localStorage.removeItem('token')
-                dispatch(fetchLogoutRequest())
+        // const token = localStorage.getItem('token')
+        // if(token){
+        //     const user = jwt.decode(token)
+            if(userID){
+                // console.log(`Logout User`)
+                // localStorage.removeItem('token')
+                dispatch(fetchLogout())
                 navigate('/')
             }
             else{
                 console.log('Can not be Logout')
             }
-        }
+        // }
     }
     const handleDropDown = ()=>{
         //console.log(`Button is pressed`)
@@ -59,9 +59,9 @@ const SignIn =(props)  => {
         <>
         {/* {console.log(`numberOfCart : ${numberOfCart}`)} */}
         <ul className="d-flex list-unstyled align-items-center my-auto">
-            {isLogin !==(null || undefined) && userID !==(null || undefined) ?
+            {isLogin !==(null || undefined) && userID !==(null || undefined)  && user!== (null ||undefined)?
             <>
-                <li className="text-decoration-none text-light slash">{full && full.user.user?.email}</li>
+                <li className="text-decoration-none text-light slash">{user && user.email}</li>
                 <li><Link className="text-decoration-none text-light slash" to="#" onClick={()=>handleLogout()}> LOGOUT</Link></li>
                 <li><button className="text-decoration-none text-light" onClick={() => handleDropDown()} >   YOUR CART ({cartSize})</button></li> 
                 

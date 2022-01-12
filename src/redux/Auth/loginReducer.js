@@ -1,11 +1,17 @@
 import { 
+    FETCH_LOGIN_REQUEST,
     FETCH_LOGIN_SUCCESS,
     FETCH_LOGIN_FAILURE,
-    FETCH_LOGIN_REQUEST,
-    FETCH_LOGOUT_REQUEST,
+
+
     FETCH_REGISTER_REQUEST,
     FETCH_REGISTER_SUCCESS,
-    FETCH_REGISTER_FAILURE
+    FETCH_REGISTER_FAILURE,
+
+    FETCH_LOGOUT_REQUEST,
+    FETCH_LOGOUT_SUCCESS,
+    FETCH_LOGOUT_FAILURE
+    
 } from "./loginTypes";
 
 
@@ -13,6 +19,7 @@ const initialState = {
     isLogin : false,
     user : '',
     data : '' ,
+    msg : '' ,
     error : null 
 } 
 
@@ -23,22 +30,16 @@ const LoginReducer = (state = initialState , action) => {
                 ...state , 
                 isLogin : false
             }
-        case FETCH_LOGOUT_REQUEST:
-            return{
-                isLogin  : false,
-                user: action.payload,
-                error : null
-            }
+
         case FETCH_LOGIN_SUCCESS:
-            // console.log(`FETCH_LOGIN ${action.payload}`)
             return {
+                ...state,
                 user : action.payload ,
-                isLogin  : true
-                
+                isLogin  : true 
             }
         case FETCH_LOGIN_FAILURE:
-            // console.log(`FETCH_FAILURE ${action.payload}`)
             return{
+                ...state,
                 error : action.payload ,
                 isLogin  : false
             }
@@ -58,6 +59,25 @@ const LoginReducer = (state = initialState , action) => {
                 ...state ,
                 error : action.payload ,
                 isLogin : false
+            }
+        case FETCH_LOGOUT_REQUEST:
+            return{
+                ...state,
+                isLogin  : true,
+            }
+        case FETCH_LOGOUT_SUCCESS:
+            console.log(`logout case Sucess is working`)
+            return{
+                ...state,
+                isLogin : action.payload.isLogin ,
+                user : action.payload.user ,
+                msg: action.payload.msg ? action.payload.msg : ''
+            }
+        case FETCH_LOGOUT_FAILURE:
+            return{
+                ...state ,
+                isLogin : true ,
+                err : action.payload
             }
         default: return state
     }

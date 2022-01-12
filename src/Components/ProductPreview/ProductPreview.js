@@ -24,7 +24,7 @@ const ProductPreview = ()=>{
     let dispatch = useDispatch()
     const productData = useSelector(state => state.productPreview.data)
     const loading = useSelector(state => state.productPreview.loading)
-    const userID = useSelector(state => state.auth.user.user._id)
+    const userID = useSelector(state => state.auth?.user?._id)
 
     
     useEffect(() => {

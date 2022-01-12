@@ -10,7 +10,7 @@ const ViewCarts = ()=>{
     let navigate = useNavigate()
     const cart = useSelector(state => state.cart?.data)
     console.log("cartArray : ",cart)
-    const userID = useSelector(state => state.auth.user?.user._id )
+    const userID = useSelector(state => state.auth?.user?._id )
     console.log(`userID : ${userID}`)
 
     const total = useSelector (state => state.cart.total)
@@ -44,28 +44,29 @@ const ViewCarts = ()=>{
                         <tbody>
                             {cart !== undefined ? 
                             cart.map((cartItem, i)=>{
-                                return <TableRow key={i} cartItem={cartItem}/>;
+                                return <TableRow key={i} cartItem={cartItem} user={userID}/>;
                             })
                         :<></>
                         }
                         </tbody>
                     </table>
                     <div className='d-flex justify-content-center '>
-                        <Button onClick={()=> navigate('/PaymentCart')}>Proceed to Check Out ${total ? total : 0} </Button>
+                        <Button onClick={()=> navigate('/PaymentCart')} disabled={parseInt(total) === 0 ? true: false}>Proceed to Check Out ${total ? total : 0} </Button>
                     </div>
                 </div>
             </div>
         </>
     )
 }
-const TableRow=({cartItem})=>{
+const TableRow=({cartItem,user})=>{
+    console.log(`cartItem._id : ${cartItem._id}`)
     let [qty, setQty] = useState(cartItem.Qty)
     const dispatch= useDispatch();
     
     useEffect(()=>{
         // console.log(qty)
         // console.log(`your are in update quantity mode`)
-        dispatch(updateCart(cartItem, qty))
+        dispatch(updateCart(cartItem._id, qty ,user))
     },[qty])
 
     const handleOnBlur=(e)=>{

@@ -11,6 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLogin } from '../../redux/Auth/loginAction';
+import Swal from 'sweetalert2';
 // import { LoginWithGoogle } from '../../redux/Auth/loginAction';
 
 
@@ -35,21 +36,24 @@ const Login=() => {
     }
     useEffect(()=>{
         if(selector?.user){
+            console.log('user is Find in Login.js')
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: "Login Sucessfully",
+                showConfirmButton: false,
+                timer: 1500
+            })
             console.log(selector.user)
-            localStorage.setItem('token' , selector.user.token)
-            navigate("/");
+            // localStorage.setItem('token' , selector.user.token)
+            // navigate("/");
         }
-    })
-    // const handleGoogleSignIn = (e) => {
-    //     console.log(`Button is pressed`)
-    //     dispatch(LoginWithGoogle())
-    // }
+    },[selector?.user])
+
     //submit
     const handleSubmit = (e)=>{
         e.preventDefault();
-        // window.open(`http://localhost:8000/api/google`)
         dispatch(fetchLogin(user))
-    //     localStorage.setItem('token' , selector?.user && selector.user.token)
     }
 
     return(
